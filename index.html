@@ -77,7 +77,9 @@ border-bottom:1px solid #eee;
 }
 
 </style>
-  
+    
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
@@ -101,6 +103,10 @@ Prime
 Priority
 </div>
   
+</div>
+
+<div style="position:absolute; top:60px; right:60px; width:320px; background:rgba(255,255,255,0.9); padding:20px; border-radius:10px;">
+<canvas id="areaChart"></canvas>
 </div>
 
 <input type="text" id="search" placeholder="Cari Nama / Plat / Agreement">
@@ -161,9 +167,45 @@ document.getElementById("total").innerText=dataGlobal.length;
 document.getElementById("prime").innerText=prime;
 document.getElementById("priority").innerText=priority;
 
-renderTable(dataGlobal);
+/* HITUNG AREA */
+
+let areaCount = {};
+
+dataGlobal.forEach(d=>{
+
+if(areaCount[d.area]){
+areaCount[d.area]++
+}else{
+areaCount[d.area]=1
+}
 
 });
+const labels = Object.keys(areaCount);
+const values = Object.values(areaCount);
+
+/* BUAT CHART */
+
+new Chart(document.getElementById("areaChart"), {
+
+type:"doughnut",
+
+data:{
+labels:labels,
+datasets:[{
+data:values
+}]
+},
+
+options:{
+plugins:{
+legend:{
+position:"bottom"
+}
+}
+}
+
+});
+    });
 
 function renderTable(data){
 
@@ -197,10 +239,13 @@ let filtered=dataGlobal.filter(d=>
 
 d.nama.toLowerCase().includes(keyword) ||
 d.plat.toLowerCase().includes(keyword) ||
-d.agreement.toLowerCase().includes(keyword)
+d.agreement.toLowerCase().includes(keyword) ||
+d.area.toLowerCase().includes(keyword) ||
+d.cabang.toLowerCase().includes(keyword) ||
+d.phone.toLowerCase().includes(keyword)
 
 )
-
+    
 renderTable(filtered);
 
 });
