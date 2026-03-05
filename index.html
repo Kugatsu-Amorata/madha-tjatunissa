@@ -3,18 +3,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Dashboard Data Madun</title>
+<title>Dashboard Data Madha</title>
 
 <style>
 
 body{
 font-family:Arial;
-background:#f4f6f9;
 margin:40px;
+
+background-image:url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
 }
 
 h1{
-color:#333;
+color:white;
+text-shadow:2px 2px 5px black;
 }
 
 .dashboard{
@@ -24,31 +29,40 @@ margin-bottom:30px;
 }
 
 .card{
-background:white;
 padding:20px;
 border-radius:10px;
-box-shadow:0 2px 6px rgba(0,0,0,0.1);
 width:200px;
 text-align:center;
+font-weight:bold;
+box-shadow:0 2px 6px rgba(0,0,0,0.2);
 }
 
-.card h2{
-margin:0;
-color:#7b1fa2;
+.total{
+background:white;
+}
+
+.prime{
+background:#1976D2;
+color:white;
+}
+
+.priority{
+background:#FFD700;
+color:black;
 }
 
 input{
 padding:10px;
 width:300px;
 margin-bottom:20px;
-border:1px solid #ccc;
 border-radius:6px;
+border:none;
 }
 
 table{
 width:100%;
 border-collapse:collapse;
-background:white;
+background:rgba(255,255,255,0.95);
 }
 
 th{
@@ -62,35 +76,31 @@ padding:8px;
 border-bottom:1px solid #eee;
 }
 
-tr:hover{
-background:#f3e5f5;
-}
-
 </style>
-
+  
 </head>
 
 <body>
 
-<h1>Dashboard Data Madun</h1>
+<h1>Dashboard Data Madha</h1>
 
 <div class="dashboard">
 
-<div class="card">
+<div class="card total">
 <h2 id="total"></h2>
 Total Data
 </div>
-
-<div class="card">
+  
+<div class="card prime">
 <h2 id="prime"></h2>
 Prime
 </div>
-
-<div class="card">
+  
+<div class="card priority">
 <h2 id="priority"></h2>
 Priority
 </div>
-
+  
 </div>
 
 <input type="text" id="search" placeholder="Cari Nama / Plat / Agreement">
