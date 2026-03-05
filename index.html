@@ -76,6 +76,20 @@ padding:8px;
 border-bottom:1px solid #eee;
 }
 
+.topSection{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+margin-bottom:20px;
+}
+
+.chartBox{
+width:340px;
+background:rgba(255,255,255,0.9);
+padding:20px;
+border-radius:10px;
+}
+    
 </style>
     
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -85,6 +99,8 @@ border-bottom:1px solid #eee;
 <body>
 
 <h1>Dashboard Data Madha</h1>
+
+<div class="topSection">
 
 <div class="dashboard">
 
@@ -105,10 +121,12 @@ Priority
   
 </div>
 
-<div style="position:absolute; top:30px; right:60px; width:320px; background:rgba(255,255,255,0.9); padding:20px; border-radius:10px;">
+<div class="chartBox">
 <canvas id="areaChart"></canvas>
 </div>
 
+</div>
+    
 <input type="text" id="search" placeholder="Cari Nama / Plat / Agreement">
 
 <table id="table">
