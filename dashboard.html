@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Data Madha</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  padding:32px;
+  background-image:url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  min-height:100vh;
+}
+
+h1{
+  color:white;
+  text-shadow:2px 2px 8px rgba(0,0,0,0.7);
+  font-size:1.8rem;
+  font-weight:800;
+  margin-bottom:20px;
+}
+
+/* NAVBAR */
+.navbar{
+  display:flex;
+  gap:10px;
+  margin-bottom:24px;
+}
+.navbar button{
+  padding:10px 24px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.9rem;
+  background:rgba(255,255,255,0.85);
+  color:#333;
+  transition:all 0.2s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+.navbar button:hover, .navbar button.active{
+  background:#7b1fa2;
+  color:white;
+  transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(123,31,162,0.4);
+}
+
+/* CARDS */
+.dashboard{
+  display:flex;
+  gap:16px;
+  margin-bottom:24px;
+  flex-wrap:wrap;
+}
+.card{
+  padding:20px 28px;
+  border-radius:12px;
+  min-width:160px;
+  text-align:center;
+  font-weight:700;
+  box-shadow:0 4px 16px rgba(0,0,0,0.15);
+}
+.card h2{font-size:2rem;margin-bottom:4px;}
+.card span{font-size:0.85rem;opacity:0.85;}
+.total{background:white;color:#333;}
+.prime{background:linear-gradient(135deg,#1565C0,#1976D2);color:white;}
+.priority{background:linear-gradient(135deg,#F9A825,#FFD700);color:#333;}
+
+/* TOP SECTION */
+.topSection{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:24px;
+  margin-bottom:24px;
+  flex-wrap:wrap;
+}
+.topLeft{display:flex;flex-direction:column;}
+
+.chartBox{
+  background:rgba(255,255,255,0.95);
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.12);
+  min-width:300px;
+  max-width:360px;
+}
+.chartBox h3{
+  font-size:0.85rem;
+  color:#666;
+  margin-bottom:12px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+
+/* SEARCH */
+input[type=text]{
+  padding:12px 16px;
+  width:100%;
+  max-width:400px;
+  margin-bottom:16px;
+  border-radius:8px;
+  border:none;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.95rem;
+  box-shadow:0 2px 8px rgba(0,0,0,0.12);
+  outline:none;
+}
+input[type=text]:focus{
+  box-shadow:0 0 0 3px rgba(123,31,162,0.3);
+}
+
+/* TABLE */
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:rgba(255,255,255,0.97);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,0.12);
+}
+th{
+  background:#7b1fa2;
+  color:white;
+  padding:12px 14px;
+  font-size:0.85rem;
+  text-align:left;
+  letter-spacing:0.03em;
+}
+td{
+  padding:10px 14px;
+  border-bottom:1px solid #f0f0f0;
+  font-size:0.88rem;
+  color:#333;
+}
+tbody tr:hover{background:#faf5ff;}
+tbody tr:last-child td{border-bottom:none;}
+
+/* STATUS BADGE */
+.badge{
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:20px;
+  font-size:0.78rem;
+  font-weight:700;
+}
+.badge-tutup{background:#FFE0E0;color:#c62828;}
+.badge-operasional{background:#E8F5E9;color:#2e7d32;}
+
+/* CABANG STATUS CHART SECTION */
+.cabangTopSection{
+  display:flex;
+  gap:24px;
+  margin-bottom:24px;
+  align-items:flex-start;
+  flex-wrap:wrap;
+}
+.statusCards{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.card-operasional{
+  background:linear-gradient(135deg,#2e7d32,#43a047);
+  color:white;
+}
+.card-tutup{
+  background:linear-gradient(135deg,#b71c1c,#e53935);
+  color:white;
+}
+
+/* EMPTY STATE */
+.empty-state{
+  text-align:center;
+  padding:40px;
+  color:#999;
+  font-style:italic;
+}
+
+</style>
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="navbar">
+  <button id="btnKmob" onclick="showPage('kmob')" class="active">KMOB</button>
+  <button id="btnCabang" onclick="showPage('cabang')">Cabang</button>
+</div>
+
+<!-- ============ KMOB PAGE ============ -->
+<div id="kmobPage">
+  <h1>Dashboard Data Madha</h1>
+  <div class="topSection">
+    <div class="topLeft">
+      <div class="dashboard">
+        <div class="card total">
+          <h2 id="total">-</h2>
+          <span>Total Data</span>
+        </div>
+        <div class="card prime">
+          <h2 id="prime">-</h2>
+          <span>Prime</span>
+        </div>
+        <div class="card priority">
+          <h2 id="priority">-</h2>
+          <span>Priority</span>
+        </div>
+      </div>
+    </div>
+    <div class="chartBox">
+      <h3>Distribusi Area</h3>
+      <canvas id="areaChart"></canvas>
+    </div>
+  </div>
+
+  <input type="text" id="search" placeholder="🔍  Cari Nama / Plat / Agreement / Cabang / Area">
+  <table id="table">
+    <thead>
+      <tr>
+        <th>Agreement</th>
+        <th>Nama</th>
+        <th>Area</th>
+        <th>Cabang</th>
+        <th>Klasifikasi</th>
+        <th>Plat</th>
+        <th>Phone</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<!-- ============ CABANG PAGE ============ -->
+<div id="cabangPage" style="display:none;">
+  <h1>Data Cabang</h1>
+
+  <div class="cabangTopSection">
+    <div>
+      <div class="statusCards" id="cabangCards">
+        <div class="card card-operasional">
+          <h2 id="countOperasional">-</h2>
+          <span>Operasional</span>
+        </div>
+        <div class="card card-tutup">
+          <h2 id="countTutup">-</h2>
+          <span>Tutup</span>
+        </div>
+      </div>
+    </div>
+    <div class="chartBox" style="max-width:280px;">
+      <h3>Status Cabang</h3>
+      <canvas id="cabangStatusChart"></canvas>
+    </div>
+  </div>
+
+  <input type="text" id="searchCabang" placeholder="🔍  Cari Cabang / Alamat / Telepon">
+  <table id="cabangTable">
+    <thead>
+      <tr>
+        <th>Cabang</th>
+        <th>Alamat</th>
+        <th>Telepon</th>
+        <th>Area</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+
+/* ===================== UTILS ===================== */
+
+/**
+ * Parse satu baris CSV dengan benar, handle quoted fields (koma di dalam quotes)
+ */
+function parseCSVLine(line) {
+  const result = [];
+  let current = '';
+  let inQuote = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQuote && line[i+1] === '"') {
+        current += '"';
+        i++;
+      } else {
+        inQuote = !inQuote;
+      }
+    } else if (ch === ',' && !inQuote) {
+      result.push(current.trim());
+      current = '';
+    } else {
+      current += ch;
+    }
+  }
+  result.push(current.trim());
+  return result;
+}
+
+/**
+ * Normalize teks untuk pencarian: lowercase, hapus spasi berlebih
+ */
+function norm(str) {
+  return (str || '').toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Cek apakah keyword cocok dengan salah satu field
+ * Juga strip prefix "cabang " dari keyword maupun field
+ */
+function matchSearch(keyword, ...fields) {
+  const kw = norm(keyword);
+  // Juga coba strip "cabang " di awal keyword
+  const kwStripped = kw.startsWith('cabang ') ? kw.replace('cabang ', '') : kw;
+
+  return fields.some(f => {
+    const fNorm = norm(f);
+    const fStripped = fNorm.startsWith('cabang ') ? fNorm.replace('cabang ', '') : fNorm;
+    return fNorm.includes(kw) || fStripped.includes(kw) ||
+           fNorm.includes(kwStripped) || fStripped.includes(kwStripped);
+  });
+}
+
+/* ===================== KMOB ===================== */
+
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT6ADg9gSdfwiOpfYZq47pZCEQ3yphM7WdLyENW_9t_NyvDM62nQvWioni4y4hbgHXblZibz0GSm-je/pub?gid=1801845643&single=true&output=csv";
+let dataGlobal = [];
+
+fetch(url)
+  .then(res => res.text())
+  .then(data => {
+    const rows = data.split("\n").slice(1);
+    let prime = 0, priority = 0;
+
+    rows.forEach(r => {
+      if (!r.trim()) return;
+      const col = parseCSVLine(r);
+      const obj = {
+        agreement: col[0] || '',
+        nama:       col[1] || '',
+        area:       col[2] || '',
+        cabang:     col[3] || '',
+        klasifikasi:col[4] || '',
+        plat:       col[5] || '',
+        phone:      col[6] || ''
+      };
+      dataGlobal.push(obj);
+      if (obj.klasifikasi === "PRIME") prime++;
+      if (obj.klasifikasi === "PRIORITY") priority++;
+    });
+
+    document.getElementById("total").innerText = dataGlobal.length;
+    document.getElementById("prime").innerText = prime;
+    document.getElementById("priority").innerText = priority;
+
+    // Chart area
+    const areaCount = {};
+    dataGlobal.forEach(d => {
+      areaCount[d.area] = (areaCount[d.area] || 0) + 1;
+    });
+
+    new Chart(document.getElementById("areaChart"), {
+      type: "doughnut",
+      data: {
+        labels: Object.keys(areaCount),
+        datasets: [{ data: Object.values(areaCount) }]
+      },
+      options: {
+        plugins: { legend: { position: "bottom", labels: { font: { size: 11 } } } }
+      }
+    });
+  })
+  .catch(err => console.error("Gagal fetch KMOB:", err));
+
+function renderTable(data) {
+  let html = "";
+  data.forEach(d => {
+    html += `
+      <tr>
+        <td>${d.agreement}</td>
+        <td>${d.nama}</td>
+        <td>${d.area}</td>
+        <td>${d.cabang}</td>
+        <td>${d.klasifikasi}</td>
+        <td>${d.plat}</td>
+        <td>${d.phone}</td>
+      </tr>`;
+  });
+  document.querySelector("#table tbody").innerHTML =
+    html || `<tr><td colspan="7" class="empty-state">Tidak ada data ditemukan</td></tr>`;
+}
+
+document.getElementById("search").addEventListener("keyup", function() {
+  const keyword = this.value.trim();
+  if (keyword === "") {
+    document.querySelector("#table tbody").innerHTML = "";
+    return;
+  }
+  const filtered = dataGlobal.filter(d =>
+    matchSearch(keyword, d.nama, d.plat, d.agreement, d.area, d.cabang, d.phone)
+  );
+  renderTable(filtered);
+});
+
+/* ===================== CABANG ===================== */
+
+const cabangUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8N4KMXSbLh24-Y3Ar-bsj0_oYNqwiDVD7kjIS_IiE4vvVjdOteuUEIg_Cbrl69tz0NVjeWh_NxLS1/pub?gid=974265388&single=true&output=csv";
+let dataCabang = [];
+let cabangChartInstance = null;
+let cabangLoaded = false;
+
+// Tampilkan loading di tabel
+document.querySelector("#cabangTable tbody").innerHTML =
+  `<tr><td colspan="4" style="text-align:center;padding:20px;color:#888;">⏳ Memuat data cabang...</td></tr>`;
+
+fetch(cabangUrl)
+  .then(res => res.text())
+  .then(rawData => {
+    document.querySelector("#cabangTable tbody").innerHTML = "";
+
+    const rows = rawData.split("\n");
+
+    // Struktur CSV:
+    // col[0] = No, col[1] = Cabang, col[2] = Alamat, col[3] = Telepon, col[4] = Area
+    rows.slice(1).forEach(r => {
+      if (!r.trim()) return;
+      const col = parseCSVLine(r);
+      if (!col[1] || col[1].trim() === '') return; // skip baris kosong
+
+      const obj = {
+        no:      col[0]?.trim() || '',
+        cabang:  col[1]?.trim() || '',
+        alamat:  col[2]?.trim() || '',
+        telepon: col[3]?.trim() || '',
+        area:    col[4]?.trim() || ''
+      };
+      dataCabang.push(obj);
+    });
+
+    cabangLoaded = true;
+    updateCabangStats();
+
+    // Jika user sudah mengetik sebelum data selesai, jalankan ulang pencarian
+    const keyword = document.getElementById("searchCabang").value.trim();
+    if (keyword !== "") {
+      const filtered = dataCabang.filter(d =>
+        matchSearch(keyword, d.cabang, d.alamat, d.telepon, d.area)
+      );
+      renderCabang(filtered);
+    }
+  })
+  .catch(err => {
+    console.error("Gagal fetch Cabang:", err);
+    document.querySelector("#cabangTable tbody").innerHTML =
+      `<tr><td colspan="4" style="text-align:center;padding:20px;color:red;">❌ Gagal memuat data. Coba refresh halaman.</td></tr>`;
+  });
+
+function isTutup(d) {
+  // "Tutup" ada di kolom Alamat, contoh: "Tutup – AR Migrasi ke Cipulir"
+  // Juga cek nama cabang jika ada kata Tutup
+  return norm(d.alamat).startsWith('tutup') ||
+         norm(d.cabang).startsWith('tutup') ||
+         norm(d.status || '').includes('tutup');
+}
+
+function updateCabangStats() {
+  const tutup = dataCabang.filter(d => isTutup(d)).length;
+  const operasional = dataCabang.length - tutup;
+
+  document.getElementById("countOperasional").innerText = operasional;
+  document.getElementById("countTutup").innerText = tutup;
+
+  // Buat / update chart
+  const ctx = document.getElementById("cabangStatusChart");
+  if (cabangChartInstance) cabangChartInstance.destroy();
+
+  cabangChartInstance = new Chart(ctx, {
+    type: "pie",
+    data: {
+      labels: ["Operasional", "Tutup"],
+      datasets: [{
+        data: [operasional, tutup],
+        backgroundColor: ["#43a047", "#e53935"],
+        borderWidth: 2,
+        borderColor: "#fff"
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: { font: { size: 12 }, padding: 12 }
+        }
+      }
+    }
+  });
+}
+
+function renderCabang(data) {
+  let html = "";
+  data.forEach(d => {
+    const tutup = isTutup(d);
+    const badge = tutup
+      ? `<span class="badge badge-tutup">Tutup</span>`
+      : `<span class="badge badge-operasional">Operasional</span>`;
+    html += `
+      <tr>
+        <td>${d.cabang}</td>
+        <td>${d.alamat}</td>
+        <td>${d.telepon || '-'}</td>
+        <td>${d.area || '-'}</td>
+        <td>${badge}</td>
+      </tr>`;
+  });
+  document.querySelector("#cabangTable tbody").innerHTML =
+    html || `<tr><td colspan="5" class="empty-state">Tidak ada data ditemukan</td></tr>`;
+}
+
+document.getElementById("searchCabang").addEventListener("keyup", function() {
+  const keyword = this.value.trim();
+
+  if (keyword === "") {
+    document.querySelector("#cabangTable tbody").innerHTML = "";
+    return;
+  }
+
+  // Jika data belum selesai loading, tampilkan pesan tunggu
+  if (!cabangLoaded) {
+    document.querySelector("#cabangTable tbody").innerHTML =
+      `<tr><td colspan="4" style="text-align:center;padding:20px;color:#888;">⏳ Data masih dimuat, harap tunggu sebentar...</td></tr>`;
+    return;
+  }
+
+  const filtered = dataCabang.filter(d =>
+    matchSearch(keyword, d.cabang, d.alamat, d.telepon, d.area)
+  );
+
+  renderCabang(filtered);
+});
+
+/* ===================== NAV ===================== */
+function showPage(page) {
+  document.getElementById("kmobPage").style.display = "none";
+  document.getElementById("cabangPage").style.display = "none";
+  document.getElementById("btnKmob").classList.remove("active");
+  document.getElementById("btnCabang").classList.remove("active");
+
+  if (page === "kmob") {
+    document.getElementById("kmobPage").style.display = "block";
+    document.getElementById("btnKmob").classList.add("active");
+  }
+  if (page === "cabang") {
+    document.getElementById("cabangPage").style.display = "block";
+    document.getElementById("btnCabang").classList.add("active");
+  }
+}
+
+</script>
+</body>
+</html>
