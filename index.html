@@ -347,12 +347,12 @@ rows.forEach(r=>{
 
 if(!r) return;
 
-let col=r.split(",");
+let col = r.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
 
 let obj={
-cabang:col[1]?.trim(),
-alamat:col[2]?.trim(),
-telepon:col[3]?.trim()
+cabang:col[1]?.replace(/"/g,'').trim(),
+alamat:col[2]?.replace(/"/g,'').trim(),
+telepon:col[3]?.replace(/"/g,'').trim()
 }
 dataCabang.push(obj);
 
