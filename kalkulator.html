@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KMoB Kalkulator – Sale & Leaseback</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #0d0f14;
+  --surface: #161a24;
+  --surface2: #1e2433;
+  --border: #2a3148;
+  --accent: #7b1fa2;
+  --accent2: #9c27b0;
+  --gold: #f0a500;
+  --green: #00c17c;
+  --red: #ff4f5e;
+  --blue: #4a9eff;
+  --text: #e8eaf0;
+  --muted: #8892a4;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ─── HEADER ─────────────────────────────── */
+header {
+  background: linear-gradient(135deg, #12071a 0%, #1a0f2e 50%, #0d0f14 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo-mark {
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, var(--accent), var(--gold));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 700; color: white;
+  font-family: var(--mono);
+  flex-shrink: 0;
+}
+header h1 { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+header span { font-size: 0.78rem; color: var(--muted); display: block; margin-top: 1px; }
+.nav-back {
+  margin-left: auto;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.82rem;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.nav-back:hover { color: var(--text); border-color: var(--accent); }
+
+/* ─── LAYOUT ──────────────────────────────── */
+.wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .wrapper { grid-template-columns: 1fr; }
+}
+
+/* ─── PANEL INPUT ─────────────────────────── */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  position: sticky;
+  top: 90px;
+}
+.panel-header {
+  background: linear-gradient(135deg, rgba(123,31,162,0.15), rgba(240,165,0,0.05));
+  border-bottom: 1px solid var(--border);
+  padding: 20px 24px;
+}
+.panel-header h2 { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+.panel-header p { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+.panel-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.field select, .field input {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  padding: 11px 14px;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.field select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238892a4' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+.field select:focus, .field input:focus { border-color: var(--accent2); }
+.field select option { background: var(--surface2); }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.rp-input { position: relative; }
+.rp-input span {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  font-size: 0.8rem; color: var(--muted); font-family: var(--mono); pointer-events: none;
+}
+.rp-input input { padding-left: 38px; font-family: var(--mono); }
+
+.hint { font-size: 0.72rem; color: var(--muted); }
+.hint.error { color: var(--red); }
+.hint.ok { color: var(--green); }
+
+.btn-calc {
+  background: linear-gradient(135deg, var(--accent), #a83cf5);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 14px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 4px;
+  transition: opacity 0.2s, transform 0.1s;
+  letter-spacing: 0.01em;
+}
+.btn-calc:hover { opacity: 0.9; }
+.btn-calc:active { transform: scale(0.98); }
+.btn-calc:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ─── PANEL OUTPUT ────────────────────────── */
+.output-area { display: flex; flex-direction: column; gap: 20px; }
+
+.idle-state {
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  padding: 60px 32px;
+  text-align: center;
+  color: var(--muted);
+}
+.idle-state .icon { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.5; }
+.idle-state p { font-size: 0.88rem; }
+
+/* Info box */
+.info-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.info-box-header {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.info-box-header h3 { font-size: 0.85rem; font-weight: 600; }
+.badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: var(--mono);
+}
+.badge-purple { background: rgba(123,31,162,0.25); color: #c084fc; border: 1px solid rgba(123,31,162,0.3); }
+.badge-green { background: rgba(0,193,124,0.15); color: var(--green); border: 1px solid rgba(0,193,124,0.3); }
+.badge-red { background: rgba(255,79,94,0.15); color: var(--red); border: 1px solid rgba(255,79,94,0.3); }
+.badge-gold { background: rgba(240,165,0,0.15); color: var(--gold); border: 1px solid rgba(240,165,0,0.3); }
+.badge-blue { background: rgba(74,158,255,0.15); color: var(--blue); border: 1px solid rgba(74,158,255,0.3); }
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+.meta-item {
+  background: var(--surface);
+  padding: 14px 18px;
+}
+.meta-item .label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.meta-item .val { font-size: 0.92rem; font-weight: 600; font-family: var(--mono); }
+.meta-item .val.green { color: var(--green); }
+.meta-item .val.red { color: var(--red); }
+.meta-item .val.gold { color: var(--gold); }
+.meta-item .val.blue { color: var(--blue); }
+
+/* ─── TABEL SIMULASI ──────────────────────── */
+.sim-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 20px 20px 12px;
+}
+.sim-table-wrap { overflow-x: auto; padding: 0 20px 20px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+}
+thead th {
+  background: var(--surface2);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 14px;
+  text-align: right;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+thead th:first-child { text-align: left; }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(255,255,255,0.03); }
+tbody td {
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+tbody td:first-child { text-align: left; font-family: var(--sans); font-weight: 600; color: var(--gold); }
+td.highlight { color: var(--text); }
+td.muted { color: var(--muted); }
+td.green { color: var(--green); }
+td.red { color: var(--red); }
+td.blue { color: var(--blue); }
+td.disabled { color: var(--border); }
+tr.recommended { background: rgba(123,31,162,0.08); }
+tr.recommended td:first-child::after { content: ' ★'; color: var(--gold); font-size: 0.7rem; }
+
+/* ─── RINCIAN BOX ─────────────────────────── */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+@media (max-width: 600px) { .detail-grid { grid-template-columns: 1fr; } }
+.detail-row {
+  background: var(--surface);
+  padding: 13px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.detail-row .dk { font-size: 0.78rem; color: var(--muted); }
+.detail-row .dv { font-size: 0.85rem; font-weight: 600; font-family: var(--mono); }
+
+/* ─── ALERT ───────────────────────────────── */
+.alert {
+  background: rgba(255,79,94,0.1);
+  border: 1px solid rgba(255,79,94,0.3);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 0.82rem;
+  color: var(--red);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.alert-warn {
+  background: rgba(240,165,0,0.08);
+  border-color: rgba(240,165,0,0.25);
+  color: var(--gold);
+}
+
+.divider { height: 1px; background: var(--border); }
+
+/* ─── ANALISA SECTION ─────────────────────── */
+.analisa-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.analisa-header {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.analisa-header h3 { font-size: 0.88rem; font-weight: 600; }
+.analisa-body { padding: 20px; }
+.analisa-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
+.analisa-item:last-child { border: none; }
+.analisa-item .ak { color: var(--muted); }
+
+/* ─── STRUKTUR PEMBIAYAAN ─────────────────── */
+.struktur-list { display: flex; flex-direction: column; gap: 8px; }
+.str-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.83rem;
+}
+.str-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.str-label { flex: 1; color: var(--muted); }
+.str-val { font-family: var(--mono); font-weight: 600; }
+
+/* ─── RESPONSIVE ──────────────────────────── */
+@media (max-width: 600px) {
+  .panel { position: static; }
+  .wrapper { padding: 16px 12px; gap: 16px; }
+  header { padding: 16px; }
+  .meta-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">K</div>
+  <div>
+    <h1>KMoB Kalkulator</h1>
+    <span>Sale & Leaseback v2.1 — Konsumen RO</span>
+  </div>
+  <a href="index.html" class="nav-back">← Kembali</a>
+</header>
+
+<div class="wrapper">
+
+  <!-- ─── PANEL INPUT ─────────────────────── -->
+  <div class="panel">
+    <div class="panel-header">
+      <h2>📋 Parameter Input</h2>
+      <p>Isi semua kolom berwarna untuk simulasi</p>
+    </div>
+    <div class="panel-body">
+
+      <div class="field">
+        <label>Cabang</label>
+        <select id="inCabang" onchange="onCabangChange()">
+          <option value="">— Pilih Cabang —</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Kategori Konsumen</label>
+          <select id="inKatKons">
+            <option value="Konsumen Baru">Konsumen Baru</option>
+            <option value="Konsumen RO" selected>Konsumen RO</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Jenis Kendaraan</label>
+          <select id="inJenis" onchange="onJenisChange()">
+            <option value="Passenger">Passenger</option>
+            <option value="Komersil Non Truck">Komersil Non Truck</option>
+            <option value="Truck">Truck / Microbus</option>
+            <option value="Microbus">Microbus</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Kategori Kendaraan</label>
+          <select id="inKatKend">
+            <option value="Kategori A">Kategori A</option>
+            <option value="Kategori B">Kategori B</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Nama di BPKB</label>
+          <select id="inNama">
+            <option value="Nama Sama">Nama Sama</option>
+            <option value="Nama Beda">Nama Beda</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Tahun Pembuatan</label>
+          <input type="number" id="inTahun" value="2019" min="2000" max="2025" onchange="updateUsiaKend()">
+        </div>
+        <div class="field">
+          <label>Usia Kendaraan</label>
+          <input type="text" id="inUsiaKend" readonly style="color:var(--muted)">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Pemakaian Kendaraan</label>
+        <select id="inPemakaian">
+          <option value="Keperluan Pribadi (Non Commercial)">Keperluan Pribadi (Non Commercial)</option>
+          <option value="Keperluan Usaha (Commercial)">Keperluan Usaha (Commercial)</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Jenis Asuransi</label>
+          <select id="inAsuransi">
+            <option value="TLO">TLO</option>
+            <option value="Comprehensive">Comprehensive</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Paket Produk</label>
+          <select id="inPaket">
+            <option value="Paket Hemat">Paket Hemat</option>
+            <option value="Paket Excellent">Paket Excellent</option>
+            <option value="Paket Exclusive">Paket Exclusive</option>
+            <option value="Paket Basic">Paket Basic</option>
+            <option value="Paket Win">Paket Win</option>
+            <option value="Paket APU">Paket APU</option>
+            <option value="Paket Extraordinary">Paket Extraordinary</option>
+            <option value="Paket Super Extraordinary">Paket Super Extraordinary</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Harga OTR / Nilai Kendaraan (Rp)</label>
+        <div class="rp-input">
+          <span>Rp</span>
+          <input type="text" id="inOTR" placeholder="112.000.000" oninput="formatRp(this)">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Pinjaman / Nilai Sewa (Rp)</label>
+        <div class="rp-input">
+          <span>Rp</span>
+          <input type="text" id="inPinjaman" placeholder="93.300.000" oninput="formatRp(this)">
+        </div>
+        <span class="hint" id="hintLTV">Masukkan OTR & Cabang untuk melihat batas maksimum</span>
+      </div>
+
+      <button class="btn-calc" onclick="hitung()">🔢 Hitung Simulasi</button>
+    </div>
+  </div>
+
+  <!-- ─── PANEL OUTPUT ───────────────────── -->
+  <div class="output-area" id="outputArea">
+    <div class="idle-state">
+      <div class="icon">📊</div>
+      <p>Isi parameter di kiri lalu klik <strong>Hitung Simulasi</strong></p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  DATA — semua diembed dari Excel
+// ══════════════════════════════════════════
+const DB = {"cabang":{"Ambon":{"grade":"F","region":"Sulawesi","region_sales":"SULAWESI"},"Balikpapan":{"grade":"F","region":"Kalimantan","region_sales":"KALIMANTAN + INDTIM"},"Bandengan":{"grade":"F","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Bandung":{"grade":"F","region":"Jawa Barat","region_sales":"JABAR + JATENG I"},"Banjarmasin":{"grade":"E","region":"Kalimantan","region_sales":"KALIMANTAN + INDTIM"},"Batam":{"grade":"C","region":"Sumatera","region_sales":"SUMATERA"},"Bekasi":{"grade":"E","region":"Jabodetabekser","region_sales":"JABAR + JATENG I"},"Bogor":{"grade":"C","region":"Jabodetabekser","region_sales":"JABAR + JATENG I"},"Cempaka Mas":{"grade":"D","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Cianjur":{"grade":"F","region":"Jawa Barat","region_sales":"JABAR + JATENG I"},"Cibitung":{"grade":"D","region":"Jabodetabekser","region_sales":"JABAR + JATENG I"},"Cibubur":{"grade":"B","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Ciledug":{"grade":"F","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Cimahi":{"grade":"F","region":"Jawa Barat","region_sales":"JABAR + JATENG I"},"Cipulir":{"grade":"-","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Ciputat":{"grade":"C","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Cirebon":{"grade":"F","region":"Jawa Barat","region_sales":"JABAR + JATENG I"},"Denpasar":{"grade":"E","region":"Intim","region_sales":"KALIMANTAN + INDTIM"},"Depok":{"grade":"D","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Gorontalo":{"grade":"E","region":"Sulawesi","region_sales":"SULAWESI"},"Grand Wijaya":{"grade":"D","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Jambangan":{"grade":"E","region":"Jawa Timur","region_sales":"JATIM + JATENG II"},"Jambi":{"grade":"F","region":"Sumatera","region_sales":"SUMATERA"},"Karawang":{"grade":"E","region":"Jabodetabekser","region_sales":"JABAR + JATENG I"},"Kedoya":{"grade":"C","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Kendari":{"grade":"E","region":"Sulawesi","region_sales":"SULAWESI"},"Kopo":{"grade":"E","region":"Jawa Barat","region_sales":"JABAR + JATENG I"},"Kramat Jati":{"grade":"-","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Kramat Jaya":{"grade":"-","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Kutabumi":{"grade":"E","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Lampung":{"grade":"F","region":"Sumatera","region_sales":"SUMATERA"},"Madiun":{"grade":"D","region":"Jawa Timur","region_sales":"JATIM + JATENG II"},"Makassar":{"grade":"C","region":"Sulawesi","region_sales":"SULAWESI"},"Malang":{"grade":"F","region":"Jawa Timur","region_sales":"JATIM + JATENG II"},"Manado":{"grade":"E","region":"Sulawesi","region_sales":"SULAWESI"},"Mataram":{"grade":"B","region":"Intim","region_sales":"KALIMANTAN + INDTIM"},"Medan":{"grade":"E","region":"Sumatera","region_sales":"SUMATERA"},"Mojokerto":{"grade":"F","region":"Jawa Timur","region_sales":"JATIM + JATENG II"},"Palangkaraya":{"grade":"C","region":"Kalimantan","region_sales":"KALIMANTAN + INDTIM"},"Palembang":{"grade":"E","region":"Sumatera","region_sales":"SUMATERA"},"Pangkalan Bun":{"grade":"D","region":"Kalimantan","region_sales":"KALIMANTAN + INDTIM"},"Pekanbaru":{"grade":"F","region":"Sumatera","region_sales":"SUMATERA"},"Pontianak":{"grade":"E","region":"Kalimantan","region_sales":"KALIMANTAN + INDTIM"},"Samarinda":{"grade":"F","region":"Kalimantan","region_sales":"KALIMANTAN + INDTIM"},"Sampit":{"grade":"-","region":"Kalimantan","region_sales":"KALIMANTAN + INDTIM"},"Semarang":{"grade":"F","region":"Jawa Tengah","region_sales":"JATIM + JATENG II"},"Serang":{"grade":"E","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Sudiang":{"grade":"E","region":"Sulawesi","region_sales":"SULAWESI"},"Surabaya":{"grade":"D","region":"Jawa Timur","region_sales":"JATIM + JATENG II"},"Tangerang":{"grade":"B","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Tasikmalaya":{"grade":"F","region":"Jawa Barat","region_sales":"JABAR + JATENG I"},"Tebet":{"grade":"D","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Tigaraksa":{"grade":"E","region":"Jabodetabekser","region_sales":"DKI BANTEN"},"Ujung Berung":{"grade":"F","region":"Jawa Barat","region_sales":"JABAR + JATENG I"},"Yogyakarta":{"grade":"F","region":"Jawa Tengah","region_sales":"JATIM + JATENG II"}},"setting":[{"paket":"Paket Excellent","kat":"Passenger","usia":"≤ 5 Tahun","admin":1500000,"provisi":0.0125,"r12":0.16,"r18":0.16,"r24":0.16,"r30":0.17,"r36":0.17,"r48":0.175},{"paket":"Paket Excellent","kat":"Passenger","usia":"6 - 10 Tahun","admin":1500000,"provisi":0.0125,"r12":0.19,"r18":0.19,"r24":0.19,"r30":0.195,"r36":0.195,"r48":0.205},{"paket":"Paket Excellent","kat":"Passenger","usia":"> 10 Tahun","admin":1500000,"provisi":0.0125,"r12":0.225,"r18":0.225,"r24":0.225,"r30":0.235,"r36":0.235,"r48":null},{"paket":"Paket Excellent","kat":"Komersil","usia":"≤ 5 Tahun","admin":1500000,"provisi":0.0125,"r12":0.2,"r18":0.2,"r24":0.2,"r30":0.21,"r36":0.21,"r48":null},{"paket":"Paket Excellent","kat":"Komersil","usia":"6 - 10 Tahun","admin":1500000,"provisi":0.0125,"r12":0.235,"r18":0.235,"r24":0.235,"r30":0.245,"r36":0.245,"r48":null},{"paket":"Paket Excellent","kat":"Komersil","usia":"> 10 Tahun","admin":1500000,"provisi":0.0125,"r12":0.265,"r18":0.265,"r24":0.265,"r30":0.275,"r36":0.275,"r48":null},{"paket":"Paket Exclusive","kat":"Passenger","usia":"≤ 5 Tahun","admin":1500000,"provisi":0.0125,"r12":0.16,"r18":0.16,"r24":0.16,"r30":0.17,"r36":0.17,"r48":0.175},{"paket":"Paket Exclusive","kat":"Passenger","usia":"6 - 10 Tahun","admin":1500000,"provisi":0.0125,"r12":0.19,"r18":0.19,"r24":0.19,"r30":0.195,"r36":0.195,"r48":0.205},{"paket":"Paket Exclusive","kat":"Passenger","usia":"> 10 Tahun","admin":1500000,"provisi":0.0125,"r12":0.225,"r18":0.225,"r24":0.225,"r30":0.235,"r36":0.235,"r48":null},{"paket":"Paket Exclusive","kat":"Komersil","usia":"≤ 5 Tahun","admin":1500000,"provisi":0.0125,"r12":0.2,"r18":0.2,"r24":0.2,"r30":0.21,"r36":0.21,"r48":null},{"paket":"Paket Exclusive","kat":"Komersil","usia":"6 - 10 Tahun","admin":1500000,"provisi":0.0125,"r12":0.235,"r18":0.235,"r24":0.235,"r30":0.245,"r36":0.245,"r48":null},{"paket":"Paket Exclusive","kat":"Komersil","usia":"> 10 Tahun","admin":1500000,"provisi":0.0125,"r12":0.265,"r18":0.265,"r24":0.265,"r30":0.275,"r36":0.275,"r48":null},{"paket":"Paket Hemat","kat":"Passenger","usia":"≤ 5 Tahun","admin":2000000,"provisi":0.03,"r12":0.17,"r18":0.17,"r24":0.17,"r30":0.175,"r36":0.175,"r48":0.185},{"paket":"Paket Hemat","kat":"Passenger","usia":"6 - 10 Tahun","admin":2000000,"provisi":0.03,"r12":0.19,"r18":0.19,"r24":0.19,"r30":0.195,"r36":0.195,"r48":0.205},{"paket":"Paket Hemat","kat":"Passenger","usia":"> 10 Tahun","admin":2000000,"provisi":0.03,"r12":0.255,"r18":0.255,"r24":0.255,"r30":0.26,"r36":0.26,"r48":null},{"paket":"Paket Hemat","kat":"Komersil","usia":"≤ 5 Tahun","admin":2500000,"provisi":0.03,"r12":0.215,"r18":0.215,"r24":0.215,"r30":0.22,"r36":0.22,"r48":null},{"paket":"Paket Hemat","kat":"Komersil","usia":"6 - 10 Tahun","admin":2500000,"provisi":0.03,"r12":0.245,"r18":0.245,"r24":0.245,"r30":0.25,"r36":0.25,"r48":null},{"paket":"Paket Hemat","kat":"Komersil","usia":"> 10 Tahun","admin":2500000,"provisi":0.03,"r12":0.3,"r18":0.3,"r24":0.3,"r30":0.305,"r36":0.305,"r48":null},{"paket":"Paket Extraordinary","kat":"Passenger","usia":"≤ 5 Tahun","admin":2250000,"provisi":0.035,"r12":0.185,"r18":0.185,"r24":0.185,"r30":0.19,"r36":0.19,"r48":0.2},{"paket":"Paket Extraordinary","kat":"Passenger","usia":"6 - 10 Tahun","admin":2250000,"provisi":0.035,"r12":0.205,"r18":0.205,"r24":0.205,"r30":0.21,"r36":0.21,"r48":0.22},{"paket":"Paket Extraordinary","kat":"Passenger","usia":"> 10 Tahun","admin":2250000,"provisi":0.035,"r12":0.27,"r18":0.27,"r24":0.27,"r30":0.275,"r36":0.275,"r48":null},{"paket":"Paket Extraordinary","kat":"Komersil","usia":"≤ 5 Tahun","admin":2750000,"provisi":0.035,"r12":0.23,"r18":0.23,"r24":0.23,"r30":0.235,"r36":0.235,"r48":null},{"paket":"Paket Extraordinary","kat":"Komersil","usia":"6 - 10 Tahun","admin":2750000,"provisi":0.035,"r12":0.26,"r18":0.26,"r24":0.26,"r30":0.265,"r36":0.265,"r48":null},{"paket":"Paket Extraordinary","kat":"Komersil","usia":"> 10 Tahun","admin":2750000,"provisi":0.035,"r12":0.315,"r18":0.315,"r24":0.315,"r30":0.32,"r36":0.32,"r48":null},{"paket":"Paket Super Extraordinary","kat":"Passenger","usia":"≤ 5 Tahun","admin":2500000,"provisi":0.04,"r12":0.205,"r18":0.205,"r24":0.205,"r30":0.21,"r36":0.21,"r48":0.22},{"paket":"Paket Super Extraordinary","kat":"Passenger","usia":"6 - 10 Tahun","admin":2500000,"provisi":0.04,"r12":0.225,"r18":0.225,"r24":0.225,"r30":0.23,"r36":0.23,"r48":0.24},{"paket":"Paket Super Extraordinary","kat":"Passenger","usia":"> 10 Tahun","admin":2500000,"provisi":0.04,"r12":0.29,"r18":0.29,"r24":0.29,"r30":0.295,"r36":0.295,"r48":null},{"paket":"Paket Super Extraordinary","kat":"Komersil","usia":"≤ 5 Tahun","admin":3000000,"provisi":0.04,"r12":0.25,"r18":0.25,"r24":0.25,"r30":0.255,"r36":0.255,"r48":null},{"paket":"Paket Super Extraordinary","kat":"Komersil","usia":"6 - 10 Tahun","admin":3000000,"provisi":0.04,"r12":0.28,"r18":0.28,"r24":0.28,"r30":0.285,"r36":0.285,"r48":null},{"paket":"Paket Super Extraordinary","kat":"Komersil","usia":"> 10 Tahun","admin":3000000,"provisi":0.04,"r12":0.335,"r18":0.335,"r24":0.335,"r30":0.34,"r36":0.34,"r48":null},{"paket":"Paket Basic","kat":"Passenger","usia":"≤ 5 Tahun","admin":1500000,"provisi":0.0215,"r12":0.155,"r18":0.155,"r24":0.155,"r30":0.155,"r36":0.16,"r48":0.16},{"paket":"Paket Basic","kat":"Passenger","usia":"6 - 10 Tahun","admin":1500000,"provisi":0.0215,"r12":0.16,"r18":0.16,"r24":0.16,"r30":0.16,"r36":0.165,"r48":0.165},{"paket":"Paket Basic","kat":"Passenger","usia":"> 10 Tahun","admin":1500000,"provisi":0.0215,"r12":null,"r18":null,"r24":null,"r30":null,"r36":null,"r48":null},{"paket":"Paket Basic","kat":"Komersil","usia":"≤ 5 Tahun","admin":1500000,"provisi":0.0215,"r12":0.19,"r18":0.19,"r24":0.19,"r30":0.19,"r36":0.195,"r48":0.195},{"paket":"Paket Basic","kat":"Komersil","usia":"6 - 10 Tahun","admin":1500000,"provisi":0.0215,"r12":0.195,"r18":0.195,"r24":0.195,"r30":0.195,"r36":0.2,"r48":0.2},{"paket":"Paket Basic","kat":"Komersil","usia":"> 10 Tahun","admin":1500000,"provisi":0.0215,"r12":null,"r18":null,"r24":null,"r30":null,"r36":null,"r48":null},{"paket":"Paket Win","kat":"Passenger","usia":"≤ 5 Tahun","admin":2000000,"provisi":0.01,"r12":0.165,"r18":0.165,"r24":0.165,"r30":0.175,"r36":0.175,"r48":0.185},{"paket":"Paket Win","kat":"Passenger","usia":"6 - 10 Tahun","admin":2000000,"provisi":0.01,"r12":0.19,"r18":0.19,"r24":0.19,"r30":0.2,"r36":0.2,"r48":0.21},{"paket":"Paket Win","kat":"Passenger","usia":"> 10 Tahun","admin":2000000,"provisi":0.01,"r12":0.225,"r18":0.225,"r24":0.225,"r30":0.235,"r36":0.235,"r48":null},{"paket":"Paket Win","kat":"Komersil","usia":"≤ 5 Tahun","admin":2000000,"provisi":0.01,"r12":0.2,"r18":0.2,"r24":0.2,"r30":0.21,"r36":0.21,"r48":null},{"paket":"Paket Win","kat":"Komersil","usia":"6 - 10 Tahun","admin":2000000,"provisi":0.01,"r12":0.235,"r18":0.235,"r24":0.235,"r30":0.245,"r36":0.245,"r48":null},{"paket":"Paket Win","kat":"Komersil","usia":"> 10 Tahun","admin":2000000,"provisi":0.01,"r12":0.265,"r18":0.265,"r24":0.265,"r30":0.275,"r36":0.275,"r48":null},{"paket":"Paket APU","kat":"Passenger","usia":"≤ 5 Tahun","admin":1500000,"provisi":0.01,"r12":0.145,"r18":0.145,"r24":0.145,"r30":0.155,"r36":0.155,"r48":0.165},{"paket":"Paket APU","kat":"Passenger","usia":"6 - 10 Tahun","admin":1500000,"provisi":0.01,"r12":0.17,"r18":0.17,"r24":0.17,"r30":0.17,"r36":0.17,"r48":0.19},{"paket":"Paket APU","kat":"Passenger","usia":"> 10 Tahun","admin":1500000,"provisi":0.01,"r12":0.195,"r18":0.195,"r24":0.195,"r30":0.195,"r36":0.195,"r48":null},{"paket":"Paket APU","kat":"Komersil","usia":"≤ 5 Tahun","admin":1500000,"provisi":0.01,"r12":0.16,"r18":0.16,"r24":0.16,"r30":0.17,"r36":0.17,"r48":null},{"paket":"Paket APU","kat":"Komersil","usia":"6 - 10 Tahun","admin":1500000,"provisi":0.01,"r12":0.185,"r18":0.185,"r24":0.185,"r30":0.185,"r36":0.185,"r48":null},{"paket":"Paket APU","kat":"Komersil","usia":"> 10 Tahun","admin":1500000,"provisi":0.01,"r12":0.21,"r18":0.21,"r24":0.21,"r30":0.21,"r36":0.21,"r48":null}],"ltv":{"Komersil Non TruckKategori ANama BedaKonsumen BaruA":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"Komersil Non TruckKategori ANama BedaKonsumen BaruB":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"Komersil Non TruckKategori ANama BedaKonsumen BaruC":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"Komersil Non TruckKategori ANama BedaKonsumen BaruD":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"Komersil Non TruckKategori ANama BedaKonsumen BaruE":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"Komersil Non TruckKategori ANama BedaKonsumen BaruF":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"Komersil Non TruckKategori ANama BedaKonsumen ROA":{"12":0.7,"18":0.7,"24":0.7,"30":0.7,"36":0.7,"48":null},"Komersil Non TruckKategori ANama BedaKonsumen ROB":{"12":0.7,"18":0.7,"24":0.7,"30":0.7,"36":0.7,"48":null},"Komersil Non TruckKategori ANama BedaKonsumen ROC":{"12":0.7,"18":0.7,"24":0.7,"30":0.7,"36":0.7,"48":null},"Komersil Non TruckKategori ANama BedaKonsumen ROD":{"12":0.7,"18":0.7,"24":0.7,"30":0.7,"36":0.7,"48":null},"Komersil Non TruckKategori ANama BedaKonsumen ROE":{"12":0.7,"18":0.7,"24":0.7,"30":0.7,"36":0.7,"48":null},"Komersil Non TruckKategori ANama BedaKonsumen ROF":{"12":0.7,"18":0.7,"24":0.7,"30":0.7,"36":0.7,"48":null},"Komersil Non TruckKategori ANama SamaKonsumen BaruA":{"12":0.85,"18":0.85,"24":0.85,"30":0.85,"36":0.85,"48":null},"Komersil Non TruckKategori ANama SamaKonsumen BaruB":{"12":0.85,"18":0.85,"24":0.85,"30":0.85,"36":0.85,"48":null},"Komersil Non TruckKategori ANama SamaKonsumen BaruC":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"Komersil Non TruckKategori ANama SamaKonsumen BaruD":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"Komersil Non TruckKategori ANama SamaKonsumen BaruE":{"12":0.8,"18":0.8,"24":0.8,"30":0.75,"36":0.75,"48":null},"Komersil Non TruckKategori ANama SamaKonsumen BaruF":{"12":0.8,"18":0.8,"24":0.8,"30":0.75,"36":0.75,"48":null},"Komersil Non TruckKategori ANama SamaKonsumen ROA":{"12":0.85,"18":0.85,"24":0.85,"30":0.85,"36":0.85,"48":null},"Komersil Non TruckKategori ANama SamaKonsumen ROB":{"12":0.85,"18":0.85,"24":0.85,"30":0.85,"36":0.85,"48":null},"Komersil Non TruckKategori ANama SamaKonsumen ROC":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"Komersil Non TruckKategori ANama SamaKonsumen ROD":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"Komersil Non TruckKategori ANama SamaKonsumen ROE":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"Komersil Non TruckKategori ANama SamaKonsumen ROF":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"Komersil Non TruckKategori BNama BedaKonsumen BaruA":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"Komersil Non TruckKategori BNama BedaKonsumen BaruB":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"Komersil Non TruckKategori BNama BedaKonsumen BaruC":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"Komersil Non TruckKategori BNama BedaKonsumen BaruD":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"Komersil Non TruckKategori BNama BedaKonsumen BaruE":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"Komersil Non TruckKategori BNama BedaKonsumen BaruF":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"Komersil Non TruckKategori BNama BedaKonsumen ROA":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"Komersil Non TruckKategori BNama BedaKonsumen ROB":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"Komersil Non TruckKategori BNama BedaKonsumen ROC":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"Komersil Non TruckKategori BNama BedaKonsumen ROD":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"Komersil Non TruckKategori BNama BedaKonsumen ROE":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"Komersil Non TruckKategori BNama BedaKonsumen ROF":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"Komersil Non TruckKategori BNama SamaKonsumen BaruA":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"Komersil Non TruckKategori BNama SamaKonsumen BaruB":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"Komersil Non TruckKategori BNama SamaKonsumen BaruC":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"Komersil Non TruckKategori BNama SamaKonsumen BaruD":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"Komersil Non TruckKategori BNama SamaKonsumen BaruE":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"Komersil Non TruckKategori BNama SamaKonsumen BaruF":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"Komersil Non TruckKategori BNama SamaKonsumen ROA":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"Komersil Non TruckKategori BNama SamaKonsumen ROB":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"Komersil Non TruckKategori BNama SamaKonsumen ROC":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"Komersil Non TruckKategori BNama SamaKonsumen ROD":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"Komersil Non TruckKategori BNama SamaKonsumen ROE":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"Komersil Non TruckKategori BNama SamaKonsumen ROF":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"MicrobusKategori ANama BedaKonsumen BaruA":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"MicrobusKategori ANama BedaKonsumen BaruB":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"MicrobusKategori ANama BedaKonsumen BaruC":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"MicrobusKategori ANama BedaKonsumen BaruD":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"MicrobusKategori ANama BedaKonsumen BaruE":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"MicrobusKategori ANama BedaKonsumen BaruF":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"MicrobusKategori ANama BedaKonsumen ROA":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"MicrobusKategori ANama BedaKonsumen ROB":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"MicrobusKategori ANama BedaKonsumen ROC":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"MicrobusKategori ANama BedaKonsumen ROD":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"MicrobusKategori ANama BedaKonsumen ROE":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"MicrobusKategori ANama BedaKonsumen ROF":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"MicrobusKategori ANama SamaKonsumen BaruA":{"12":0.85,"18":0.85,"24":0.85,"30":0.85,"36":0.85,"48":null},"MicrobusKategori ANama SamaKonsumen BaruB":{"12":0.85,"18":0.85,"24":0.85,"30":0.85,"36":0.85,"48":null},"MicrobusKategori ANama SamaKonsumen BaruC":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"MicrobusKategori ANama SamaKonsumen BaruD":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"MicrobusKategori ANama SamaKonsumen BaruE":{"12":0.8,"18":0.8,"24":0.8,"30":0.75,"36":0.75,"48":null},"MicrobusKategori ANama SamaKonsumen BaruF":{"12":0.8,"18":0.8,"24":0.8,"30":0.75,"36":0.75,"48":null},"MicrobusKategori ANama SamaKonsumen ROA":{"12":0.85,"18":0.85,"24":0.85,"30":0.85,"36":0.85,"48":null},"MicrobusKategori ANama SamaKonsumen ROB":{"12":0.85,"18":0.85,"24":0.85,"30":0.85,"36":0.85,"48":null},"MicrobusKategori ANama SamaKonsumen ROC":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"MicrobusKategori ANama SamaKonsumen ROD":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"MicrobusKategori ANama SamaKonsumen ROE":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"MicrobusKategori ANama SamaKonsumen ROF":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"MicrobusKategori BNama BedaKonsumen BaruA":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"MicrobusKategori BNama BedaKonsumen BaruB":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"MicrobusKategori BNama BedaKonsumen BaruC":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"MicrobusKategori BNama BedaKonsumen BaruD":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"MicrobusKategori BNama BedaKonsumen BaruE":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"MicrobusKategori BNama BedaKonsumen BaruF":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"MicrobusKategori BNama BedaKonsumen ROA":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"MicrobusKategori BNama BedaKonsumen ROB":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"MicrobusKategori BNama BedaKonsumen ROC":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"MicrobusKategori BNama BedaKonsumen ROD":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"MicrobusKategori BNama BedaKonsumen ROE":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"MicrobusKategori BNama BedaKonsumen ROF":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"MicrobusKategori BNama SamaKonsumen BaruA":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"MicrobusKategori BNama SamaKonsumen BaruB":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"MicrobusKategori BNama SamaKonsumen BaruC":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"MicrobusKategori BNama SamaKonsumen BaruD":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"MicrobusKategori BNama SamaKonsumen BaruE":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"MicrobusKategori BNama SamaKonsumen BaruF":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"MicrobusKategori BNama SamaKonsumen ROA":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"MicrobusKategori BNama SamaKonsumen ROB":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"MicrobusKategori BNama SamaKonsumen ROC":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"MicrobusKategori BNama SamaKonsumen ROD":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"MicrobusKategori BNama SamaKonsumen ROE":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"MicrobusKategori BNama SamaKonsumen ROF":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"PassengerKategori ANama BedaKonsumen BaruA":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"PassengerKategori ANama BedaKonsumen BaruB":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"PassengerKategori ANama BedaKonsumen BaruC":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"PassengerKategori ANama BedaKonsumen BaruD":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"PassengerKategori ANama BedaKonsumen BaruE":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"PassengerKategori ANama BedaKonsumen BaruF":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"PassengerKategori ANama BedaKonsumen ROA":{"12":0.9,"18":0.9,"24":0.9,"30":0.9,"36":0.9,"48":0.8},"PassengerKategori ANama BedaKonsumen ROB":{"12":0.9,"18":0.9,"24":0.9,"30":0.9,"36":0.9,"48":0.8},"PassengerKategori ANama BedaKonsumen ROC":{"12":0.9,"18":0.9,"24":0.9,"30":0.9,"36":0.9,"48":0.8},"PassengerKategori ANama BedaKonsumen ROD":{"12":0.9,"18":0.9,"24":0.9,"30":0.9,"36":0.9,"48":0.8},"PassengerKategori ANama BedaKonsumen ROE":{"12":0.9,"18":0.9,"24":0.9,"30":0.85,"36":0.85,"48":0.8},"PassengerKategori ANama BedaKonsumen ROF":{"12":0.9,"18":0.9,"24":0.9,"30":0.85,"36":0.85,"48":0.8},"PassengerKategori ANama SamaKonsumen BaruA":{"12":0.9,"18":0.9,"24":0.9,"30":0.9,"36":0.9,"48":0.7},"PassengerKategori ANama SamaKonsumen BaruB":{"12":0.9,"18":0.9,"24":0.9,"30":0.9,"36":0.9,"48":0.7},"PassengerKategori ANama SamaKonsumen BaruC":{"12":0.9,"18":0.9,"24":0.9,"30":0.9,"36":0.9,"48":0.7},"PassengerKategori ANama SamaKonsumen BaruD":{"12":0.9,"18":0.9,"24":0.9,"30":0.9,"36":0.9,"48":0.7},"PassengerKategori ANama SamaKonsumen BaruE":{"12":0.9,"18":0.9,"24":0.9,"30":0.85,"36":0.85,"48":0.7},"PassengerKategori ANama SamaKonsumen BaruF":{"12":0.9,"18":0.85,"24":0.85,"30":0.85,"36":0.85,"48":0.7},"PassengerKategori ANama SamaKonsumen ROA":{"12":0.9,"18":0.9,"24":0.9,"30":0.9,"36":0.9,"48":0.8},"PassengerKategori ANama SamaKonsumen ROB":{"12":0.9,"18":0.9,"24":0.9,"30":0.9,"36":0.9,"48":0.8},"PassengerKategori ANama SamaKonsumen ROC":{"12":0.9,"18":0.9,"24":0.9,"30":0.9,"36":0.9,"48":0.8},"PassengerKategori ANama SamaKonsumen ROD":{"12":0.9,"18":0.9,"24":0.9,"30":0.9,"36":0.9,"48":0.8},"PassengerKategori ANama SamaKonsumen ROE":{"12":0.9,"18":0.9,"24":0.9,"30":0.85,"36":0.85,"48":0.8},"PassengerKategori ANama SamaKonsumen ROF":{"12":0.9,"18":0.9,"24":0.9,"30":0.85,"36":0.85,"48":0.8},"PassengerKategori BNama BedaKonsumen BaruA":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"PassengerKategori BNama BedaKonsumen BaruB":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"PassengerKategori BNama BedaKonsumen BaruC":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"PassengerKategori BNama BedaKonsumen BaruD":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"PassengerKategori BNama BedaKonsumen BaruE":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"PassengerKategori BNama BedaKonsumen BaruF":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"PassengerKategori BNama BedaKonsumen ROA":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":0.75},"PassengerKategori BNama BedaKonsumen ROB":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":0.75},"PassengerKategori BNama BedaKonsumen ROC":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":0.75},"PassengerKategori BNama BedaKonsumen ROD":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":0.75},"PassengerKategori BNama BedaKonsumen ROE":{"12":0.8,"18":0.8,"24":0.8,"30":0.75,"36":0.75,"48":0.7},"PassengerKategori BNama BedaKonsumen ROF":{"12":0.8,"18":0.8,"24":0.8,"30":0.75,"36":0.75,"48":0.7},"PassengerKategori BNama SamaKonsumen BaruA":{"12":0.85,"18":0.85,"24":0.85,"30":0.85,"36":0.85,"48":0.7},"PassengerKategori BNama SamaKonsumen BaruB":{"12":0.85,"18":0.85,"24":0.85,"30":0.85,"36":0.85,"48":0.7},"PassengerKategori BNama SamaKonsumen BaruC":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":0.7},"PassengerKategori BNama SamaKonsumen BaruD":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":0.7},"PassengerKategori BNama SamaKonsumen BaruE":{"12":0.8,"18":0.8,"24":0.8,"30":0.75,"36":0.75,"48":0.7},"PassengerKategori BNama SamaKonsumen BaruF":{"12":0.8,"18":0.8,"24":0.8,"30":0.75,"36":0.75,"48":0.7},"PassengerKategori BNama SamaKonsumen ROA":{"12":0.85,"18":0.85,"24":0.85,"30":0.85,"36":0.85,"48":0.8},"PassengerKategori BNama SamaKonsumen ROB":{"12":0.85,"18":0.85,"24":0.85,"30":0.85,"36":0.85,"48":0.8},"PassengerKategori BNama SamaKonsumen ROC":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":0.8},"PassengerKategori BNama SamaKonsumen ROD":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":0.8},"PassengerKategori BNama SamaKonsumen ROE":{"12":0.8,"18":0.8,"24":0.8,"30":0.75,"36":0.75,"48":0.75},"PassengerKategori BNama SamaKonsumen ROF":{"12":0.8,"18":0.8,"24":0.8,"30":0.75,"36":0.75,"48":0.75},"TruckKategori ANama BedaKonsumen BaruA":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"TruckKategori ANama BedaKonsumen BaruB":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"TruckKategori ANama BedaKonsumen BaruC":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"TruckKategori ANama BedaKonsumen BaruD":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"TruckKategori ANama BedaKonsumen BaruE":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"TruckKategori ANama BedaKonsumen BaruF":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"TruckKategori ANama BedaKonsumen ROA":{"12":0.7,"18":0.7,"24":0.7,"30":0.7,"36":0.7,"48":null},"TruckKategori ANama BedaKonsumen ROB":{"12":0.7,"18":0.7,"24":0.7,"30":0.7,"36":0.7,"48":null},"TruckKategori ANama BedaKonsumen ROC":{"12":0.7,"18":0.7,"24":0.7,"30":0.7,"36":0.7,"48":null},"TruckKategori ANama BedaKonsumen ROD":{"12":0.7,"18":0.7,"24":0.7,"30":0.7,"36":0.7,"48":null},"TruckKategori ANama BedaKonsumen ROE":{"12":0.7,"18":0.7,"24":0.7,"30":0.7,"36":0.7,"48":null},"TruckKategori ANama BedaKonsumen ROF":{"12":0.7,"18":0.7,"24":0.7,"30":0.7,"36":0.7,"48":null},"TruckKategori ANama SamaKonsumen BaruA":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"TruckKategori ANama SamaKonsumen BaruB":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"TruckKategori ANama SamaKonsumen BaruC":{"12":0.75,"18":0.75,"24":0.75,"30":0.75,"36":0.75,"48":null},"TruckKategori ANama SamaKonsumen BaruD":{"12":0.75,"18":0.75,"24":0.75,"30":0.75,"36":0.75,"48":null},"TruckKategori ANama SamaKonsumen BaruE":{"12":0.75,"18":0.75,"24":0.75,"30":0.75,"36":0.75,"48":null},"TruckKategori ANama SamaKonsumen BaruF":{"12":0.75,"18":0.75,"24":0.75,"30":0.75,"36":0.75,"48":null},"TruckKategori ANama SamaKonsumen ROA":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"TruckKategori ANama SamaKonsumen ROB":{"12":0.8,"18":0.8,"24":0.8,"30":0.8,"36":0.8,"48":null},"TruckKategori ANama SamaKonsumen ROC":{"12":0.75,"18":0.75,"24":0.75,"30":0.75,"36":0.75,"48":null},"TruckKategori ANama SamaKonsumen ROD":{"12":0.75,"18":0.75,"24":0.75,"30":0.75,"36":0.75,"48":null},"TruckKategori ANama SamaKonsumen ROE":{"12":0.75,"18":0.75,"24":0.75,"30":0.75,"36":0.75,"48":null},"TruckKategori ANama SamaKonsumen ROF":{"12":0.75,"18":0.75,"24":0.75,"30":0.75,"36":0.75,"48":null},"TruckKategori BNama BedaKonsumen BaruA":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"TruckKategori BNama BedaKonsumen BaruB":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"TruckKategori BNama BedaKonsumen BaruC":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"TruckKategori BNama BedaKonsumen BaruD":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"TruckKategori BNama BedaKonsumen BaruE":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"TruckKategori BNama BedaKonsumen BaruF":{"12":null,"18":null,"24":null,"30":null,"36":null,"48":null},"TruckKategori BNama BedaKonsumen ROA":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"TruckKategori BNama BedaKonsumen ROB":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"TruckKategori BNama BedaKonsumen ROC":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"TruckKategori BNama BedaKonsumen ROD":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"TruckKategori BNama BedaKonsumen ROE":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"TruckKategori BNama BedaKonsumen ROF":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"TruckKategori BNama SamaKonsumen BaruA":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"TruckKategori BNama SamaKonsumen BaruB":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"TruckKategori BNama SamaKonsumen BaruC":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"TruckKategori BNama SamaKonsumen BaruD":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"TruckKategori BNama SamaKonsumen BaruE":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"TruckKategori BNama SamaKonsumen BaruF":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"TruckKategori BNama SamaKonsumen ROA":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"TruckKategori BNama SamaKonsumen ROB":{"12":0.55,"18":0.55,"24":0.55,"30":0.55,"36":0.55,"48":null},"TruckKategori BNama SamaKonsumen ROC":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"TruckKategori BNama SamaKonsumen ROD":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"TruckKategori BNama SamaKonsumen ROE":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null},"TruckKategori BNama SamaKonsumen ROF":{"12":0.5,"18":0.5,"24":0.5,"30":0.5,"36":0.5,"48":null}},"insurance":[{"type":"ins_1","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Pribadi (Non Commercial)","min_otr":0,"wil1":0.0047,"wil2":0.0065,"wil3":0.0051},{"type":"ins_1","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Pribadi (Non Commercial)","min_otr":125000001,"wil1":0.0063,"wil2":0.0044,"wil3":0.0044},{"type":"ins_1","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Pribadi (Non Commercial)","min_otr":200000001,"wil1":0.0041,"wil2":0.0038,"wil3":0.0029},{"type":"ins_1","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Pribadi (Non Commercial)","min_otr":400000001,"wil1":0.0025,"wil2":0.0025,"wil3":0.0023},{"type":"ins_1","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Pribadi (Non Commercial)","min_otr":800000001,"wil1":0.002,"wil2":0.002,"wil3":0.002},{"type":"ins_2","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Usaha (Commercial)","min_otr":0,"wil1":0.00541,"wil2":0.00748,"wil3":0.00587},{"type":"ins_2","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Usaha (Commercial)","min_otr":125000001,"wil1":0.00725,"wil2":0.00506,"wil3":0.00506},{"type":"ins_2","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Usaha (Commercial)","min_otr":200000001,"wil1":0.00472,"wil2":0.00437,"wil3":0.00334},{"type":"ins_2","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Usaha (Commercial)","min_otr":400000001,"wil1":0.00288,"wil2":0.00288,"wil3":0.00265},{"type":"ins_2","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Usaha (Commercial)","min_otr":800000001,"wil1":0.0023,"wil2":0.0023,"wil3":0.0023},{"type":"ins_3","tlo":"Truck, Pick Up, Bus","pemakaian":"Keperluan Pribadi (Non Commercial)","min_otr":0,"wil1":0.0088,"wil2":0.0168,"wil3":0.0081},{"type":"ins_4","tlo":"Truck, Pick Up, Bus","pemakaian":"Keperluan Usaha (Commercial)","min_otr":0,"wil1":0.01012,"wil2":0.01932,"wil3":0.00932},{"type":"ins_5","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Pribadi (Non Commercial)","min_otr":0,"wil1":0.0382,"wil2":0.0326,"wil3":0.0253},{"type":"ins_5","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Pribadi (Non Commercial)","min_otr":125000001,"wil1":0.0267,"wil2":0.0247,"wil3":0.0269},{"type":"ins_5","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Pribadi (Non Commercial)","min_otr":200000001,"wil1":0.0218,"wil2":0.0208,"wil3":0.0179},{"type":"ins_5","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Pribadi (Non Commercial)","min_otr":400000001,"wil1":0.012,"wil2":0.012,"wil3":0.0114},{"type":"ins_5","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Pribadi (Non Commercial)","min_otr":800000001,"wil1":0.0105,"wil2":0.0105,"wil3":0.0105},{"type":"ins_6","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Usaha (Commercial)","min_otr":0,"wil1":0.04393,"wil2":0.03749,"wil3":0.0291},{"type":"ins_6","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Usaha (Commercial)","min_otr":125000001,"wil1":0.03071,"wil2":0.02841,"wil3":0.03094},{"type":"ins_6","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Usaha (Commercial)","min_otr":200000001,"wil1":0.02507,"wil2":0.02392,"wil3":0.02059},{"type":"ins_6","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Usaha (Commercial)","min_otr":400000001,"wil1":0.0138,"wil2":0.0138,"wil3":0.01311},{"type":"ins_6","tlo":"R4, Non Bus, Non Truck","pemakaian":"Keperluan Usaha (Commercial)","min_otr":800000001,"wil1":0.01208,"wil2":0.01208,"wil3":0.01208}],"region_map":{"Jabodetabekser":"Wilayah 2","Jawa Barat":"Wilayah 2","Jawa Tengah":"Wilayah 3","Jawa Timur":"Wilayah 3","Sumatera":"Wilayah 1","Kalimantan":"Wilayah 3","Sulawesi":"Wilayah 3","Intim":"Wilayah 3"},"aj_per_bulan":14785,"eqvet_rate":0.00075,"flood_rate":0.00075,"depreciation":{"1":1.0,"2":0.85,"3":0.75,"4":0.7}};
+
+// ══════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════
+const rp = v => 'Rp ' + Math.round(v).toLocaleString('id-ID');
+const pct = v => (v * 100).toFixed(2) + '%';
+
+function parseRp(s) {
+  return parseInt(s.replace(/\D/g, '')) || 0;
+}
+function formatRp(el) {
+  const n = parseRp(el.value);
+  el.value = n ? n.toLocaleString('id-ID') : '';
+  updateLTVHint();
+}
+
+function getUsiaKategori(usia) {
+  if (usia <= 5) return '≤ 5 Tahun';
+  if (usia <= 10) return '6 - 10 Tahun';
+  return '> 10 Tahun';
+}
+
+function getWilayah(region) {
+  return DB.region_map[region] || 'Wilayah 2';
+}
+
+// LTV key: "{jenisKend}{katKend}{nama}{katKons}{grade}"
+function getLTV(jenisKend, katKend, nama, katKons, grade, tenor) {
+  const key = `${jenisKend}${katKend}${nama}${katKons}${grade}`;
+  const row = DB.ltv[key];
+  if (!row) return null;
+  return row[String(tenor)];
+}
+
+// Insurance rate
+function getInsRate(jenis, pemakaian, otr, wilayah) {
+  // Tentukan ins type
+  let isTLO = jenis === 'TLO';
+  let isTruck = ['Truck','Microbus'].includes(document.getElementById('inJenis').value);
+  let insType;
+  if (isTLO) {
+    insType = isTruck ? 'ins_3' : (pemakaian.includes('Pribadi') ? 'ins_1' : 'ins_2');
+  } else {
+    // Comprehensive
+    insType = pemakaian.includes('Pribadi') ? 'ins_5' : 'ins_6';
+    if (isTruck) return null; // Truck hanya TLO dalam sheet ini
+  }
+
+  const rows = DB.insurance.filter(r => r.type === insType);
+  // Cari bracket OTR (ambil baris tertinggi yang min_otr <= otr)
+  let picked = null;
+  for (const r of rows) {
+    if (otr >= r.min_otr) picked = r;
+  }
+  if (!picked) return null;
+
+  const wKey = wilayah === 'Wilayah 1' ? 'wil1' : wilayah === 'Wilayah 2' ? 'wil2' : 'wil3';
+  return picked[wKey];
+}
+
+// Hitung premi asuransi kendaraan (penyusutan per tahun)
+function hitungPremiAsuransi(otr, insBaseRate, tenor, usiaKend) {
+  const depMap = {1: 1.0, 2: 0.85, 3: 0.75, 4: 0.70};
+  const totalRate = insBaseRate + DB.eqvet_rate + DB.flood_rate;
+  const tahunTenor = tenor / 12;
+  let total = 0;
+  // Setiap tahun dalam tenor, mulai dari usia kendaraan saat ini
+  for (let y = 1; y <= tahunTenor; y += 1) {
+    const usiaThisTahun = usiaKend + y;
+    // Penyusutan: tahun ke-1 tenor = dep[1], dst
+    const dep = depMap[Math.min(y, 4)] || 0.70;
+    const otrEfektif = otr * dep;
+    // Porsi tahun: bisa setengah tahun (6 bulan)
+    const porsi = (y <= tahunTenor) ? 1.0 : (tahunTenor % 1) / 1.0;
+    total += otrEfektif * totalRate * (y === Math.ceil(tahunTenor) && tahunTenor % 1 !== 0 ? tahunTenor % 1 : 1.0);
+  }
+  // Handle half-year tenors (18, 30)
+  if (tenor % 24 === 18 || tenor === 18) {
+    // Recalculate properly
+    total = 0;
+    const segments = [];
+    if (tenor === 18) segments.push([12, 1.0], [6, 0.85]);
+    if (tenor === 30) segments.push([12, 1.0], [12, 0.85], [6, 0.75]);
+    if (tenor === 12) { return otr * 1.0 * totalRate; }
+    if (tenor === 24) { return otr * 1.0 * totalRate + otr * 0.85 * totalRate; }
+    if (tenor === 36) { return otr * 1.0 * totalRate + otr * 0.85 * totalRate + otr * 0.75 * totalRate; }
+    if (tenor === 48) { return otr * 1.0 * totalRate + otr * 0.85 * totalRate + otr * 0.75 * totalRate + otr * 0.70 * totalRate; }
+    for (const [bln, dep] of segments) total += otr * dep * totalRate * (bln / 12);
+    return total;
+  }
+  // Fallback clean calc
+  return hitungPremiAsuransiClean(otr, insBaseRate, tenor);
+}
+
+function hitungPremiAsuransiClean(otr, insBaseRate, tenor) {
+  const totalRate = insBaseRate + DB.eqvet_rate + DB.flood_rate;
+  const depSegs = { 12: [[1.0, 1]], 18: [[1.0, 1], [0.85, 0.5]], 24: [[1.0, 1], [0.85, 1]], 30: [[1.0, 1], [0.85, 1], [0.75, 0.5]], 36: [[1.0, 1], [0.85, 1], [0.75, 1]], 48: [[1.0, 1], [0.85, 1], [0.75, 1], [0.70, 1]] };
+  const segs = depSegs[tenor] || depSegs[36];
+  return segs.reduce((acc, [dep, frac]) => acc + otr * dep * totalRate * frac, 0);
+}
+
+// PMT annuitas, ceiling ke 5000
+function pmt(pv, annualRate, months) {
+  const r = annualRate / 12;
+  return pv * r / (1 - Math.pow(1 + r, -months));
+}
+function pmtCeil5k(pv, annualRate, months) {
+  return Math.ceil(pmt(pv, annualRate, months) / 5000) * 5000;
+}
+
+// Asuransi jiwa flat per bulan
+const AJ_PER_BULAN = DB.aj_per_bulan;
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+window.onload = () => {
+  const sel = document.getElementById('inCabang');
+  Object.keys(DB.cabang).sort().forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    sel.appendChild(opt);
+  });
+  updateUsiaKend();
+};
+
+function onCabangChange() { updateLTVHint(); }
+function onJenisChange() { updateLTVHint(); }
+
+function updateUsiaKend() {
+  const tahun = parseInt(document.getElementById('inTahun').value) || 2019;
+  const currentYear = new Date().getFullYear();
+  const usia = currentYear - tahun;
+  const katUsia = getUsiaKategori(usia);
+  document.getElementById('inUsiaKend').value = `${usia} Tahun (${katUsia})`;
+  updateLTVHint();
+}
+
+function updateLTVHint() {
+  const hint = document.getElementById('hintLTV');
+  const cabang = document.getElementById('inCabang').value;
+  const otr = parseRp(document.getElementById('inOTR').value);
+  const tahun = parseInt(document.getElementById('inTahun').value) || 2019;
+  const usia = new Date().getFullYear() - tahun;
+  const katKend = document.getElementById('inKatKend').value;
+  const nama = document.getElementById('inNama').value;
+  const katKons = document.getElementById('inKatKons').value;
+
+  if (!cabang || !otr) { hint.className = 'hint'; hint.textContent = 'Masukkan OTR & Cabang untuk melihat batas maksimum'; return; }
+
+  const cbInfo = DB.cabang[cabang];
+  if (!cbInfo) return;
+  const grade = cbInfo.grade;
+
+  // Cari max LTV dari semua tenor
+  const katKonsStr = katKons === 'Konsumen RO' ? 'Konsumen RO' : 'Konsumen Baru';
+  const jenisKend = document.getElementById('inJenis').value;
+  const ltv36 = getLTV(jenisKend, katKend, nama, katKonsStr, grade, 36);
+  if (ltv36 === null) {
+    hint.className = 'hint error'; hint.textContent = `Kombinasi ini TIDAK DISETUJUI (x) — Grade ${grade}, Tenor 36`; return;
+  }
+  const maxPinjaman = Math.floor(otr * ltv36);
+  hint.className = 'hint ok'; hint.textContent = `Max pinjaman (LTV ${Math.round(ltv36*100)}%, tenor 36): ${rp(maxPinjaman)}`;
+}
+
+// ══════════════════════════════════════════
+//  HITUNG UTAMA
+// ══════════════════════════════════════════
+function hitung() {
+  const cabang   = document.getElementById('inCabang').value;
+  const katKons  = document.getElementById('inKatKons').value;
+  const jenisKend= document.getElementById('inJenis').value;
+  const katKend  = document.getElementById('inKatKend').value;
+  const nama     = document.getElementById('inNama').value;
+  const tahun    = parseInt(document.getElementById('inTahun').value) || 2019;
+  const pemakaian= document.getElementById('inPemakaian').value;
+  const jensIns  = document.getElementById('inAsuransi').value;
+  const paket    = document.getElementById('inPaket').value;
+  const otr      = parseRp(document.getElementById('inOTR').value);
+  const pinjaman = parseRp(document.getElementById('inPinjaman').value);
+
+  const out = document.getElementById('outputArea');
+
+  // Validasi
+  if (!cabang) { out.innerHTML = `<div class="alert">⚠️ Pilih Cabang terlebih dahulu.</div>`; return; }
+  if (!otr)    { out.innerHTML = `<div class="alert">⚠️ Masukkan Harga OTR / Nilai Kendaraan.</div>`; return; }
+  if (!pinjaman){ out.innerHTML = `<div class="alert">⚠️ Masukkan Nilai Pinjaman / Sewa.</div>`; return; }
+
+  const cbInfo = DB.cabang[cabang];
+  const grade = cbInfo.grade;
+  const region = cbInfo.region;
+  const wilayah = getWilayah(region);
+
+  const currentYear = new Date().getFullYear();
+  const usiaKend = currentYear - tahun;
+  const katUsia = getUsiaKategori(usiaKend);
+  const katKonsLTV = katKons === 'Konsumen RO' ? 'Konsumen RO' : 'Konsumen Baru';
+
+  // Setting rate
+  const settingKat = (jenisKend === 'Passenger' || jenisKend === 'Microbus') ? 'Passenger' : 'Komersil';
+  const settingRow = DB.setting.find(s => s.paket === paket && s.kat === settingKat && s.usia === katUsia);
+  if (!settingRow) {
+    out.innerHTML = `<div class="alert">⚠️ Tidak ada rate untuk kombinasi paket "${paket}" + ${settingKat} + ${katUsia}. Coba ganti paket.</div>`; return;
+  }
+
+  const admin   = settingRow.admin;
+  const provPct = settingRow.provisi;
+  const provisi = Math.round(pinjaman * provPct);
+  const insBaseRate = getInsRate(jensIns, pemakaian, otr, wilayah);
+
+  // Simulasi semua tenor
+  const tenors = [12, 18, 24, 30, 36, 48];
+  const rateMap = { 12: settingRow.r12, 18: settingRow.r18, 24: settingRow.r24, 30: settingRow.r30, 36: settingRow.r36, 48: settingRow.r48 };
+
+  const rows = tenors.map(t => {
+    const rate = rateMap[t];
+    const ltv  = getLTV(jenisKend, katKend, nama, katKonsLTV, grade, t);
+    const maxPinjaman = ltv !== null ? Math.floor(otr * ltv) : null;
+
+    if (rate === null) return { tenor: t, status: 'X', maxPinjaman, ltv };
+    if (ltv === null) return { tenor: t, status: 'DITOLAK', maxPinjaman: null, ltv: null };
+
+    const melebihi = pinjaman > maxPinjaman;
+    const insTotal = insBaseRate ? hitungPremiAsuransiClean(otr, insBaseRate, t) : 0;
+    const ajTotal  = AJ_PER_BULAN * t;
+    const nilaiPembiayaan = pinjaman + admin + provisi + insTotal + ajTotal;
+    const angsuran = pmtCeil5k(nilaiPembiayaan, rate, t);
+    const realLTV  = nilaiPembiayaan / otr;
+
+    return { tenor: t, rate, ltv, maxPinjaman, insTotal, ajTotal, nilaiPembiayaan, angsuran, melebihi, status: melebihi ? 'MELEBIHI' : 'OK', realLTV };
+  });
+
+  // Rekomendasi: tenor pertama yang OK
+  const recTenor = rows.find(r => r.status === 'OK')?.tenor;
+
+  // ─── RENDER ──────────────────────────────
+  let html = '';
+
+  // Info box cabang
+  html += `
+  <div class="info-box">
+    <div class="info-box-header">
+      <h3>📍 Info Cabang & Kendaraan</h3>
+      <span class="badge badge-purple">Grade ${grade}</span>
+      <span class="badge badge-blue">${wilayah}</span>
+    </div>
+    <div class="meta-grid">
+      <div class="meta-item"><div class="label">Cabang</div><div class="val">${cabang}</div></div>
+      <div class="meta-item"><div class="label">Region</div><div class="val">${region}</div></div>
+      <div class="meta-item"><div class="label">Jenis Kendaraan</div><div class="val">${jenisKend}</div></div>
+      <div class="meta-item"><div class="label">Usia Kendaraan</div><div class="val">${usiaKend} Tahun</div></div>
+      <div class="meta-item"><div class="label">Kategori Usia</div><div class="val">${katUsia}</div></div>
+      <div class="meta-item"><div class="label">Harga OTR</div><div class="val gold">${rp(otr)}</div></div>
+      <div class="meta-item"><div class="label">Nilai Sewa</div><div class="val green">${rp(pinjaman)}</div></div>
+      <div class="meta-item"><div class="label">Paket</div><div class="val">${paket}</div></div>
+    </div>
+  </div>`;
+
+  // Biaya tetap
+  const insRate36 = insBaseRate ? hitungPremiAsuransiClean(otr, insBaseRate, 36) : 0;
+  html += `
+  <div class="info-box">
+    <div class="info-box-header"><h3>💳 Biaya Tetap (Tidak Bergantung Tenor)</h3></div>
+    <div class="detail-grid">
+      <div class="detail-row"><span class="dk">Biaya Admin</span><span class="dv">${rp(admin)}</span></div>
+      <div class="detail-row"><span class="dk">Biaya Provisi (${pct(provPct)})</span><span class="dv">${rp(provisi)}</span></div>
+      <div class="detail-row"><span class="dk">Ins. Kendaraan (${jensIns}, ${wilayah})</span><span class="dv">${insBaseRate ? (pct(insBaseRate + DB.eqvet_rate + DB.flood_rate) + '/thn') : '–'}</span></div>
+      <div class="detail-row"><span class="dk">Ins. Jiwa</span><span class="dv">${rp(AJ_PER_BULAN)}/bulan</span></div>
+    </div>
+  </div>`;
+
+  // Tabel simulasi semua tenor
+  html += `
+  <div class="info-box">
+    <div class="sim-title">📊 Simulasi Semua Tenor</div>
+    <div class="sim-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tenor</th>
+            <th>Interest Rate</th>
+            <th>Max LTV</th>
+            <th>Max Pinjaman</th>
+            <th>Ins. Kendaraan</th>
+            <th>Ins. Jiwa</th>
+            <th>Nilai Pembiayaan</th>
+            <th>Angsuran/Bln</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+  rows.forEach(r => {
+    const isRec = r.tenor === recTenor;
+    const trClass = isRec ? 'class="recommended"' : '';
+    if (r.status === 'X') {
+      html += `<tr ${trClass}><td>${r.tenor} bln</td><td class="disabled" colspan="7">Tidak tersedia untuk kombinasi ini (X)</td><td class="disabled">–</td></tr>`;
+    } else if (r.status === 'DITOLAK') {
+      html += `<tr ${trClass}><td>${r.tenor} bln</td><td class="disabled" colspan="7">Tidak disetujui (kombinasi x)</td><td class="red">DITOLAK</td></tr>`;
+    } else {
+      const stBadge = r.melebihi
+        ? `<span style="color:var(--red);font-size:.75rem;">⚠ Melebihi</span>`
+        : `<span style="color:var(--green);font-size:.75rem;">✓ OK</span>`;
+      html += `<tr ${trClass}>
+        <td>${r.tenor} bln</td>
+        <td class="blue">${pct(r.rate)}</td>
+        <td class="muted">${Math.round(r.ltv*100)}%</td>
+        <td class="muted">${rp(r.maxPinjaman)}</td>
+        <td class="muted">${rp(r.insTotal)}</td>
+        <td class="muted">${rp(r.ajTotal)}</td>
+        <td class="muted">${rp(r.nilaiPembiayaan)}</td>
+        <td class="highlight" style="font-size:1rem;font-weight:700;">${rp(r.angsuran)}</td>
+        <td>${stBadge}</td>
+      </tr>`;
+    }
+  });
+
+  html += `</tbody></table></div></div>`;
+
+  // Rincian tenor rekomendasi
+  const rec = rows.find(r => r.tenor === recTenor);
+  if (rec && rec.status !== 'X' && rec.status !== 'DITOLAK') {
+    const dp = otr - pinjaman;
+    html += `
+    <div class="info-box">
+      <div class="info-box-header">
+        <h3>⭐ Rincian Tenor ${rec.tenor} Bulan (Rekomendasi)</h3>
+        <span class="badge badge-green">LTV ${Math.round(rec.ltv*100)}%</span>
+        <span class="badge badge-gold">${pct(rec.rate)}/thn</span>
+      </div>
+      <div class="struktur-list" style="padding:16px 20px;">
+        <div class="str-item"><div class="str-dot" style="background:var(--gold)"></div><span class="str-label">Harga OTR / Nilai Kendaraan</span><span class="str-val gold">${rp(otr)}</span></div>
+        <div class="str-item"><div class="str-dot" style="background:var(--green)"></div><span class="str-label">Nilai Sewa / Pinjaman</span><span class="str-val green">${rp(pinjaman)}</span></div>
+        <div class="str-item"><div class="str-dot" style="background:var(--muted)"></div><span class="str-label">Down Payment (selisih)</span><span class="str-val">${rp(dp)} (${pct(dp/otr)})</span></div>
+        <div class="str-item"><div class="str-dot" style="background:var(--accent2)"></div><span class="str-label">Biaya Admin</span><span class="str-val">${rp(admin)}</span></div>
+        <div class="str-item"><div class="str-dot" style="background:var(--accent2)"></div><span class="str-label">Biaya Provisi (${pct(provPct)})</span><span class="str-val">${rp(provisi)}</span></div>
+        <div class="str-item"><div class="str-dot" style="background:var(--blue)"></div><span class="str-label">Asuransi Kendaraan ${rec.tenor} bln</span><span class="str-val">${rp(rec.insTotal)}</span></div>
+        <div class="str-item"><div class="str-dot" style="background:var(--blue)"></div><span class="str-label">Asuransi Jiwa ${rec.tenor} bln</span><span class="str-val">${rp(rec.ajTotal)}</span></div>
+        <div class="str-item" style="background:rgba(123,31,162,0.15);border-radius:8px;"><div class="str-dot" style="background:var(--accent2)"></div><span class="str-label" style="color:var(--text);font-weight:600;">Total Nilai Pembiayaan</span><span class="str-val" style="color:var(--accent2);font-size:1rem;">${rp(rec.nilaiPembiayaan)}</span></div>
+        <div class="str-item" style="background:rgba(240,165,0,0.12);border-radius:8px;"><div class="str-dot" style="background:var(--gold)"></div><span class="str-label" style="color:var(--text);font-weight:700;">ANGSURAN PER BULAN</span><span class="str-val" style="color:var(--gold);font-size:1.15rem;">${rp(rec.angsuran)}</span></div>
+        <div class="str-item"><div class="str-dot" style="background:var(--muted)"></div><span class="str-label">Rasio NTF (Real LTV)</span><span class="str-val ${rec.realLTV > rec.ltv ? 'red' : 'green'}">${pct(rec.realLTV)} ${rec.realLTV > rec.ltv ? '⚠ Melebihi' : '✓ Aman'}</span></div>
+      </div>
+    </div>`;
+  }
+
+  // Catatan
+  html += `
+  <div class="alert alert-warn">
+    ⚡ <div>Kalkulator ini menggunakan data dari file Excel KMoB Kalkulator v2.1.4 (Grading per 2025-07-14). Angka bersifat simulasi — konfirmasikan ke sistem MI sebelum pencairan.</div>
+  </div>`;
+
+  out.innerHTML = html;
+  out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>
