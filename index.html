@@ -633,7 +633,7 @@ function showPage(page){
   display: none;
   flex-direction: column;
 }
-#mp-card.open { display: flex; }
+#mp-card.open { display: flex !important; }
 
 /* Header card */
 .mp-card-header {
@@ -765,14 +765,14 @@ function showPage(page){
 .mp-pl-toggle:hover { color: rgba(255,255,255,.7); }
 
 /* padding bawah body agar konten tidak tertutup */
-body { padding-bottom: 0 !important; }
+body { padding-bottom: 24px; }
 </style>
 
 <!-- FAB (minimize state) -->
 <button id="mp-fab" onclick="mpOpen()" title="Buka Player" style="display:none">🎵</button>
 
 <!-- Player Card -->
-<div id="mp-card">
+<div id="mp-card" class="open">
   <div class="mp-card-header">
     <div class="mp-art" id="mpArt">🎵</div>
     <div class="mp-info">
