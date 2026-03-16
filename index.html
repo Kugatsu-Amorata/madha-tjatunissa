@@ -188,19 +188,7 @@ body.bg-cabang .chartBox h3{border-left:3px solid #2e7d32;}
   box-shadow:0 4px 20px rgba(0,0,0,0.14);flex:1;min-width:300px;max-width:540px;
 }
 .areaChartBox h3{border-left:3px solid #2e7d32;}
-.areaTableBox{
-  background:rgba(255,255,255,0.96);padding:20px;border-radius:14px;
-  box-shadow:0 4px 20px rgba(0,0,0,0.14);flex:1;min-width:260px;max-width:360px;
-}
-.areaTableBox h3{border-left:3px solid #1565c0;}
-
-.area-summary-table{width:100%;border-collapse:collapse;font-size:0.84rem;}
-.area-summary-table th{background:#1b5e20;color:white;padding:8px 10px;text-align:left;font-size:0.76rem;letter-spacing:0.04em;}
-.area-summary-table td{padding:7px 10px;border-bottom:1px solid #eee;color:#333;}
-.area-summary-table tbody tr:hover{background:#f1f8e9;}
-.area-summary-table tbody tr:last-child td{border-bottom:none;}
-.area-count-badge{display:inline-block;background:#e8f5e9;color:#1b5e20;font-weight:700;padding:2px 9px;border-radius:20px;font-size:0.8rem;}
-.area-pct{color:#999;font-size:0.76rem;}
+/* area table CSS dihapus */
 
 /* SEARCH */
 input[type=text]{
@@ -275,36 +263,36 @@ tbody tr:last-child td{border-bottom:none;}
   <h1>🏢 Data Cabang</h1>
   <p class="subtitle-sunda">Wilayah Operasional Seluruh Indonesia</p>
 
-  <!-- STATUS -->
-  <div class="cabangTopSection">
-    <div>
-      <div class="statusCards">
-        <div class="card card-operasional"><h2 id="countOperasional">-</h2><span>Operasional</span></div>
-        <div class="card card-tutup"><h2 id="countTutup">-</h2><span>Tutup</span></div>
-        <div class="card total"><h2 id="countTotal">-</h2><span>Total Cabang</span></div>
-      </div>
-    </div>
-    <div class="chartBox" style="max-width:240px;">
-      <h3>Status Cabang</h3>
-      <canvas id="cabangStatusChart"></canvas>
-    </div>
+  <!-- WAKTU REALTIME -->
+  <div id="realtimeClock" style="
+    display:inline-flex; align-items:center; gap:10px;
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:12px;
+    padding:8px 18px;
+    margin-bottom:16px;
+    color:white;
+    font-size:0.88rem;
+    font-weight:600;
+    text-shadow:1px 1px 4px rgba(0,0,0,0.5);
+    letter-spacing:0.03em;
+  ">
+    <span style="font-size:1rem;">🕐</span>
+    <span id="clockText">—</span>
   </div>
 
-  <!-- AREA DISTRIBUTION -->
-  <div class="areaSection">
-    <div class="areaChartBox">
-      <h3>📊 Distribusi Cabang per Area</h3>
-      <canvas id="areaBarChart" style="max-height:340px;"></canvas>
-    </div>
-    <div class="areaTableBox">
-      <h3>📋 Ringkasan per Area</h3>
-      <table class="area-summary-table">
-        <thead>
-          <tr><th>#</th><th>Area</th><th>Cabang</th></tr>
-        </thead>
-        <tbody id="areaSummaryBody"></tbody>
-      </table>
-    </div>
+  <!-- STATUS CARDS -->
+  <div class="statusCards">
+    <div class="card card-operasional"><h2 id="countOperasional">-</h2><span>Operasional</span></div>
+    <div class="card card-tutup"><h2 id="countTutup">-</h2><span>Tutup</span></div>
+    <div class="card total"><h2 id="countTotal">-</h2><span>Total Cabang</span></div>
+  </div>
+
+  <!-- DISTRIBUSI AREA CHART — langsung di bawah cards -->
+  <div class="areaChartBox" style="margin-bottom:20px;">
+    <h3>📊 Distribusi Cabang per Area</h3>
+    <canvas id="areaBarChart" style="max-height:360px;"></canvas>
   </div>
 
   <!-- SEARCH + TABLE -->
@@ -434,16 +422,6 @@ function updateCabangStats(){
   document.getElementById("countOperasional").innerText=operasional;
   document.getElementById("countTutup").innerText=tutup;
   document.getElementById("countTotal").innerText=dataCabang.length;
-  const ctx=document.getElementById("cabangStatusChart");
-  if(cabangChartInstance) cabangChartInstance.destroy();
-  cabangChartInstance=new Chart(ctx,{
-    type:"doughnut",
-    data:{
-      labels:["Operasional","Tutup"],
-      datasets:[{data:[operasional,tutup],backgroundColor:["#2e7d32","#e53935"],borderWidth:3,borderColor:"#fff"}]
-    },
-    options:{cutout:"62%",plugins:{legend:{position:"bottom",labels:{font:{size:11},padding:10}}}}
-  });
 }
 
 function buildAreaCharts(){
@@ -493,17 +471,7 @@ function buildAreaCharts(){
     }
   });
 
-  // Tabel ringkasan
-  let html='';
-  sorted.forEach((item,i)=>{
-    const pct=((item[1]/total)*100).toFixed(1);
-    html+=`<tr>
-      <td style="color:#999;font-size:0.76rem;">${i+1}</td>
-      <td><strong>${item[0]}</strong></td>
-      <td><span class="area-count-badge">${item[1]}</span> <span class="area-pct">${pct}%</span></td>
-    </tr>`;
-  });
-  document.getElementById("areaSummaryBody").innerHTML=html||`<tr><td colspan="3" class="empty-state">Tidak ada data</td></tr>`;
+  // Ringkasan area dihapus
 }
 
 function renderCabang(data){
@@ -585,6 +553,26 @@ function stopSundaQuote() {
   document.getElementById('sundaQuoteBox').classList.remove('visible');
   clearInterval(qTimer);
 }
+
+
+/* ── REALTIME CLOCK ── */
+function updateClock() {
+  const now = new Date();
+  const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const months = ['Januari','Februari','Maret','April','Mei','Juni',
+                  'Juli','Agustus','September','Oktober','November','Desember'];
+  const hari  = days[now.getDay()];
+  const tgl   = now.getDate();
+  const bln   = months[now.getMonth()];
+  const thn   = now.getFullYear();
+  const hh    = String(now.getHours()).padStart(2,'0');
+  const mm    = String(now.getMinutes()).padStart(2,'0');
+  const ss    = String(now.getSeconds()).padStart(2,'0');
+  const el = document.getElementById('clockText');
+  if (el) el.textContent = `${hari}, ${tgl} ${bln} ${thn}   ${hh}:${mm}:${ss} WIB`;
+}
+updateClock();
+setInterval(updateClock, 1000);
 
 /* ====== NAV ====== */
 function showPage(page){
@@ -805,11 +793,6 @@ body { padding-bottom: 0 !important; }
   </div>
 
   <div class="mp-pl-toggle" id="mpPlToggle" onclick="mpTogglePl()">▾ Playlist</div>
-  <div class="mp-pl-search" id="mpPlSearch" style="display:none;padding:8px 12px 4px;">
-    <input type="text" id="mpSearchInput" placeholder="🔍 Cari lagu..." oninput="mpFilterList(this.value)"
-      style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);
-      border-radius:8px;padding:7px 12px;color:#fff;font-size:.78rem;outline:none;font-family:inherit;">
-  </div>
   <div class="mp-pl" id="mpPlList" style="display:none"></div>
 </div>
 
@@ -875,46 +858,12 @@ const mpFab    = document.getElementById('mp-fab');
   mpAudio.addEventListener('loadedmetadata',mpOnMeta);
   mpAudio.addEventListener('ended',         mpOnEnd);
   mpAudio.addEventListener('error',         mpOnErr);
-  mpAudio.addEventListener('play',  function() { mpPlaying = true;  mpUpdateBtn(); });
-  mpAudio.addEventListener('pause', function() { mpPlaying = false; mpUpdateBtn(); });
-  mpAudio.addEventListener('waiting', () => mpSetArtist('⏳ buffering...'));
-  mpAudio.addEventListener('playing', () => mpSetArtist(''));
-
-  // Restore state dari sessionStorage (saat kembali dari kalkulator)
-  const saved = sessionStorage.getItem('mpState');
-  if (saved) {
-    try {
-      const s = JSON.parse(saved);
-      sessionStorage.removeItem('mpState');
-      mpBuildList();
-      mpCard.classList.add('open');
-      mpLoadTrack(s.idx, false);
-      // Restore posisi setelah metadata load
-      mpAudio.addEventListener('loadedmetadata', function once() {
-        mpAudio.removeEventListener('loadedmetadata', once);
-        if (s.time > 0) mpAudio.currentTime = s.time;
-        if (s.vol !== undefined) { mpAudio.volume = s.vol; document.getElementById('mpVolSlider').value = s.vol; }
-        if (s.wasPlaying) {
-          mpAudio.play().then(() => {}).catch(()=>{});
-        }
-      }, { once: true });
-      return;
-    } catch(e) {}
-  }
-
+  mpAudio.addEventListener('waiting',       () => mpSetArtist('⏳ buffering...'));
+  mpAudio.addEventListener('playing',       () => mpSetArtist(''));
   mpBuildList();
   mpLoadTrack(0, false);
+  // Tampilkan card otomatis
   mpCard.classList.add('open');
-
-  // Simpan state sebelum pindah halaman
-  window.addEventListener('beforeunload', function() {
-    sessionStorage.setItem('mpState', JSON.stringify({
-      idx: mpIdx,
-      time: mpAudio.currentTime || 0,
-      vol: mpAudio.volume,
-      wasPlaying: mpPlaying
-    }));
-  });
 })();
 
 // ── OPEN / CLOSE ───────────────────────────────────────
@@ -958,12 +907,13 @@ function mpTogglePlay() {
     mpLoadTrack(mpIdx, true); return;
   }
   if (mpPlaying) {
-    mpAudio.pause();
+    mpAudio.pause(); mpPlaying = false;
   } else {
     mpAudio.play()
-      .then(() => {})
-      .catch(() => { mpLoadTrack(mpIdx, true); });
+      .then(() => { mpPlaying = true; })
+      .catch(() => { mpLoadTrack(mpIdx, true); return; });
   }
+  mpUpdateBtn();
 }
 
 // ── PREV / NEXT ────────────────────────────────────────
@@ -1029,39 +979,13 @@ function mpToggleLoop() {
 // ── PLAYLIST ───────────────────────────────────────────
 function mpTogglePl() {
   mpPlOpen = !mpPlOpen;
-  document.getElementById('mpPlList').style.display   = mpPlOpen ? 'block' : 'none';
-  document.getElementById('mpPlSearch').style.display = mpPlOpen ? 'block' : 'none';
-  document.getElementById('mpPlToggle').textContent   = mpPlOpen ? '▴ Playlist' : '▾ Playlist';
+  document.getElementById('mpPlList').style.display = mpPlOpen ? 'block' : 'none';
+  document.getElementById('mpPlToggle').textContent = mpPlOpen ? '▴ Playlist' : '▾ Playlist';
   if (mpPlOpen) {
-    // Reset search
-    const inp = document.getElementById('mpSearchInput');
-    if (inp) inp.value = '';
-    mpBuildList();
     // Scroll ke lagu aktif
-    setTimeout(() => {
-      const el = document.getElementById('mpPl_' + mpIdx);
-      if (el) el.scrollIntoView({ block: 'nearest' });
-    }, 50);
-    // Fokus ke search
-    if (inp) inp.focus();
+    const el = document.getElementById('mpPl_' + mpIdx);
+    if (el) el.scrollIntoView({ block: 'nearest' });
   }
-}
-
-function mpFilterList(keyword) {
-  const kw = keyword.toLowerCase().trim();
-  const list = document.getElementById('mpPlList');
-  if (!kw) { mpBuildList(); return; }
-  const filtered = MP_PLAYLIST
-    .map((t, i) => ({ ...t, origIdx: i }))
-    .filter(t => t.title.toLowerCase().includes(kw));
-  list.innerHTML = filtered.length
-    ? filtered.map(t => `
-        <div class="mp-pl-item ${t.origIdx===mpIdx?'active':''}" id="mpPl_${t.origIdx}" onclick="mpLoadTrack(${t.origIdx},true)">
-          <span class="mp-pl-num">${t.origIdx===mpIdx ? (mpPlaying?'▶':'◆') : t.origIdx+1}</span>
-          <span class="mp-pl-name">${t.title.replace(new RegExp(kw,'gi'), m => '<mark style="background:#7b1fa2;color:#fff;border-radius:3px;padding:0 2px">'+m+'</mark>')}</span>
-          ${t.origIdx===mpIdx ? '<span class="mp-pl-playing">♪</span>' : ''}
-        </div>`).join('')
-    : '<div style="padding:14px;text-align:center;font-size:.75rem;color:rgba(255,255,255,.3)">Lagu tidak ditemukan</div>';
 }
 function mpBuildList() {
   const list = document.getElementById('mpPlList');
