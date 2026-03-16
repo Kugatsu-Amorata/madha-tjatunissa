@@ -805,6 +805,11 @@ body { padding-bottom: 0 !important; }
   </div>
 
   <div class="mp-pl-toggle" id="mpPlToggle" onclick="mpTogglePl()">▾ Playlist</div>
+  <div class="mp-pl-search" id="mpPlSearch" style="display:none;padding:8px 12px 4px;">
+    <input type="text" id="mpSearchInput" placeholder="🔍 Cari lagu..." oninput="mpFilterList(this.value)"
+      style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);
+      border-radius:8px;padding:7px 12px;color:#fff;font-size:.78rem;outline:none;font-family:inherit;">
+  </div>
   <div class="mp-pl" id="mpPlList" style="display:none"></div>
 </div>
 
@@ -870,12 +875,46 @@ const mpFab    = document.getElementById('mp-fab');
   mpAudio.addEventListener('loadedmetadata',mpOnMeta);
   mpAudio.addEventListener('ended',         mpOnEnd);
   mpAudio.addEventListener('error',         mpOnErr);
-  mpAudio.addEventListener('waiting',       () => mpSetArtist('⏳ buffering...'));
-  mpAudio.addEventListener('playing',       () => mpSetArtist(''));
+  mpAudio.addEventListener('play',  function() { mpPlaying = true;  mpUpdateBtn(); });
+  mpAudio.addEventListener('pause', function() { mpPlaying = false; mpUpdateBtn(); });
+  mpAudio.addEventListener('waiting', () => mpSetArtist('⏳ buffering...'));
+  mpAudio.addEventListener('playing', () => mpSetArtist(''));
+
+  // Restore state dari sessionStorage (saat kembali dari kalkulator)
+  const saved = sessionStorage.getItem('mpState');
+  if (saved) {
+    try {
+      const s = JSON.parse(saved);
+      sessionStorage.removeItem('mpState');
+      mpBuildList();
+      mpCard.classList.add('open');
+      mpLoadTrack(s.idx, false);
+      // Restore posisi setelah metadata load
+      mpAudio.addEventListener('loadedmetadata', function once() {
+        mpAudio.removeEventListener('loadedmetadata', once);
+        if (s.time > 0) mpAudio.currentTime = s.time;
+        if (s.vol !== undefined) { mpAudio.volume = s.vol; document.getElementById('mpVolSlider').value = s.vol; }
+        if (s.wasPlaying) {
+          mpAudio.play().then(() => {}).catch(()=>{});
+        }
+      }, { once: true });
+      return;
+    } catch(e) {}
+  }
+
   mpBuildList();
   mpLoadTrack(0, false);
-  // Tampilkan card otomatis
   mpCard.classList.add('open');
+
+  // Simpan state sebelum pindah halaman
+  window.addEventListener('beforeunload', function() {
+    sessionStorage.setItem('mpState', JSON.stringify({
+      idx: mpIdx,
+      time: mpAudio.currentTime || 0,
+      vol: mpAudio.volume,
+      wasPlaying: mpPlaying
+    }));
+  });
 })();
 
 // ── OPEN / CLOSE ───────────────────────────────────────
@@ -919,13 +958,12 @@ function mpTogglePlay() {
     mpLoadTrack(mpIdx, true); return;
   }
   if (mpPlaying) {
-    mpAudio.pause(); mpPlaying = false;
+    mpAudio.pause();
   } else {
     mpAudio.play()
-      .then(() => { mpPlaying = true; })
-      .catch(() => { mpLoadTrack(mpIdx, true); return; });
+      .then(() => {})
+      .catch(() => { mpLoadTrack(mpIdx, true); });
   }
-  mpUpdateBtn();
 }
 
 // ── PREV / NEXT ────────────────────────────────────────
@@ -991,13 +1029,39 @@ function mpToggleLoop() {
 // ── PLAYLIST ───────────────────────────────────────────
 function mpTogglePl() {
   mpPlOpen = !mpPlOpen;
-  document.getElementById('mpPlList').style.display = mpPlOpen ? 'block' : 'none';
-  document.getElementById('mpPlToggle').textContent = mpPlOpen ? '▴ Playlist' : '▾ Playlist';
+  document.getElementById('mpPlList').style.display   = mpPlOpen ? 'block' : 'none';
+  document.getElementById('mpPlSearch').style.display = mpPlOpen ? 'block' : 'none';
+  document.getElementById('mpPlToggle').textContent   = mpPlOpen ? '▴ Playlist' : '▾ Playlist';
   if (mpPlOpen) {
+    // Reset search
+    const inp = document.getElementById('mpSearchInput');
+    if (inp) inp.value = '';
+    mpBuildList();
     // Scroll ke lagu aktif
-    const el = document.getElementById('mpPl_' + mpIdx);
-    if (el) el.scrollIntoView({ block: 'nearest' });
+    setTimeout(() => {
+      const el = document.getElementById('mpPl_' + mpIdx);
+      if (el) el.scrollIntoView({ block: 'nearest' });
+    }, 50);
+    // Fokus ke search
+    if (inp) inp.focus();
   }
+}
+
+function mpFilterList(keyword) {
+  const kw = keyword.toLowerCase().trim();
+  const list = document.getElementById('mpPlList');
+  if (!kw) { mpBuildList(); return; }
+  const filtered = MP_PLAYLIST
+    .map((t, i) => ({ ...t, origIdx: i }))
+    .filter(t => t.title.toLowerCase().includes(kw));
+  list.innerHTML = filtered.length
+    ? filtered.map(t => `
+        <div class="mp-pl-item ${t.origIdx===mpIdx?'active':''}" id="mpPl_${t.origIdx}" onclick="mpLoadTrack(${t.origIdx},true)">
+          <span class="mp-pl-num">${t.origIdx===mpIdx ? (mpPlaying?'▶':'◆') : t.origIdx+1}</span>
+          <span class="mp-pl-name">${t.title.replace(new RegExp(kw,'gi'), m => '<mark style="background:#7b1fa2;color:#fff;border-radius:3px;padding:0 2px">'+m+'</mark>')}</span>
+          ${t.origIdx===mpIdx ? '<span class="mp-pl-playing">♪</span>' : ''}
+        </div>`).join('')
+    : '<div style="padding:14px;text-align:center;font-size:.75rem;color:rgba(255,255,255,.3)">Lagu tidak ditemukan</div>';
 }
 function mpBuildList() {
   const list = document.getElementById('mpPlList');
