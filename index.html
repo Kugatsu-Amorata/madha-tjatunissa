@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Data Madha</title>
+<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,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">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,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">
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  padding:32px;
+  min-height:100vh;
+}
+
+/* Background KMOB - Hutan hujan tropis pegunungan Jawa Barat */
+body.bg-kmob {
+  /* Fallback gradient jika foto gagal load */
+  background-color: #1a2e1a;
+  background-image:
+    linear-gradient(to bottom, rgba(5,18,8,0.50) 0%, rgba(5,18,8,0.18) 45%, rgba(5,18,8,0.58) 100%),
+    url("https://images.unsplash.com/photo-1448375240586-882707db888b?w=1600&q=80");
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* Background CABANG - sawah + gunung Jawa Barat nuansa Sunda */
+body.bg-cabang {
+  background-color: #0d2010;
+  background-image:
+    linear-gradient(to bottom, rgba(0,40,10,0.52) 0%, rgba(0,30,8,0.28) 50%, rgba(0,25,5,0.62) 100%),
+    url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80");
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* Background AL-QURAN - Masjid / suasana islami */
+body.bg-quran {
+  background-color: #0a1628;
+  background-image:
+    linear-gradient(to bottom, rgba(5,12,30,0.62) 0%, rgba(10,20,50,0.30) 50%, rgba(5,12,30,0.72) 100%),
+    url("https://images.unsplash.com/photo-1564769610726-59cead6a6f8f?w=1600&q=80");
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+h1{
+  color:white;
+  text-shadow:2px 2px 10px rgba(0,0,0,0.85), 0 0 40px rgba(0,0,0,0.4);
+  font-size:1.9rem;
+  font-weight:800;
+  margin-bottom:6px;
+}
+.subtitle-sunda {
+  color: rgba(255,255,255,0.8);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+  margin-bottom: 20px;
+}
+.sunda-ornament {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  margin-bottom: 6px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+}
+
+/* Quote motivasi Sunda - pojok kanan atas */
+.sunda-quote-box {
+  position: fixed;
+  top: 28px;
+  right: 32px;
+  max-width: 300px;
+  background: rgba(0,0,0,0.42);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 14px;
+  padding: 14px 18px;
+  z-index: 100;
+  display: none;
+  animation: fadeInQuote 0.6s ease;
+}
+@keyframes fadeInQuote {
+  from { opacity:0; transform:translateY(-10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.sunda-quote-box.visible { display: block; }
+.sunda-quote-text {
+  color: rgba(255,255,255,0.95);
+  font-size: 0.83rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.5;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  margin-bottom: 6px;
+}
+.sunda-quote-meaning {
+  color: rgba(255,220,100,0.9);
+  font-size: 0.73rem;
+  font-weight: 500;
+  line-height: 1.4;
+  font-style: normal;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  margin-bottom: 5px;
+}
+.sunda-quote-dot {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+.sunda-quote-dot span {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.sunda-quote-dot span.active { background: rgba(255,220,100,0.9); }
+
+/* NAVBAR */
+.navbar{
+  display:flex;
+  gap:10px;
+  margin-bottom:24px;
+}
+.navbar button{
+  padding:10px 26px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.9rem;
+  background:rgba(255,255,255,0.88);
+  color:#333;
+  transition:all 0.2s;
+  box-shadow:0 2px 10px rgba(0,0,0,0.2);
+}
+.navbar button:hover{opacity:0.9; transform:translateY(-1px);}
+.navbar a:hover{opacity:0.9; transform:translateY(-1px);}
+body.bg-kmob .navbar button.active{background:#7b1fa2;color:white;box-shadow:0 4px 14px rgba(123,31,162,0.45);}
+body.bg-cabang .navbar button.active{background:#2e7d32;color:white;box-shadow:0 4px 14px rgba(46,125,50,0.5);}
+body.bg-quran .navbar button.active{background:#b8860b;color:white;box-shadow:0 4px 14px rgba(184,134,11,0.55);}
+
+/* CARDS */
+.dashboard{display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap;}
+.card{padding:20px 28px;border-radius:12px;min-width:155px;text-align:center;font-weight:700;box-shadow:0 4px 18px rgba(0,0,0,0.18);}
+.card h2{font-size:2rem;margin-bottom:4px;}
+.card span{font-size:0.83rem;opacity:0.85;}
+.total{background:rgba(255,255,255,0.96);color:#333;}
+.prime{background:linear-gradient(135deg,#1565C0,#1976D2);color:white;}
+.priority{background:linear-gradient(135deg,#F9A825,#FFD700);color:#333;}
+.card-operasional{background:linear-gradient(135deg,#1b5e20,#43a047);color:white;}
+.card-tutup{background:linear-gradient(135deg,#b71c1c,#e53935);color:white;}
+
+
+
+/* TOP SECTION */
+.topSection{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:24px;flex-wrap:wrap;}
+.topLeft{display:flex;flex-direction:column;}
+
+/* CHART BOXES */
+.chartBox{
+  background:rgba(255,255,255,0.96);
+  padding:20px;
+  border-radius:14px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.14);
+  min-width:260px;
+  max-width:350px;
+}
+.chartBox h3,.areaChartBox h3,.areaTableBox h3{
+  font-size:0.78rem;color:#555;margin-bottom:12px;
+  font-weight:800;text-transform:uppercase;letter-spacing:0.07em;
+  padding-left:9px;
+}
+body.bg-kmob .chartBox h3{border-left:3px solid #7b1fa2;}
+body.bg-cabang .chartBox h3{border-left:3px solid #2e7d32;}
+
+/* CABANG TOP */
+.cabangTopSection{display:flex;gap:20px;margin-bottom:20px;align-items:flex-start;flex-wrap:wrap;}
+.statusCards{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
+
+/* AREA SECTION */
+.areaSection{display:flex;gap:20px;margin-bottom:24px;flex-wrap:wrap;align-items:flex-start;}
+.areaChartBox{
+  background:rgba(255,255,255,0.96);padding:20px;border-radius:14px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.14);flex:1;min-width:300px;max-width:540px;
+}
+.areaChartBox h3{border-left:3px solid #2e7d32;}
+.areaTableBox{
+  background:rgba(255,255,255,0.96);padding:20px;border-radius:14px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.14);flex:1;min-width:260px;max-width:360px;
+}
+.areaTableBox h3{border-left:3px solid #1565c0;}
+
+.area-summary-table{width:100%;border-collapse:collapse;font-size:0.84rem;}
+.area-summary-table th{background:#1b5e20;color:white;padding:8px 10px;text-align:left;font-size:0.76rem;letter-spacing:0.04em;}
+.area-summary-table td{padding:7px 10px;border-bottom:1px solid #eee;color:#333;}
+.area-summary-table tbody tr:hover{background:#f1f8e9;}
+.area-summary-table tbody tr:last-child td{border-bottom:none;}
+.area-count-badge{display:inline-block;background:#e8f5e9;color:#1b5e20;font-weight:700;padding:2px 9px;border-radius:20px;font-size:0.8rem;}
+.area-pct{color:#999;font-size:0.76rem;}
+
+/* SEARCH */
+input[type=text]{
+  padding:12px 16px;width:100%;max-width:420px;margin-bottom:16px;
+  border-radius:8px;border:none;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.95rem;box-shadow:0 2px 10px rgba(0,0,0,0.14);outline:none;
+}
+body.bg-kmob input[type=text]:focus{box-shadow:0 0 0 3px rgba(123,31,162,0.28);}
+body.bg-cabang input[type=text]:focus{box-shadow:0 0 0 3px rgba(46,125,50,0.35);}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;background:rgba(255,255,255,0.97);border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.12);}
+th{padding:12px 14px;font-size:0.81rem;text-align:left;letter-spacing:0.03em;color:white;}
+#table th{background:#7b1fa2;}
+#cabangTable th{background:#1b5e20;}
+td{padding:10px 14px;border-bottom:1px solid #f0f0f0;font-size:0.84rem;color:#333;}
+body.bg-kmob tbody tr:hover{background:#faf5ff;}
+body.bg-cabang tbody tr:hover{background:#f1f8e9;}
+tbody tr:last-child td{border-bottom:none;}
+
+/* BADGE */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.74rem;font-weight:700;}
+.badge-tutup{background:#FFE0E0;color:#c62828;}
+.badge-operasional{background:#E8F5E9;color:#2e7d32;}
+.empty-state{text-align:center;padding:40px;color:#aaa;font-style:italic;}
+
+
+/* ── AL-QURAN PAGE STYLES ──────────────────────────────────────── */
+.quran-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.quran-bismillah {
+  font-size: 2rem;
+  color: rgba(255,215,100,0.95);
+  text-shadow: 0 0 20px rgba(255,200,50,0.5);
+  margin-bottom: 6px;
+  font-family: 'Georgia', serif;
+  letter-spacing: 0.05em;
+}
+.quran-subtitle {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.82rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+
+/* Search surah */
+.quran-search-wrap {
+  max-width: 480px;
+  margin: 0 auto 24px;
+  position: relative;
+}
+.quran-search-wrap input {
+  width: 100%;
+  padding: 13px 20px 13px 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,215,100,0.25);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 0.95rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  outline: none;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.quran-search-wrap input:focus { border-color: rgba(255,215,100,0.55); }
+.quran-search-wrap input::placeholder { color: rgba(255,255,255,0.35); }
+.quran-search-icon {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%); font-size: 1.1rem; pointer-events: none;
+}
+
+/* Surah grid */
+.surah-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.surah-card {
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,215,100,0.18);
+  border-radius: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.surah-card:hover {
+  background: rgba(255,215,100,0.12);
+  border-color: rgba(255,215,100,0.45);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+}
+.surah-num {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, #b8860b, #ffd700);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem; font-weight: 700; color: #1a1000;
+  flex-shrink: 0;
+}
+.surah-info { flex: 1; overflow: hidden; }
+.surah-name-id {
+  font-size: 0.9rem; font-weight: 700;
+  color: rgba(255,255,255,0.95);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.surah-meta {
+  font-size: 0.72rem; color: rgba(255,215,100,0.7);
+  margin-top: 2px;
+}
+.surah-name-ar {
+  font-size: 1.1rem; color: rgba(255,215,100,0.9);
+  font-family: 'Georgia', serif;
+  flex-shrink: 0;
+}
+
+/* ── DETAIL PANEL — wrapper ─────────────────────────────────────── */
+.quran-detail {
+  border-radius: 18px;
+  padding: 0;
+  display: none;
+  margin-bottom: 32px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+}
+.quran-detail.open { display: block; }
+
+/* sticky header bar */
+.quran-detail-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px; flex-wrap: wrap; gap: 10px;
+  background: linear-gradient(135deg, #1a3a1a, #2d5a2d);
+  border-bottom: 2px solid rgba(255,215,100,0.3);
+  position: sticky; top: 0; z-index: 10;
+}
+.quran-detail-title { color: #ffd700; font-size: 1.05rem; font-weight: 700; }
+.quran-detail-ar { color: rgba(255,215,100,0.8); font-size: 0.95rem; font-family:'Georgia',serif; margin-top:2px; }
+.quran-detail-meta-row {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 2px;
+}
+.quran-detail-badge {
+  background: rgba(255,215,100,0.2); color: #ffd700;
+  font-size: 0.7rem; font-weight: 700; padding: 2px 10px;
+  border-radius: 20px; border: 1px solid rgba(255,215,100,0.3);
+}
+.quran-header-right { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.quran-back {
+  background: rgba(255,215,100,0.15); border: 1px solid rgba(255,215,100,0.35);
+  color: #ffd700; border-radius: 8px; padding: 7px 14px;
+  cursor: pointer; font-size: 0.8rem; font-weight: 600;
+  font-family: 'Plus Jakarta Sans', sans-serif; transition: background 0.2s;
+}
+.quran-back:hover { background: rgba(255,215,100,0.3); }
+
+/* theme toggle button */
+.quran-theme-btn {
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+  color: white; border-radius: 8px; padding: 7px 12px;
+  cursor: pointer; font-size: 0.8rem; font-weight: 600;
+  font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.2s;
+  white-space: nowrap;
+}
+.quran-theme-btn:hover { background: rgba(255,255,255,0.22); }
+
+/* surah banner (nama besar bergaya) */
+.surah-banner {
+  text-align: center; padding: 32px 24px 24px;
+  border-bottom: 1px solid var(--ayat-border);
+  background: var(--ayat-bg);
+}
+.surah-banner-ornament {
+  font-size: 0.75rem; letter-spacing: 0.3em;
+  color: var(--ayat-accent); opacity: 0.6; margin-bottom: 10px;
+}
+.surah-banner-name {
+  font-size: 2.4rem; font-family: 'Georgia', serif;
+  color: var(--ayat-accent); line-height: 1.3; margin-bottom: 6px;
+}
+.surah-banner-latin {
+  font-size: 0.9rem; color: var(--ayat-sub);
+  letter-spacing: 0.08em; font-weight: 600;
+}
+
+/* ── AYAT CONTAINER body ─────────────────────────────────────────── */
+#ayatContainer {
+  background: var(--ayat-bg);
+  padding: 0 24px 32px;
+  transition: background 0.3s;
+}
+
+/* ayat number label (Ayat X:Y style) */
+.ayat-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--ayat-label-bg);
+  border: 1px solid var(--ayat-label-border);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 0.75rem; font-weight: 700;
+  color: var(--ayat-label-color);
+  margin-top: 24px; margin-bottom: 16px;
+  cursor: pointer; transition: background 0.15s;
+  user-select: none;
+}
+.ayat-label:hover { background: var(--ayat-label-hover); }
+.ayat-label-arrow { font-size: 0.65rem; opacity: 0.6; transition: transform 0.2s; }
+.ayat-label.collapsed .ayat-label-arrow { transform: rotate(-90deg); }
+
+/* ayat content (collapsible) */
+.ayat-content {
+  border-bottom: 1px solid var(--ayat-border);
+  padding-bottom: 20px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  max-height: 600px;
+  opacity: 1;
+}
+.ayat-content.collapsed { max-height: 0; opacity: 0; padding-bottom: 0; }
+
+.ayat-arabic {
+  text-align: center;
+  font-size: 1.85rem;
+  line-height: 2.4;
+  color: var(--ayat-arabic);
+  font-family: 'Georgia', serif;
+  margin-bottom: 14px;
+  direction: rtl;
+  padding: 16px 8px 0;
+}
+.ayat-latin {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--ayat-latin);
+  font-style: italic;
+  margin-bottom: 10px;
+  line-height: 1.7;
+}
+.ayat-translation {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--ayat-text);
+  line-height: 1.75;
+  font-weight: 500;
+}
+
+/* ── CSS VARIABLES — LIGHT THEME (default) ─────────────────────── */
+#ayatWrapper {
+  --ayat-bg:           #f5f0e8;
+  --ayat-arabic:       #1a1000;
+  --ayat-latin:        #7a6a3a;
+  --ayat-text:         #333;
+  --ayat-sub:          #666;
+  --ayat-accent:       #8B6914;
+  --ayat-border:       #e0d5b8;
+  --ayat-label-bg:     #e8e0cc;
+  --ayat-label-border: #c8b878;
+  --ayat-label-color:  #5a4a1a;
+  --ayat-label-hover:  #d8cca8;
+}
+
+/* ── DARK THEME ─────────────────────────────────────────────────── */
+#ayatWrapper.dark-ayat {
+  --ayat-bg:           #0d1117;
+  --ayat-arabic:       rgba(255,255,255,0.95);
+  --ayat-latin:        rgba(255,215,100,0.65);
+  --ayat-text:         rgba(255,255,255,0.75);
+  --ayat-sub:          rgba(255,255,255,0.45);
+  --ayat-accent:       #ffd700;
+  --ayat-border:       rgba(255,215,100,0.12);
+  --ayat-label-bg:     rgba(255,215,100,0.1);
+  --ayat-label-border: rgba(255,215,100,0.25);
+  --ayat-label-color:  #ffd700;
+  --ayat-label-hover:  rgba(255,215,100,0.2);
+}
+
+/* loading */
+.ayat-loading {
+  text-align: center; padding: 40px;
+  color: rgba(255,215,100,0.6); font-size: 1rem;
+  background: var(--ayat-bg, #0d1117);
+}
+
+/* Juz / stats bar */
+.quran-stats {
+  display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 22px;
+}
+.quran-stat-card {
+  background: rgba(255,215,100,0.1);
+  border: 1px solid rgba(255,215,100,0.2);
+  border-radius: 12px; padding: 14px 20px;
+  text-align: center; min-width: 100px;
+}
+.quran-stat-card h3 { font-size: 1.5rem; color: #ffd700; margin-bottom: 4px; }
+.quran-stat-card span { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+
+/* Ornament */
+.quran-ornament {
+  text-align: center;
+  color: rgba(255,215,100,0.5);
+  font-size: 1rem;
+  letter-spacing: 0.3em;
+  margin-bottom: 10px;
+}
+
+/* Loading spinner */
+.quran-spinner {
+  display: inline-block; width: 28px; height: 28px;
+  border: 3px solid rgba(255,215,100,0.2);
+  border-top-color: #ffd700;
+  border-radius: 50%;
+  animation: qspin 0.8s linear infinite;
+  vertical-align: middle; margin-right: 10px;
+}
+@keyframes qspin { to { transform: rotate(360deg); } }
+
+body.bg-quran .navbar button.active {
+  background: linear-gradient(135deg,#b8860b,#ffd700);
+  color: #1a1000;
+}
+
+</style>
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-kmob">
+
+<div class="navbar">
+  <button id="btnKmob" onclick="showPage('kmob')" class="active">KMOB</button>
+  <button id="btnCabang" onclick="showPage('cabang')">Cabang</button>
+  <a href="kalkulator.html" style="padding:10px 26px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;background:rgba(255,255,255,0.88);color:#333;transition:all 0.2s;box-shadow:0 2px 10px rgba(0,0,0,0.2);text-decoration:none;display:inline-flex;align-items:center;gap:6px;">🧮 Kalkulator</a>
+  <button id="btnQuran" onclick="showPage('quran')">☪️ Al-Quran</button>
+</div>
+
+<!-- ============ KMOB PAGE ============ -->
+<div id="kmobPage">
+  <h1>Dashboard Data Madha</h1>
+  <div style="display:flex;align-items:flex-start;gap:24px;margin-bottom:24px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="dashboard" style="margin-bottom:0;">
+        <div class="card total"><h2 id="total">-</h2><span>Total Data</span></div>
+        <div class="card prime"><h2 id="prime">-</h2><span>Prime</span></div>
+        <div class="card priority"><h2 id="priority">-</h2><span>Priority</span></div>
+      </div>
+      <div class="chartBox" style="max-width:500px;">
+        <h3>Distribusi Area</h3>
+        <canvas id="areaChart" style="max-height:160px;"></canvas>
+      </div>
+    </div>
+  </div>
+  <input type="text" id="search" placeholder="🔍  Cari Nama / Plat / Agreement / Cabang / Area / Keterangan">
+  <table id="table">
+    <thead>
+      <tr>
+        <th>Agreement</th><th>Nama</th><th>Area</th>
+        <th>Cabang</th><th>Klasifikasi</th><th>Plat</th><th>Phone</th>
+        <th>Keterangan</th><th>Alasan</th>
+      </tr>
+    </thead>
+    <tbody><tr><td colspan="9" style="text-align:center;padding:30px;color:#aaa;">⏳ Memuat data...</td></tr></tbody>
+  </table>
+</div>
+
+<!-- ============ CABANG PAGE ============ -->
+<div id="cabangPage" style="display:none;">
+
+  <div class="sunda-ornament">🙏 &nbsp; Sampurasun &nbsp; 🙏</div>
+  <h1>🏢 Data Cabang</h1>
+  <p class="subtitle-sunda">Wilayah Operasional Seluruh Indonesia</p>
+
+  <!-- JAM REALTIME -->
+  <div id="realtimeClock" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.13);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.22);border-radius:12px;padding:7px 18px;margin-bottom:16px;color:white;font-size:0.88rem;font-weight:600;text-shadow:1px 1px 4px rgba(0,0,0,0.5);letter-spacing:0.03em;">
+    <span>🕐</span><span id="clockText">—</span>
+  </div>
+
+  <!-- STATUS CARDS -->
+  <div class="statusCards" style="margin-bottom:16px;">
+    <div class="card card-operasional"><h2 id="countOperasional">-</h2><span>Operasional</span></div>
+    <div class="card card-tutup"><h2 id="countTutup">-</h2><span>Tutup</span></div>
+    <div class="card total"><h2 id="countTotal">-</h2><span>Total Cabang</span></div>
+  </div>
+
+  <!-- DISTRIBUSI AREA -->
+  <div class="areaChartBox" style="margin-bottom:20px;max-width:530px;">
+    <h3>📊 Distribusi Cabang per Area</h3>
+    <canvas id="areaBarChart" style="max-height:360px;"></canvas>
+  </div>
+
+  <!-- SEARCH + TABLE -->
+  <input type="text" id="searchCabang" placeholder="🔍  Cari Cabang / Alamat / Telepon / Area">
+  <table id="cabangTable">
+    <thead>
+      <tr>
+        <th>Cabang</th><th>Alamat</th><th>Telepon</th><th>Area</th><th>Status</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+
+/* ====== UTILS ====== */
+function parseCSVLine(line) {
+  const result = []; let current = ''; let inQuote = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQuote && line[i+1] === '"') { current += '"'; i++; }
+      else inQuote = !inQuote;
+    } else if (ch === ',' && !inQuote) { result.push(current.trim()); current = ''; }
+    else { current += ch; }
+  }
+  result.push(current.trim()); return result;
+}
+function norm(str){ return (str||'').toLowerCase().replace(/\s+/g,' ').trim(); }
+function matchSearch(keyword, ...fields){
+  const kw = norm(keyword);
+  const kwS = kw.startsWith('cabang ') ? kw.replace('cabang ','') : kw;
+  return fields.some(f=>{
+    const fn = norm(f);
+    const fs = fn.startsWith('cabang ') ? fn.replace('cabang ','') : fn;
+    return fn.includes(kw)||fs.includes(kw)||fn.includes(kwS)||fs.includes(kwS);
+  });
+}
+
+/* ====== KMOB ====== */
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT6ADg9gSdfwiOpfYZq47pZCEQ3yphM7WdLyENW_9t_NyvDM62nQvWioni4y4hbgHXblZibz0GSm-je/pub?gid=1801845643&single=true&output=csv";
+let dataGlobal = [];
+
+fetch(url).then(r=>r.text()).then(data=>{
+  const rows = data.split("\n").slice(1);
+  let prime=0, priority=0;
+  rows.forEach(r=>{
+    if(!r.trim()) return;
+    const col = parseCSVLine(r);
+    // Deteksi apakah ada 2 kolom phone (col[6] dan col[7] keduanya nomor HP)
+      const isPhone = v => /^[0-9+\-() ]{6,}$/.test((v||'').trim());
+      const ketIdx  = isPhone(col[7]) ? 8 : 7;   // jika col[7] angka, keterangan di col[8]
+      const alasIdx = ketIdx + 1;
+      const obj={agreement:col[0]||'',nama:col[1]||'',area:col[2]||'',cabang:col[3]||'',klasifikasi:col[4]||'',plat:col[5]||'',phone:col[6]||'',keterangan:col[ketIdx]||'',alasan:col[alasIdx]||''};
+    dataGlobal.push(obj);
+    if(obj.klasifikasi==="PRIME") prime++;
+    if(obj.klasifikasi==="PRIORITY") priority++;
+  });
+  document.getElementById("total").innerText=dataGlobal.length;
+  document.getElementById("prime").innerText=prime;
+  document.getElementById("priority").innerText=priority;
+  const areaCount={};
+  dataGlobal.forEach(d=>{areaCount[d.area]=(areaCount[d.area]||0)+1;});
+  new Chart(document.getElementById("areaChart"),{
+    type:"doughnut",
+    data:{labels:Object.keys(areaCount),datasets:[{data:Object.values(areaCount)}]},
+    options:{plugins:{legend:{position:"bottom",labels:{font:{size:11}}}}}
+  });
+}).catch(e=>{
+  console.error("Gagal KMOB:",e);
+  document.querySelector("#table tbody").innerHTML=
+    `<tr><td colspan="9" style="text-align:center;padding:30px;color:#c62828;">❌ Gagal memuat data.<br><button onclick="location.reload()" style="margin-top:10px;padding:6px 18px;border:none;border-radius:8px;background:#7b1fa2;color:white;cursor:pointer;font-weight:600;">🔄 Retry</button></td></tr>`;
+});
+
+function renderTable(data){
+  let html="";
+  data.forEach(d=>{
+    const ket=d.keterangan||'';
+    const kc=ket==='BISA'?'background:#e8f5e9;color:#2e7d32':
+             ket==='MINUS'?'background:#fff3e0;color:#e65100':
+             ket==='EXP'?'background:#fce4ec;color:#c62828':
+             ket==='TERIMA KECIL'?'background:#e3f2fd;color:#1565c0':
+             (ket.includes('TAHUN')||ket.includes('UMUR'))?'background:#f3e5f5;color:#6a1b9a':'background:#f5f5f5;color:#555';
+    const kb=ket?`<span style="${kc};padding:2px 9px;border-radius:12px;font-size:0.74rem;font-weight:700;">${ket}</span>`:'-';
+    html+=`<tr><td>${d.agreement}</td><td>${d.nama}</td><td>${d.area}</td><td>${d.cabang}</td><td>${d.klasifikasi}</td><td>${d.plat}</td><td>${d.phone}</td><td>${kb}</td><td style="font-size:0.8rem;color:#777;">${d.alasan||'-'}</td></tr>`;
+  });
+  document.querySelector("#table tbody").innerHTML=html||`<tr><td colspan="7" class="empty-state">Tidak ada data ditemukan</td></tr>`;
+}
+document.getElementById("search").addEventListener("keyup",function(){
+  const kw=this.value.trim();
+  if(kw===""){document.querySelector("#table tbody").innerHTML="";return;}
+  renderTable(dataGlobal.filter(d=>matchSearch(kw,d.nama,d.plat,d.agreement,d.area,d.cabang,d.phone,d.keterangan,d.alasan)));
+});
+
+/* ====== CABANG ====== */
+const cabangUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8N4KMXSbLh24-Y3Ar-bsj0_oYNqwiDVD7kjIS_IiE4vvVjdOteuUEIg_Cbrl69tz0NVjeWh_NxLS1/pub?gid=974265388&single=true&output=csv";
+let dataCabang=[], cabangChartInstance=null, areaBarChartInstance=null, cabangLoaded=false;
+
+document.querySelector("#cabangTable tbody").innerHTML=
+  `<tr><td colspan="5" style="text-align:center;padding:20px;color:#888;">⏳ Memuat data cabang...</td></tr>`;
+
+fetch(cabangUrl).then(r=>r.text()).then(rawData=>{
+  document.querySelector("#cabangTable tbody").innerHTML="";
+  const rows=rawData.split("\n");
+  // col[0]=No, col[1]=Cabang, col[2]=Alamat, col[3]=Telepon, col[4]=Area
+  rows.slice(1).forEach(r=>{
+    if(!r.trim()) return;
+    const col=parseCSVLine(r);
+    if(!col[1]||col[1].trim()==='') return;
+    dataCabang.push({no:col[0]?.trim()||'',cabang:col[1]?.trim()||'',alamat:col[2]?.trim()||'',telepon:col[3]?.trim()||'',area:col[4]?.trim()||''});
+  });
+  cabangLoaded=true;
+  updateCabangStats();
+  buildAreaCharts();
+  const kw=document.getElementById("searchCabang").value.trim();
+  if(kw!=="") renderCabang(dataCabang.filter(d=>matchSearch(kw,d.cabang,d.alamat,d.telepon,d.area)));
+}).catch(err=>{
+  console.error("Gagal Cabang:",err);
+  document.querySelector("#cabangTable tbody").innerHTML=
+    `<tr><td colspan="5" style="text-align:center;padding:20px;color:red;">❌ Gagal memuat data. Coba refresh.</td></tr>`;
+});
+
+function isTutup(d){
+  return norm(d.alamat).startsWith('tutup') || norm(d.cabang).startsWith('tutup');
+}
+
+function updateCabangStats(){
+  const tutup=dataCabang.filter(d=>isTutup(d)).length;
+  const operasional=dataCabang.length-tutup;
+  document.getElementById("countOperasional").innerText=operasional;
+  document.getElementById("countTutup").innerText=tutup;
+  document.getElementById("countTotal").innerText=dataCabang.length;
+}
+
+function buildAreaCharts(){
+  const areaCount={};
+  dataCabang.forEach(d=>{
+    const area=d.area||'Tidak Diketahui';
+    areaCount[area]=(areaCount[area]||0)+1;
+  });
+  const sorted=Object.entries(areaCount).sort((a,b)=>b[1]-a[1]);
+  const labels=sorted.map(x=>x[0]);
+  const values=sorted.map(x=>x[1]);
+  const total=dataCabang.length;
+
+  // Palet warna alam Sunda: hijau, biru, cokelat tanah
+  const palette=[
+    '#1b5e20','#2e7d32','#388e3c','#43a047','#66bb6a',
+    '#0d47a1','#1565c0','#1976d2','#42a5f5','#90caf9',
+    '#e65100','#f57f17','#f9a825','#ffd54f','#bf360c',
+    '#4a148c','#6a1b9a','#7b1fa2','#ab47bc','#880e4f'
+  ];
+
+  // Bar chart horizontal
+  const ctx2=document.getElementById("areaBarChart");
+  if(areaBarChartInstance) areaBarChartInstance.destroy();
+  areaBarChartInstance=new Chart(ctx2,{
+    type:"bar",
+    data:{
+      labels:labels,
+      datasets:[{
+        label:"Jumlah Cabang",
+        data:values,
+        backgroundColor:palette.slice(0,labels.length),
+        borderRadius:6,
+        borderSkipped:false
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>` ${c.raw} cabang (${((c.raw/total)*100).toFixed(1)}%)`}}
+      },
+      scales:{
+        x:{beginAtZero:true,ticks:{stepSize:1,font:{size:10}},grid:{color:'rgba(0,0,0,0.06)'}},
+        y:{ticks:{font:{size:10}}}
+      }
+    }
+  });
+
+  
+}
+
+function renderCabang(data){
+  let html="";
+  data.forEach(d=>{
+    const tutup=isTutup(d);
+    const badge=tutup?`<span class="badge badge-tutup">Tutup</span>`:`<span class="badge badge-operasional">Operasional</span>`;
+    html+=`<tr>
+      <td><strong>${d.cabang}</strong></td>
+      <td>${d.alamat}</td>
+      <td>${d.telepon||'-'}</td>
+      <td>${d.area||'-'}</td>
+      <td>${badge}</td>
+    </tr>`;
+  });
+  document.querySelector("#cabangTable tbody").innerHTML=
+    html||`<tr><td colspan="5" class="empty-state">Tidak ada data ditemukan</td></tr>`;
+}
+
+
+/* ====== AL-QURAN MODULE ====== */
+let _quranData = null;        // cache surah list
+let _quranInited = false;
+
+async function quranInit() {
+  if (_quranInited) return;   // only fetch once
+  _quranInited = true;
+  try {
+    const res = await fetch("https://api.quran.gading.dev/surah");
+    const json = await res.json();
+    if (!json.data) throw new Error("empty");
+    _quranData = json.data;
+    _renderSurahGrid(_quranData);
+    // Restore last-read surah badge
+    const last = localStorage.getItem("qLastRead");
+    if (last) {
+      const s = _quranData.find(x => x.number === parseInt(last));
+      if (s) document.getElementById("qLastRead").textContent = s.name.transliteration.id;
+    }
+  } catch (e) {
+    document.getElementById("surahGrid").innerHTML =
+      `<div class="ayat-loading" style="color:#ff6b6b;">
+        ❌ Gagal memuat. Periksa koneksi internet.
+        <br><button onclick="_quranInited=false;quranInit()" style="margin-top:12px;padding:7px 18px;border:none;border-radius:8px;background:rgba(255,215,100,0.2);color:#ffd700;cursor:pointer;font-weight:600;font-family:inherit;">🔄 Coba Lagi</button>
+      </div>`;
+  }
+}
+
+function _renderSurahGrid(data) {
+  const revelationLabel = { makkiyah: 'Makkiyah', madaniyah: 'Madaniyah' };
+  document.getElementById("surahGrid").innerHTML = data.map(s => `
+    <div class="surah-card" onclick="quranOpenSurah(${s.number})">
+      <div class="surah-num">${s.number}</div>
+      <div class="surah-info">
+        <div class="surah-name-id">${s.name.transliteration.id}</div>
+        <div class="surah-meta">${revelationLabel[s.revelation.id] || s.revelation.id} · ${s.numberOfVerses} ayat</div>
+      </div>
+      <div class="surah-name-ar">${s.name.short}</div>
+    </div>`).join('');
+}
+
+function quranFilter(kw) {
+  if (!_quranData) return;
+  kw = kw.toLowerCase().trim();
+  if (!kw) { _renderSurahGrid(_quranData); return; }
+  const res = _quranData.filter(s =>
+    s.name.transliteration.id.toLowerCase().includes(kw) ||
+    s.name.transliteration.en.toLowerCase().includes(kw) ||
+    String(s.number).includes(kw)
+  );
+  if (!res.length) {
+    document.getElementById("surahGrid").innerHTML =
+      '<div class="ayat-loading" style="color:rgba(255,215,100,0.5);">Surah tidak ditemukan 🔍</div>';
+  } else {
+    _renderSurahGrid(res);
+  }
+}
+
+// ── Theme state for ayat view ─────────────────────────────────────
+let _quranDarkMode = true; // default: dark
+
+function quranToggleTheme() {
+  _quranDarkMode = !_quranDarkMode;
+  var wrapper = document.getElementById("ayatWrapper");
+  var btn     = document.getElementById("qThemeBtn");
+  if (_quranDarkMode) {
+    wrapper.classList.add("dark-ayat");
+    btn.textContent = "☀️ Tema Terang";
+  } else {
+    wrapper.classList.remove("dark-ayat");
+    btn.textContent = "🌙 Tema Gelap";
+  }
+  localStorage.setItem("qTheme", _quranDarkMode ? "dark" : "light");
+}
+
+function quranApplySavedTheme() {
+  var saved = localStorage.getItem("qTheme");
+  if (saved === "light") {
+    _quranDarkMode = false;
+    document.getElementById("ayatWrapper").classList.remove("dark-ayat");
+    document.getElementById("qThemeBtn").textContent = "🌙 Tema Gelap";
+  } else {
+    _quranDarkMode = true;
+    document.getElementById("ayatWrapper").classList.add("dark-ayat");
+    document.getElementById("qThemeBtn").textContent = "☀️ Tema Terang";
+  }
+}
+
+function quranToggleAyat(idx) {
+  var content = document.getElementById("ayat-content-" + idx);
+  var label   = document.getElementById("ayat-label-" + idx);
+  if (!content || !label) return;
+  content.classList.toggle("collapsed");
+  label.classList.toggle("collapsed");
+}
+
+async function quranOpenSurah(num) {
+  // Save last read
+  localStorage.setItem("qLastRead", num);
+  if (_quranData) {
+    var found = _quranData.find(function(x) { return x.number === num; });
+    if (found) document.getElementById("qLastRead").textContent = found.name.transliteration.id;
+  }
+  // Show detail panel, hide grid
+  document.getElementById("surahGrid").style.display = "none";
+  document.getElementById("quranSearch").parentElement.style.display = "none";
+  var detail = document.getElementById("quranDetail");
+  detail.classList.add("open");
+  // scroll to top
+  detail.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  document.getElementById("ayatContainer").innerHTML =
+    '<div class="ayat-loading"><span class="quran-spinner"></span> Memuat ayat...</div>';
+
+  // Apply saved theme
+  quranApplySavedTheme();
+
+  try {
+    var res  = await fetch("https://api.quran.gading.dev/surah/" + num);
+    var json = await res.json();
+    var s    = json.data;
+
+    // Header info
+    document.getElementById("qDetailTitle").textContent =
+      s.number + ". " + s.name.transliteration.id;
+    document.getElementById("qDetailAr").textContent = s.name.long;
+
+    var revLabel = s.revelation.id === "makkiyah" ? "Makkiyah" : "Madaniyah";
+    var juzNum   = (s.verses[0] && s.verses[0].meta) ? s.verses[0].meta.juz : "—";
+    document.getElementById("qDetailMeta").innerHTML =
+      '<span class="quran-detail-badge">' + revLabel + '</span>' +
+      '<span class="quran-detail-badge">' + s.numberOfVerses + ' Ayat</span>' +
+      '<span class="quran-detail-badge">Juz ' + juzNum + '</span>';
+
+    // Build ayat HTML — surah banner + per-ayat card
+    var html = '<div class="surah-banner">' +
+      '<div class="surah-banner-ornament">— ✦ —</div>' +
+      '<div class="surah-banner-name">' + s.name.short + '</div>' +
+      '<div class="surah-banner-latin">' + s.name.transliteration.id + ' · ' + s.name.translation.id + '</div>' +
+      '</div>';
+
+    html += s.verses.map(function(v, i) {
+      // latin (transliteration) — API provides it as v.text.transliteration.en
+      var latin = (v.text && v.text.transliteration && v.text.transliteration.en)
+        ? v.text.transliteration.en : "";
+
+      return '<div class="ayat-label" id="ayat-label-' + i + '" onclick="quranToggleAyat(' + i + ')">' +
+          'Ayat ' + num + ':' + v.number.inSurah +
+          '<span class="ayat-label-arrow">▾</span>' +
+        '</div>' +
+        '<div class="ayat-content" id="ayat-content-' + i + '">' +
+          '<div class="ayat-arabic">' + v.text.arab + '</div>' +
+          (latin ? '<div class="ayat-latin">' + latin + '</div>' : '') +
+          '<div class="ayat-translation">' + v.translation.id + '</div>' +
+        '</div>';
+    }).join('');
+
+    document.getElementById("ayatContainer").innerHTML = html;
+
+  } catch (e) {
+    document.getElementById("ayatContainer").innerHTML =
+      '<div class="ayat-loading" style="color:#ff6b6b;">' +
+      '❌ Gagal memuat ayat. Periksa koneksi.' +
+      '<br><button onclick="quranOpenSurah(' + num + ')" ' +
+      'style="margin-top:12px;padding:7px 18px;border:none;border-radius:8px;' +
+      'background:rgba(255,215,100,0.2);color:#ffd700;cursor:pointer;font-weight:600;font-family:inherit;">' +
+      '🔄 Coba Lagi</button></div>';
+  }
+}
+
+function quranBack() {
+  document.getElementById("quranDetail").classList.remove("open");
+  document.getElementById("surahGrid").style.display = "grid";
+  document.getElementById("quranSearch").parentElement.style.display = "block";
+  // Reset search
+  document.getElementById("quranSearch").value = "";
+  if (_quranData) _renderSurahGrid(_quranData);
+}
+
+document.getElementById("searchCabang").addEventListener("keyup",function(){
+  const kw=this.value.trim();
+  if(kw===""){document.querySelector("#cabangTable tbody").innerHTML="";return;}
+  if(!cabangLoaded){
+    document.querySelector("#cabangTable tbody").innerHTML=
+      `<tr><td colspan="5" style="text-align:center;padding:20px;color:#888;">⏳ Data masih dimuat...</td></tr>`;
+    return;
+  }
+  renderCabang(dataCabang.filter(d=>matchSearch(kw,d.cabang,d.alamat,d.telepon,d.area)));
+});
+
+
+/* ====== QUOTE MOTIVASI SUNDA ====== */
+const sundaQuotes = [
+  { q: '"Ulah lali kana jati, teu meunang poho kana galur."', m: 'Jangan lupa asal-usul, jangan lupakan garis leluhur.' },
+  { q: '"Cageur, bageur, bener, pinter, singer."', m: 'Sehat, baik hati, jujur, cerdas, dan tanggap — lima kunci manusia Sunda.' },
+  { q: '"Nyanghulu ka hukum, ngidul ka nagara, ngetan-ngulon ka batur."', m: 'Taat aturan, hormat negara, rukun dengan sesama.' },
+  { q: '"Kudu bisa silih asah, silih asih, silih asuh."', m: 'Harus saling mengasah, saling menyayangi, saling menjaga.' },
+  { q: '"Hade ku omong, goreng ku omong."', m: 'Baik atau buruknya hidup ditentukan oleh tutur kata kita.' },
+  { q: '"Ngindung ka waktu, mibapa ka jaman."', m: 'Ikuti perkembangan zaman, tapi jangan tinggalkan nilai-nilai.' },
+  { q: '"Ulah peurih batan kapeurih."', m: 'Jangan menjadi lebih menyakitkan dari luka itu sendiri — tetap sabar.' },
+];
+let qIdx = 0;
+let qTimer = null;
+
+function showSundaQuote(idx) {
+  const box = document.getElementById('sundaQuoteBox');
+  const qt  = document.getElementById('sundaQuoteText');
+  const qm  = document.getElementById('sundaQuoteMeaning');
+  const dots = document.getElementById('sundaQuoteDots');
+  qt.textContent  = sundaQuotes[idx].q;
+  qm.textContent  = sundaQuotes[idx].m;
+  // dots
+  let dHtml = '';
+  sundaQuotes.forEach((_,i) => {
+    dHtml += `<span class="${i===idx?'active':''}" onclick="jumpQuote(${i})"></span>`;
+  });
+  dots.innerHTML = dHtml;
+}
+
+function jumpQuote(i) {
+  qIdx = i;
+  showSundaQuote(qIdx);
+  clearInterval(qTimer);
+  qTimer = setInterval(nextQuote, 6000);
+}
+
+function nextQuote() {
+  qIdx = (qIdx + 1) % sundaQuotes.length;
+  showSundaQuote(qIdx);
+}
+
+function startSundaQuote() {
+  document.getElementById('sundaQuoteBox').classList.add('visible');
+  showSundaQuote(0);
+  qTimer = setInterval(nextQuote, 6000);
+}
+
+function stopSundaQuote() {
+  document.getElementById('sundaQuoteBox').classList.remove('visible');
+  clearInterval(qTimer);
+}
+
+
+/* ── JAM REALTIME ── */
+function mpUpdateClock(){
+  const now=new Date();
+  const D=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const M=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const hh=String(now.getHours()).padStart(2,'0');
+  const mm=String(now.getMinutes()).padStart(2,'0');
+  const ss=String(now.getSeconds()).padStart(2,'0');
+  const el=document.getElementById('clockText');
+  if(el) el.textContent=`${D[now.getDay()]}, ${now.getDate()} ${M[now.getMonth()]} ${now.getFullYear()}   ${hh}:${mm}:${ss} WIB`;
+}
+mpUpdateClock();
+setInterval(mpUpdateClock,1000);
+/* ====== NAV ====== */
+function showPage(page){
+  document.getElementById("kmobPage").style.display="none";
+  document.getElementById("cabangPage").style.display="none";
+  document.getElementById("quranPage").style.display="none";
+  document.getElementById("btnKmob").classList.remove("active");
+  document.getElementById("btnCabang").classList.remove("active");
+  const qBtn = document.getElementById("btnQuran");
+  if(qBtn) qBtn.classList.remove("active");
+  if(page==="kmob"){
+    document.getElementById("kmobPage").style.display="block";
+    document.getElementById("btnKmob").classList.add("active");
+    document.body.className="bg-kmob";
+    stopSundaQuote();
+  }
+  if(page==="cabang"){
+    document.getElementById("cabangPage").style.display="block";
+    document.getElementById("btnCabang").classList.add("active");
+    document.body.className="bg-cabang";
+    startSundaQuote();
+  }
+  if(page==="quran"){
+    document.getElementById("quranPage").style.display="block";
+    if(qBtn) qBtn.classList.add("active");
+    document.body.className="bg-quran";
+    stopSundaQuote();
+    quranInit();
+  }
+}
+</script>
+
+<!-- Quote motivasi Sunda pojok kanan atas -->
+<div class="sunda-quote-box" id="sundaQuoteBox">
+  <div class="sunda-quote-text" id="sundaQuoteText"></div>
+  <div class="sunda-quote-meaning" id="sundaQuoteMeaning"></div>
+  <div class="sunda-quote-dot" id="sundaQuoteDots"></div>
+</div>
+
+
+
+<!-- ============ AL-QURAN PAGE ============ -->
+<div id="quranPage" style="display:none;">
+
+  <div class="quran-ornament">✦ &nbsp; بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ &nbsp; ✦</div>
+
+  <div class="quran-header">
+    <h1 style="color:#ffd700;text-shadow:0 0 30px rgba(255,215,0,0.4);">☪️ Al-Quran Digital</h1>
+    <p class="quran-subtitle">114 Surah · 6.236 Ayat · 30 Juz</p>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="quran-stats">
+    <div class="quran-stat-card"><h3>114</h3><span>Surah</span></div>
+    <div class="quran-stat-card"><h3>6.236</h3><span>Ayat</span></div>
+    <div class="quran-stat-card"><h3>30</h3><span>Juz</span></div>
+    <div class="quran-stat-card"><h3 id="qLastRead">—</h3><span>Terakhir Dibaca</span></div>
+  </div>
+
+  <!-- Search -->
+  <div class="quran-search-wrap">
+    <span class="quran-search-icon">🔍</span>
+    <input type="text" id="quranSearch" placeholder="Cari nama surah... (contoh: Al-Fatihah, Yasin)" oninput="quranFilter(this.value)">
+  </div>
+
+  <!-- Surah list grid -->
+  <div class="surah-grid" id="surahGrid">
+    <div class="ayat-loading"><span class="quran-spinner"></span> Memuat daftar surah...</div>
+  </div>
+
+  <!-- Detail panel (surah + ayat) -->
+  <div class="quran-detail" id="quranDetail">
+    <div class="quran-detail-header">
+      <div>
+        <div class="quran-detail-title" id="qDetailTitle">—</div>
+        <div class="quran-detail-ar" id="qDetailAr">—</div>
+        <div class="quran-detail-meta-row" id="qDetailMeta"></div>
+      </div>
+      <div class="quran-header-right">
+        <button class="quran-theme-btn" id="qThemeBtn" onclick="quranToggleTheme()">☀️ Tema Terang</button>
+        <button class="quran-back" onclick="quranBack()">← Kembali</button>
+      </div>
+    </div>
+    <div id="ayatWrapper">
+      <div id="ayatContainer">
+        <div class="ayat-loading"><span class="quran-spinner"></span> Memuat ayat...</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ╔══════════════════════════════════════════╗
+     ║  MUSIC PLAYER — GitHub Pages Edition    ║
+     ║  File dari: assets/music/*.mp3          ║
+     ╚══════════════════════════════════════════╝ -->
+<style>
+/* ── MINI BUTTON (saat minimize) ─── */
+#mp-fab {
+  position: fixed; bottom: 24px; right: 24px;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: linear-gradient(135deg,#7b1fa2,#4a148c);
+  border: none; cursor: pointer; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 18px rgba(123,31,162,0.55);
+  transition: transform .2s, box-shadow .2s;
+  animation: fabPulse 2.8s ease-in-out infinite;
+}
+#mp-fab:hover { transform: scale(1.1); }
+@keyframes fabPulse {
+  0%,100% { box-shadow: 0 4px 18px rgba(123,31,162,.55); }
+  50%      { box-shadow: 0 4px 28px rgba(123,31,162,.9); }
+}
+
+/* ── PLAYER CARD (pojok kanan bawah) ─── */
+#mp-card {
+  position: fixed; bottom: 24px; right: 24px;
+  width: 320px;
+  background: rgba(14,14,22,0.97);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 18px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+  z-index: 9999;
+  overflow: hidden;
+  transition: opacity .3s, transform .3s;
+  display: flex;
+  flex-direction: column;
+}
+#mp-card.hidden { display: none !important; }
+#mp-card.open { display: flex !important; }
+
+/* Header card */
+.mp-card-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px 0;
+}
+.mp-art {
+  width: 46px; height: 46px; border-radius: 10px; flex-shrink: 0;
+  background: linear-gradient(135deg,#7b1fa2,#311b92);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; position: relative; overflow: hidden;
+}
+.mp-art.spin { animation: artSpin 6s linear infinite; }
+@keyframes artSpin { to { filter: hue-rotate(360deg); } }
+.mp-info { flex: 1; overflow: hidden; }
+.mp-title {
+  font-size: .85rem; font-weight: 700; color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mp-artist {
+  font-size: .7rem; color: rgba(255,255,255,.45);
+  margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mp-close {
+  background: none; border: none; color: rgba(255,255,255,.35);
+  cursor: pointer; font-size: 1rem; padding: 4px; border-radius: 6px;
+  transition: color .15s;
+}
+.mp-close:hover { color: #fff; }
+
+/* Progress */
+.mp-prog-wrap {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px 4px;
+}
+.mp-time { font-size: .65rem; color: rgba(255,255,255,.35); font-family: monospace; width: 32px; }
+.mp-prog {
+  flex: 1; height: 3px; background: rgba(255,255,255,.12);
+  border-radius: 4px; cursor: pointer; position: relative;
+}
+.mp-prog-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg,#7b1fa2,#e040fb);
+  border-radius: 4px; pointer-events: none;
+  transition: width .2s linear;
+}
+.mp-prog:hover { height: 5px; }
+
+/* Controls */
+.mp-controls {
+  display: flex; align-items: center; justify-content: center;
+  gap: 4px; padding: 6px 16px 10px;
+}
+.mp-btn {
+  background: none; border: none; color: rgba(255,255,255,.55);
+  cursor: pointer; font-size: .95rem; padding: 7px;
+  border-radius: 50%; width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.mp-btn:hover { color: #fff; background: rgba(255,255,255,.1); }
+.mp-btn.active { color: #e040fb; }
+.mp-btn.play {
+  background: #fff; color: #111; font-size: 1rem;
+  width: 40px; height: 40px;
+}
+.mp-btn.play:hover { background: rgba(255,255,255,.85); transform: scale(1.07); }
+
+/* Volume */
+.mp-vol-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 16px 10px;
+}
+.mp-vol-icon { font-size: .85rem; cursor: pointer; background: none; border: none; color: rgba(255,255,255,.4); }
+.mp-vol-slider {
+  flex: 1; height: 3px; -webkit-appearance: none; appearance: none;
+  background: rgba(255,255,255,.15); border-radius: 4px; cursor: pointer; outline: none;
+}
+.mp-vol-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 11px; height: 11px;
+  border-radius: 50%; background: #fff; cursor: pointer;
+}
+.mp-count { font-size: .65rem; color: rgba(255,255,255,.3); font-family: monospace; }
+
+/* Playlist panel */
+.mp-pl {
+  border-top: 1px solid rgba(255,255,255,.07);
+  max-height: 200px; overflow-y: auto;
+}
+.mp-pl::-webkit-scrollbar { width: 3px; }
+.mp-pl::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 4px; }
+.mp-pl-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 14px; cursor: pointer; transition: background .12s;
+}
+.mp-pl-item:hover { background: rgba(255,255,255,.06); }
+.mp-pl-item.active { background: rgba(123,31,162,.22); }
+.mp-pl-num { font-size: .68rem; color: rgba(255,255,255,.25); width: 18px; text-align: right; font-family: monospace; flex-shrink: 0; }
+.mp-pl-name { font-size: .78rem; color: rgba(255,255,255,.82); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mp-pl-playing { color: #e040fb; font-size: .7rem; flex-shrink: 0; }
+
+/* Search di playlist */
+.mp-pl-search {
+  padding: 8px 12px 4px;
+  border-top: 1px solid rgba(255,255,255,.07);
+}
+.mp-pl-search input {
+  width: 100%;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 8px;
+  padding: 7px 12px;
+  color: #fff;
+  font-size: .78rem;
+  outline: none;
+  font-family: inherit;
+  transition: border-color .2s;
+}
+.mp-pl-search input:focus { border-color: rgba(192,100,252,.6); }
+.mp-pl-search input::placeholder { color: rgba(255,255,255,.3); }
+
+/* Toggle playlist btn */
+.mp-pl-toggle {
+  text-align: center; padding: 6px;
+  border-top: 1px solid rgba(255,255,255,.07);
+  cursor: pointer; font-size: .7rem;
+  color: rgba(255,255,255,.3); transition: color .15s;
+}
+.mp-pl-toggle:hover { color: rgba(255,255,255,.7); }
+
+/* padding bawah body agar konten tidak tertutup */
+body { padding-bottom: 24px; }
+</style>
+
+<!-- FAB (minimize state) -->
+<button id="mp-fab" onclick="mpOpen()" title="Buka Player" style="display:none">🎵</button>
+
+<!-- Player Card -->
+<div id="mp-card">
+  <div class="mp-card-header">
+    <div class="mp-art" id="mpArt">🎵</div>
+    <div class="mp-info">
+      <div class="mp-title" id="mpTitle">Pilih lagu...</div>
+      <div class="mp-artist" id="mpArtist">—</div>
+    </div>
+    <button class="mp-close" onclick="mpClose()" title="Minimize">╌</button>
+  </div>
+
+  <div class="mp-prog-wrap">
+    <span class="mp-time" id="mpCur">0:00</span>
+    <div class="mp-prog" id="mpProg" onclick="mpSeek(event)">
+      <div class="mp-prog-fill" id="mpFill"></div>
+    </div>
+    <span class="mp-time" style="text-align:right" id="mpDur">0:00</span>
+  </div>
+
+  <div class="mp-controls">
+    <button class="mp-btn" id="mpShufBtn" onclick="mpToggleShuffle()" title="Shuffle">⇄</button>
+    <button class="mp-btn" onclick="mpPrev()" title="Prev">⏮</button>
+    <button class="mp-btn play" id="mpPlayBtn" onclick="mpTogglePlay()">▶</button>
+    <button class="mp-btn" onclick="mpNext()" title="Next">⏭</button>
+    <button class="mp-btn" id="mpLoopBtn" onclick="mpToggleLoop()" title="Loop">↻</button>
+  </div>
+
+  <div class="mp-vol-row">
+    <button class="mp-vol-icon" id="mpVolIco" onclick="mpToggleMute()">🔊</button>
+    <input class="mp-vol-slider" id="mpVolSlider" type="range" min="0" max="1" step="0.02" value="0.75" oninput="mpSetVol(this.value)">
+    <span class="mp-count" id="mpCount">1 / 1</span>
+  </div>
+
+  <div class="mp-pl-toggle" id="mpPlToggle" onclick="mpTogglePl()">▾ Playlist</div>
+  <div class="mp-pl-search" id="mpPlSearch" style="display:none">
+    <input type="text" id="mpSearchInput" placeholder="🔍  Cari judul lagu..." oninput="mpFilterList(this.value)">
+  </div>
+  <div class="mp-pl" id="mpPlList" style="display:none"></div>
+</div>
+
+<audio id="mpAudio" preload="none"></audio>
+
+<script>
+// ╔══════════════════════════════════════════════════════════════════════╗
+// ║  MUSIC PLAYER — Audited & Final Edition                             ║
+// ║  Audit fixes applied (see comments: EXISTING / FIXED / ADDED)       ║
+// ╚══════════════════════════════════════════════════════════════════════╝
+
+// ══════════════════════════════════════════════════════════════════════
+// STEP 2 FIX — MANIFEST-BASED PLAYLIST
+// REASON: Browsers running on static hosting (GitHub Pages) cannot read
+// directory contents. There is no filesystem API for listing folder files.
+// fetch('assets/music/') would return an HTML directory listing on some
+// servers but return 403/404 on GitHub Pages — completely unreliable.
+// SOLUTION: Declare filenames once in MUSIC_FILES. Title and metadata
+// are derived automatically. To add a new song, only edit this one array.
+// ══════════════════════════════════════════════════════════════════════
+
+// EXISTING — source of truth: only filenames, no full paths, no metadata
+const MUSIC_FILES = [
+  "11 Januari - Gigi.m4a",
+  "Akhirnya Ku Menemukanmu - NAFF.mp3",
+  "Ari Lasso - Arti Cinta ( Lirik ).m4a",
+  "Asal Kau Bahagia.m4a",
+  "Bagaikan Langit - Potret.m4a",
+  "Bayangkan Jika Kita Tidak Menyerah - Hindia.m4a",
+  "Benci Untuk Mencinta.m4a",
+  "bergema sampai selamanya.m4a",
+  "Bernadya - Terlintas.mp3",
+  "bernadya-masa-sepi.m4a",
+  "Betapa - Sheila On 7.m4a",
+  "Bila Rasaku Ini Rasamu - Nidji.MP3",
+  "Bukannya Aku Takut - Juliette.m4a",
+  "Caffeine - Hidupku Kan Damaikan Hatimu (Official Audio).mp3",
+  "Cincin - Hindia.m4a",
+  "Dua Cincin - Hello.m4a",
+  "Element - Cinta Tak Bersyarat (Official Lyric).m4a",
+  "Empat Mata - D'Bagindas Link - Musik Favorit.mp3",
+  "Gantung - Melly Goeslaw.m4a",
+  "Hanya Ingin Kau Tahu - Repvblik.m4a",
+  "Hapus Aku - Nidji.m4a",
+  "Hindia - Evaluasi (Official Video) -9qV_t5pS9c.m4a",
+  "Hindia - everything u are.m4a",
+  "Ijinkan Aku Menyayangimu - Iwan Fals.m4a",
+  "Janji Palsu.m4a",
+  "JIKA - MELLY GOESLOW FEAT ARI LASSO (LYRICS) UT-o4....mp3",
+  "Karma - Cokelat.m4a",
+  "Kau Masih Kekasihku - NaFF.m4a",
+  "Kisah Kasih Di Sekolah.m4a",
+  "Lesung Pipi.m4a",
+  "Puisi Alam.m4a",
+  "Ungu - Demi Waktu (Video lyrics).mp3",
+];
+
+// ── KEYWORD → EMOJI MAP (EXISTING — do not modify) ────────────────
+const _MP_EMOJI_MAP = {
+  'januari':'🎸','akhirnya':'🎵','arti':'❤️','asal':'🎶','bagaikan':'🌤️',
+  'bayangkan':'🌿','benci':'💜','bergema':'🎙️','bernadya':'🎀','betapa':'⭐',
+  'bila':'✨','bukan':'🌸','caffeine':'☕','cincin':'💍','dua':'💍',
+  'cinta':'🎼','empat':'🎹','gantung':'🌺','hanya':'🎤','hapus':'✨',
+  'evaluasi':'🌿','everything':'🌿','ijinkan':'🏔️','janji':'🌹','jika':'🌺',
+  'karma':'🍫','kau':'🎵','kisah':'🏫','lesung':'🎙️','puisi':'🏔️','demi':'💐'
+};
+
+// ADDED — named helper getRandomIcon() as required by audit spec
+// Uses title hash so the same song always gets the same icon (deterministic)
+const _MP_ICON_POOL = ['🌤️','🌿','🌙','⭐','🎧','🎶','🌊','⚡','🌅'];
+function getRandomIcon(title) {
+  const key = Object.keys(_MP_EMOJI_MAP).find(k => title.toLowerCase().includes(k));
+  if (key) return _MP_EMOJI_MAP[key];
+  // Deterministic hash — same title → same icon every load
+  let h = 0;
+  for (let i = 0; i < title.length; i++) h = (h * 31 + title.charCodeAt(i)) & 0xffff;
+  return _MP_ICON_POOL[h % _MP_ICON_POOL.length];
+}
+
+// ADDED — named helper getRandomColor() as required by audit spec
+// Uses track index so color is stable across sessions
+const _MP_COLOR_PALETTE = ["#6c5cff","#ff6b6b","#00c9a7","#4d96ff","#ffb347","#845ec2"];
+function getRandomColor(idx) {
+  return _MP_COLOR_PALETTE[idx % _MP_COLOR_PALETTE.length];
+}
+
+// FIXED — tampilkan nama file lengkap, hanya buang ekstensi saja
+// "Ari Lasso - Arti Cinta ( Lirik ).m4a" → "Ari Lasso - Arti Cinta ( Lirik )"
+// "Betapa - Sheila On 7.m4a"             → "Betapa - Sheila On 7"
+function _mpTitleFromFile(filename) {
+  return filename.replace(/\.[^.]+$/, '').trim();
+}
+
+// ADDED — STEP 3: generate playlist dynamically from MUSIC_FILES manifest
+// Each entry gets: title (auto-derived), file (full path), icon (auto), color (auto)
+const MP_PLAYLIST = MUSIC_FILES.map((filename, idx) => ({
+  title: _mpTitleFromFile(filename),
+  file:  'assets/music/' + filename,
+  icon:  null,   // resolved lazily via getRandomIcon(title) at render time
+  color: null,   // resolved lazily via getRandomColor(idx)  at render time
+  _idx:  idx,    // used by color lookup
+}));
+
+// ── HELPER: format seconds → M:SS (EXISTING — do not modify) ──────
+function mpFmt(s) {
+  if (!s || isNaN(s)) return '0:00';
+  return `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+}
+
+// ── HELPER: set artist sub-line text (EXISTING — do not modify) ───
+function mpSetArtist(txt) { document.getElementById('mpArtist').textContent = txt; }
+
+// ── STATE (EXISTING — do not modify) ─────────────────────────────
+let mpIdx     = 0;
+let mpPlaying = false;
+let mpShuffle = false;
+let mpLoop    = false;
+let mpMuted   = false;
+let mpPlOpen  = false;
+
+const mpAudio = document.getElementById('mpAudio');
+const mpCard  = document.getElementById('mp-card');
+const mpFab   = document.getElementById('mp-fab');
+
+// ── MEDIA SESSION API (FIXED — artwork was empty array → added color tile) ─
+function mpUpdateMediaSession(t, idx) {
+  if (!('mediaSession' in navigator)) return;
+  // FIXED: artwork now uses a generated SVG data-URI color tile so the
+  // lock screen is not blank. Falls back gracefully on unsupported browsers.
+  const color  = getRandomColor(idx).replace('#', '%23');
+  const artSVG = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96'><rect width='96' height='96' rx='12' fill='${color}'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='44'>${encodeURIComponent(getRandomIcon(t.title))}</text></svg>`;
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title:  t.title,
+    artist: 'Madha Playlist',
+    album:  'Dashboard Madha',
+    artwork: [{ src: artSVG, sizes: '96x96', type: 'image/svg+xml' }],  // FIXED
+  });
+  // EXISTING handlers — preserved exactly
+  navigator.mediaSession.setActionHandler('play',          () => { mpAudio.play(); });
+  navigator.mediaSession.setActionHandler('pause',         () => { mpAudio.pause(); });
+  navigator.mediaSession.setActionHandler('previoustrack', () => mpPrev());
+  navigator.mediaSession.setActionHandler('nexttrack',     () => mpNext());
+  navigator.mediaSession.setActionHandler('seekto', (d) => {
+    if (mpAudio.duration) mpAudio.currentTime = d.seekTime;
+  });
+}
+
+// ── SMART SCROLL (EXISTING — do not modify) ───────────────────────
+function mpScrollToActive() {
+  if (!mpPlOpen) return;
+  setTimeout(() => {
+    const el = document.getElementById('mpPl_' + mpIdx);
+    if (el) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, 60);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+(function mpInit() {
+  // EXISTING — restore volume from localStorage
+  const savedVol = parseFloat(localStorage.getItem('mpVol'));
+  const initVol  = (!isNaN(savedVol) && savedVol >= 0 && savedVol <= 1) ? savedVol : 0.75;
+  mpAudio.volume = initVol;
+  const sl = document.getElementById('mpVolSlider');
+  if (sl) sl.value = initVol;
+  // FIXED — sync volume icon on init so it matches restored value
+  const volIco = document.getElementById('mpVolIco');
+  if (volIco) volIco.textContent = initVol === 0 ? '🔇' : initVol < 0.4 ? '🔉' : '🔊';
+
+  // EXISTING — audio event listeners
+  mpAudio.addEventListener('timeupdate',     mpOnTime);
+  mpAudio.addEventListener('loadedmetadata', mpOnMeta);
+  mpAudio.addEventListener('ended',          mpOnEnd);   // EXISTING: auto play next
+  mpAudio.addEventListener('error',          mpOnErr);
+  mpAudio.addEventListener('play',           () => { mpPlaying = true;  mpUpdateBtn(); });
+  mpAudio.addEventListener('pause',          () => { mpPlaying = false; mpUpdateBtn(); });
+  mpAudio.addEventListener('waiting',        () => mpSetArtist('⏳ buffering...'));
+  mpAudio.addEventListener('playing',        () => { mpSetArtist(''); mpPlaying = true; mpUpdateBtn(); });
+  mpBuildList();
+
+  // EXISTING — restore cross-page state from sessionStorage
+  const _saved = sessionStorage.getItem('mpState');
+  if (_saved) {
+    try {
+      const s = JSON.parse(_saved);
+      sessionStorage.removeItem('mpState');
+      mpCard.classList.remove('hidden');
+      mpLoadTrack(s.idx || 0, false);
+      if (s.vol !== undefined) {
+        mpAudio.volume = s.vol;
+        if (sl) sl.value = s.vol;
+        // FIXED — re-sync icon after sessionStorage volume restore
+        if (volIco) volIco.textContent = s.vol === 0 ? '🔇' : s.vol < 0.4 ? '🔉' : '🔊';
+      }
+      mpAudio.addEventListener('loadedmetadata', function _once() {
+        mpAudio.removeEventListener('loadedmetadata', _once);
+        if (s.time > 1) mpAudio.currentTime = s.time;
+        if (s.wasPlaying) mpAudio.play().catch(() => {});
+      }, { once: true });
+    } catch (e) {
+      mpLoadTrack(0, false);
+      mpCard.classList.remove('hidden');
+    }
+  } else {
+    mpLoadTrack(0, false);
+    mpCard.classList.remove('hidden');
+  }
+
+  // EXISTING — save state before navigating away (cross-page, e.g. to kalkulator.html)
+  window.addEventListener('beforeunload', () => {
+    const state = {
+      idx:        mpIdx,
+      time:       mpAudio.currentTime || 0,
+      vol:        mpAudio.volume,
+      wasPlaying: mpPlaying,
+    };
+    sessionStorage.setItem('mpState', JSON.stringify(state));
+    // ADDED — also persist to localStorage so state survives full browser close/reopen
+    // Gap dari kode referensi: sessionStorage hilang saat browser ditutup penuh.
+    // localStorage tetap ada antar sesi. Kita simpan idx + time saja (tidak wasPlaying).
+    localStorage.setItem('mpLastState', JSON.stringify({
+      idx:  mpIdx,
+      time: mpAudio.currentTime || 0,
+    }));
+  });
+
+  // ADDED — on cold start (no sessionStorage), try restore from localStorage
+  // Hanya restore index+time, bukan wasPlaying — tidak auto-play saat browser baru dibuka (UX)
+  if (!sessionStorage.getItem('mpState')) {
+    try {
+      const ls = JSON.parse(localStorage.getItem('mpLastState') || 'null');
+      if (ls && ls.idx >= 0 && ls.idx < MP_PLAYLIST.length) {
+        mpLoadTrack(ls.idx, false);
+        mpAudio.addEventListener('loadedmetadata', function _lsOnce() {
+          mpAudio.removeEventListener('loadedmetadata', _lsOnce);
+          if (ls.time > 1) mpAudio.currentTime = ls.time;
+        }, { once: true });
+      }
+    } catch (e) { /* localStorage corrupt — ignore */ }
+  }
+
+  // ADDED — volumechange listener: sync slider+icon jika volume berubah
+  // dari luar (OS media control, headset, Media Session OS-level)
+  mpAudio.addEventListener('volumechange', () => {
+    if (mpAudio.muted) return; // mute handled separately by mpToggleMute
+    const v = mpAudio.volume;
+    const sl2 = document.getElementById('mpVolSlider');
+    if (sl2) sl2.value = v;
+    const ico = document.getElementById('mpVolIco');
+    if (ico) ico.textContent = v === 0 ? '🔇' : v < 0.4 ? '🔉' : '🔊';
+    localStorage.setItem('mpVol', v);
+  });
+
+  // EXISTING — keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    const tag = document.activeElement?.tagName?.toLowerCase();
+    if (tag === 'input' || tag === 'textarea') return;
+    if (e.code === 'Space')      { e.preventDefault(); mpTogglePlay(); }
+    else if (e.code === 'ArrowRight') { e.preventDefault(); mpNext(); }
+    else if (e.code === 'ArrowLeft')  { e.preventDefault(); mpPrev(); }
+  });
+})();
+
+// ── OPEN / CLOSE (EXISTING — do not modify) ───────────────────────
+function mpOpen()  { mpFab.style.display = 'none'; mpCard.classList.remove('hidden'); }
+function mpClose() { mpCard.classList.add('hidden'); mpFab.style.display = 'flex'; }
+
+// ── LOAD TRACK (EXISTING core + FIXED color/icon + FIXED MediaSession) ──
+function mpLoadTrack(idx, autoplay) {
+  mpIdx = idx;
+  const t     = MP_PLAYLIST[idx];
+  const color = getRandomColor(idx);   // FIXED: using named helper
+  const emoji = getRandomIcon(t.title); // FIXED: using named helper
+
+  // EXISTING — update header display
+  document.getElementById('mpTitle').textContent = t.title;
+  const artEl = document.getElementById('mpArt');
+  artEl.textContent      = emoji;
+  artEl.style.background = `linear-gradient(135deg, ${color}, ${color}99)`; // EXISTING behavior
+
+  document.getElementById('mpFill').style.width  = '0%';
+  document.getElementById('mpCur').textContent   = '0:00';
+  document.getElementById('mpDur').textContent   = '0:00';
+  document.getElementById('mpCount').textContent = `${idx + 1} / ${MP_PLAYLIST.length}`;
+  mpSetArtist('');
+  mpBuildList();
+  mpScrollToActive(); // EXISTING
+
+  mpAudio.pause();
+  mpAudio.src = t.file;
+  mpAudio.load();
+
+  // FIXED — pass idx to media session so artwork color matches track
+  mpUpdateMediaSession(t, idx);
+
+  if (autoplay) {
+    // EXISTING — wait for canplay, then play
+    mpAudio.addEventListener('canplay', function once() {
+      mpAudio.removeEventListener('canplay', once);
+      mpAudio.play()
+        .then(() => { mpPlaying = true; mpUpdateBtn(); })
+        .catch(err => console.warn('Autoplay blocked:', err));
+    }, { once: true });
+  } else {
+    mpPlaying = false;
+    mpUpdateBtn();
+  }
+}
+
+// ── PLAY / PAUSE (EXISTING — do not modify) ───────────────────────
+function mpTogglePlay() {
+  if (!mpAudio.src || mpAudio.src === location.href) {
+    mpLoadTrack(mpIdx, true); return;
+  }
+  if (mpPlaying) {
+    mpAudio.pause();
+  } else {
+    mpAudio.play().catch(() => { mpLoadTrack(mpIdx, true); });
+  }
+}
+
+// ── PREV (EXISTING — do not modify) ──────────────────────────────
+function mpPrev() {
+  if (mpAudio.currentTime > 3) { mpAudio.currentTime = 0; return; }
+  const i = (mpIdx - 1 + MP_PLAYLIST.length) % MP_PLAYLIST.length;
+  mpLoadTrack(i, mpPlaying);
+}
+
+// ── NEXT (EXISTING — shuffle anti-repeat logic preserved) ─────────
+function mpNext() {
+  let i;
+  if (mpShuffle) {
+    // EXISTING — avoid repeating same track in shuffle mode
+    do { i = Math.floor(Math.random() * MP_PLAYLIST.length); }
+    while (i === mpIdx && MP_PLAYLIST.length > 1);
+  } else {
+    i = (mpIdx + 1) % MP_PLAYLIST.length;
+  }
+  mpLoadTrack(i, mpPlaying);
+}
+
+// ── AUTO PLAY NEXT when track ends (EXISTING logic, verified correct) ──
+function mpOnEnd() {
+  if (mpLoop) {
+    // EXISTING — repeat single track
+    mpAudio.currentTime = 0;
+    mpAudio.play().catch(() => {});
+  } else {
+    // EXISTING — advance to next (autoplay=true ensures continuous playback)
+    let i;
+    if (mpShuffle) {
+      do { i = Math.floor(Math.random() * MP_PLAYLIST.length); }
+      while (i === mpIdx && MP_PLAYLIST.length > 1);
+    } else {
+      i = (mpIdx + 1) % MP_PLAYLIST.length;
+    }
+    mpLoadTrack(i, true); // EXISTING — true = auto play next
+  }
+}
+
+// ── SEEK (EXISTING — do not modify) ──────────────────────────────
+function mpSeek(e) {
+  const r = document.getElementById('mpProg').getBoundingClientRect();
+  const p = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+  if (mpAudio.duration) mpAudio.currentTime = p * mpAudio.duration;
+}
+
+// ── TIME UPDATE (EXISTING + Media Session position sync) ──────────
+function mpOnTime() {
+  if (!mpAudio.duration) return;
+  const p = mpAudio.currentTime / mpAudio.duration * 100;
+  document.getElementById('mpFill').style.width = p + '%';
+  document.getElementById('mpCur').textContent  = mpFmt(mpAudio.currentTime);
+  // EXISTING — update Media Session scrub position
+  if ('mediaSession' in navigator) {
+    try {
+      navigator.mediaSession.setPositionState({
+        duration:     mpAudio.duration,
+        playbackRate: mpAudio.playbackRate,
+        position:     mpAudio.currentTime,
+      });
+    } catch (e) { /* unsupported on some browsers — safe to ignore */ }
+  }
+}
+
+// ── METADATA LOADED (EXISTING — do not modify) ───────────────────
+function mpOnMeta() {
+  document.getElementById('mpDur').textContent = mpFmt(mpAudio.duration);
+}
+
+// ── VOLUME (EXISTING + FIXED: mute-unmute slider sync) ────────────
+function mpSetVol(v) {
+  v = parseFloat(v);
+  mpAudio.volume = v;
+  mpMuted = v === 0;
+  document.getElementById('mpVolIco').textContent = v === 0 ? '🔇' : v < 0.4 ? '🔉' : '🔊';
+  localStorage.setItem('mpVol', v); // EXISTING — persist volume
+}
+
+function mpToggleMute() {
+  mpMuted = !mpMuted;
+  mpAudio.muted = mpMuted;
+  const sl = document.getElementById('mpVolSlider');
+  if (mpMuted) {
+    // EXISTING behavior
+    document.getElementById('mpVolIco').textContent = '🔇';
+  } else {
+    // FIXED — restore slider to actual volume level when unmuting
+    // Previously: ikon berubah tapi slider bisa stuck di 0 jika vol=0
+    const v = mpAudio.volume;
+    if (sl) sl.value = v;
+    document.getElementById('mpVolIco').textContent = v === 0 ? '🔇' : v < 0.4 ? '🔉' : '🔊';
+  }
+}
+
+// ── SHUFFLE / LOOP (EXISTING — do not modify) ─────────────────────
+function mpToggleShuffle() {
+  mpShuffle = !mpShuffle;
+  document.getElementById('mpShufBtn').classList.toggle('active', mpShuffle);
+}
+function mpToggleLoop() {
+  mpLoop = !mpLoop;
+  document.getElementById('mpLoopBtn').textContent = mpLoop ? '🔂' : '↻';
+  document.getElementById('mpLoopBtn').classList.toggle('active', mpLoop);
+}
+
+// ── PLAYLIST TOGGLE (EXISTING — do not modify) ────────────────────
+function mpTogglePl() {
+  mpPlOpen = !mpPlOpen;
+  document.getElementById('mpPlList').style.display   = mpPlOpen ? 'block' : 'none';
+  document.getElementById('mpPlSearch').style.display = mpPlOpen ? 'block' : 'none';
+  document.getElementById('mpPlToggle').textContent   = mpPlOpen ? '▴ Playlist' : '▾ Playlist';
+  if (mpPlOpen) {
+    const inp = document.getElementById('mpSearchInput');
+    if (inp) { inp.value = ''; inp.focus(); }
+    mpBuildList();
+    mpScrollToActive(); // EXISTING
+  }
+}
+
+// ── PLAYLIST FILTER (EXISTING — do not modify) ───────────────────
+function mpFilterList(kw) {
+  kw = kw.toLowerCase().trim();
+  const list = document.getElementById('mpPlList');
+  if (!kw) { mpBuildList(); return; }
+  const res = MP_PLAYLIST
+    .map((t, i) => ({ t, i }))
+    .filter(({ t }) => t.title.toLowerCase().includes(kw));
+  if (!res.length) {
+    list.innerHTML = '<div style="padding:14px;text-align:center;font-size:.75rem;color:rgba(255,255,255,.3)">Tidak ditemukan</div>';
+    return;
+  }
+  list.innerHTML = res.map(({ t, i }) => {
+    const hi = t.title.replace(
+      new RegExp(kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'),
+      m => `<mark style="background:#7b1fa2;color:#fff;border-radius:3px;padding:0 2px">${m}</mark>`
+    );
+    return `<div class="mp-pl-item ${i===mpIdx?'active':''}" onclick="mpLoadTrack(${i},true)">
+      <span class="mp-pl-num">${i===mpIdx?(mpPlaying?'▶':'◆'):i+1}</span>
+      <span class="mp-pl-name">${hi}</span>
+      ${i===mpIdx?'<span class="mp-pl-playing">♪</span>':''}
+    </div>`;
+  }).join('');
+}
+
+// ── BUILD PLAYLIST UI (EXISTING — do not modify) ─────────────────
+function mpBuildList() {
+  const list = document.getElementById('mpPlList');
+  list.innerHTML = MP_PLAYLIST.map((t, i) => `
+    <div class="mp-pl-item ${i===mpIdx?'active':''}" id="mpPl_${i}" onclick="mpLoadTrack(${i},true)">
+      <span class="mp-pl-num">${i===mpIdx ? (mpPlaying?'▶':'◆') : i+1}</span>
+      <span class="mp-pl-name">${t.title}</span>
+      ${i===mpIdx ? '<span class="mp-pl-playing">♪</span>' : ''}
+    </div>`).join('');
+}
+
+// ── UPDATE PLAY BUTTON (EXISTING + Media Session state sync) ──────
+function mpUpdateBtn() {
+  const btn = document.getElementById('mpPlayBtn');
+  btn.textContent = mpPlaying ? '⏸' : '▶';
+  document.getElementById('mpArt').classList.toggle('spin', mpPlaying);
+  // EXISTING — update Media Session playback state
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.playbackState = mpPlaying ? 'playing' : 'paused';
+  }
+  mpBuildList();
+  if (mpPlaying) mpScrollToActive(); // EXISTING
+}
+
+// ── ERROR HANDLER (EXISTING — do not modify) ─────────────────────
+function mpOnErr() {
+  const codes = {1:'Dibatalkan', 2:'Network error', 3:'Format tidak didukung', 4:'File tidak ditemukan'};
+  mpSetArtist('⚠️ ' + (codes[mpAudio.error?.code] || 'Error'));
+  mpPlaying = false; mpUpdateBtn();
+}
+</script>
+
+</body>
+</html>
