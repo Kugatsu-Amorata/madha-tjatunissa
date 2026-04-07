@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Lagu Pertama",
+    "artist": "Artis 1",
+    "album": "Album 1",
+    "file": "assets/music/lagu1.mp3",
+    "cover": "assets/music/cover1.jpg",
+    "duration": "3:45"
+  },
+  {
+    "title": "Lagu Kedua",
+    "artist": "Artis 2",
+    "album": "Album 1",
+    "file": "assets/music/lagu2.mp3",
+    "cover": "assets/music/cover2.jpg",
+    "duration": "4:12"
+  },
+  {
+    "title": "Lagu Ketiga",
+    "artist": "Artis 3",
+    "album": "Album 2",
+    "file": "assets/music/lagu3.mp3",
+    "cover": "assets/music/cover3.jpg",
+    "duration": "3:58"
+  }
+]
