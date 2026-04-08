@@ -1,258 +1,34 @@
 [
-  {
-    "title": "11 Januari",
-    "artist": "Gigi",
-    "album": "",
-    "file": "assets/music/11 Januari - Gigi.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Akhirnya Ku Menemukanmu",
-    "artist": "NAFF",
-    "album": "",
-    "file": "assets/music/Akhirnya Ku Menemukanmu - NAFF.mp3",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Arti Cinta",
-    "artist": "Ari Lasso",
-    "album": "",
-    "file": "assets/music/Ari Lasso - Arti Cinta ( Lirik ).m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Asal Kau Bahagia",
-    "artist": "Armada",
-    "album": "",
-    "file": "assets/music/Asal Kau Bahagia.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Bagaikan Langit",
-    "artist": "Potret",
-    "album": "",
-    "file": "assets/music/Bagaikan Langit - Potret.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Bayangkan Jika Kita Tidak Menyerah",
-    "artist": "Hindia",
-    "album": "",
-    "file": "assets/music/Bayangkan Jika Kita Tidak Menyerah - Hindia.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Benci Untuk Mencinta",
-    "artist": "",
-    "album": "",
-    "file": "assets/music/Benci Untuk Mencinta.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Terlintas",
-    "artist": "Bernadya",
-    "album": "",
-    "file": "assets/music/Bernadya - Terlintas.mp3",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Betapa",
-    "artist": "Sheila On 7",
-    "album": "",
-    "file": "assets/music/Betapa - Sheila On 7.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Bila Rasaku Ini Rasamu",
-    "artist": "Nidji",
-    "album": "",
-    "file": "assets/music/Bila Rasaku Ini Rasamu - Nidji.MP3",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Bukannya Aku Takut",
-    "artist": "Juliette",
-    "album": "",
-    "file": "assets/music/Bukannya Aku Takut - Juliette.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Hidupku Kan Damaikan Hatimu",
-    "artist": "Caffeine",
-    "album": "",
-    "file": "assets/music/Caffeine - Hidupku Kan Damaikan Hatimu (Official Audio).mp3",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Cincin",
-    "artist": "Hindia",
-    "album": "",
-    "file": "assets/music/Cincin - Hindia.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Dua Cincin",
-    "artist": "Hello",
-    "album": "",
-    "file": "assets/music/Dua Cincin - Hello.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Cinta Tak Bersyarat",
-    "artist": "Element",
-    "album": "",
-    "file": "assets/music/Element - Cinta Tak Bersyarat (Official Lyric).m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Empat Mata",
-    "artist": "D'Bagindas",
-    "album": "",
-    "file": "assets/music/Empat Mata - D'Bagindas Lirik - Musik Favorit.mp3",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Gantung",
-    "artist": "Melly Goeslaw",
-    "album": "",
-    "file": "assets/music/Gantung - Melly Goeslaw.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Hanya Ingin Kau Tahu",
-    "artist": "Repvblik",
-    "album": "",
-    "file": "assets/music/Hanya Ingin Kau Tahu - Repvblik.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Hapus Aku",
-    "artist": "Nidji",
-    "album": "",
-    "file": "assets/music/Hapus Aku - Nidji.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Evakuasi",
-    "artist": "Hindia",
-    "album": "",
-    "file": "assets/music/Hindia - Evakuasi (Official Video) -9qV_tSpS9c.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Everything U Are",
-    "artist": "Hindia",
-    "album": "",
-    "file": "assets/music/Hindia - everything u are.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Ijinkan Aku Menyayangimu",
-    "artist": "Iwan Fals",
-    "album": "",
-    "file": "assets/music/Ijinkan Aku Menyayangimu - Iwan Fals.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "JIKA",
-    "artist": "Melly Goeslaw feat. Ari Lasso",
-    "album": "",
-    "file": "assets/music/JIKA - MELLY GOESLOW FEAT ARI LASSO (LYRICS) UT-o4aRw2TI.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Janji Palsu",
-    "artist": "",
-    "album": "",
-    "file": "assets/music/Janji Palsu.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Karma",
-    "artist": "Cokelat",
-    "album": "",
-    "file": "assets/music/Karma - Cokelat.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Kau Masih Kekasihku",
-    "artist": "NaFF",
-    "album": "",
-    "file": "assets/music/Kau Masih Kekasihku - NaFF.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Kisah Kasih Di Sekolah",
-    "artist": "",
-    "album": "",
-    "file": "assets/music/Kisah Kasih Di Sekolah.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Lesung Pipi",
-    "artist": "",
-    "album": "",
-    "file": "assets/music/Lesung Pipi.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Puisi Alam",
-    "artist": "",
-    "album": "",
-    "file": "assets/music/Puisi Alam.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Demi Waktu",
-    "artist": "Ungu",
-    "album": "",
-    "file": "assets/music/Ungu - Demi Waktu (Video lyrics).mp3",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Bergema Sampai Selamanya",
-    "artist": "",
-    "album": "",
-    "file": "assets/music/bergema sampai selamanya.m4a",
-    "cover": "",
-    "duration": ""
-  },
-  {
-    "title": "Masa Sepi",
-    "artist": "Bernadya",
-    "album": "",
-    "file": "assets/music/bernadya-masa-sepi.m4a",
-    "cover": "",
-    "duration": ""
-  }
+  { "title": "11 Januari", "artist": "Gigi", "album": "", "file": "assets/music/11 Januari - Gigi.m4a", "cover": "", "duration": "", "genre": "Rock" },
+  { "title": "Akhirnya Ku Menemukanmu", "artist": "NAFF", "album": "", "file": "assets/music/Akhirnya Ku Menemukanmu - NAFF.mp3", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Arti Cinta", "artist": "Ari Lasso", "album": "", "file": "assets/music/Ari Lasso - Arti Cinta ( Lirik ).m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Asal Kau Bahagia", "artist": "Armada", "album": "", "file": "assets/music/Asal Kau Bahagia.m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Bagaikan Langit", "artist": "Potret", "album": "", "file": "assets/music/Bagaikan Langit - Potret.m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Bayangkan Jika Kita Tidak Menyerah", "artist": "Hindia", "album": "", "file": "assets/music/Bayangkan Jika Kita Tidak Menyerah - Hindia.m4a", "cover": "", "duration": "", "genre": "Indie" },
+  { "title": "Benci Untuk Mencinta", "artist": "", "album": "", "file": "assets/music/Benci Untuk Mencinta.m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Terlintas", "artist": "Bernadya", "album": "", "file": "assets/music/Bernadya - Terlintas.mp3", "cover": "", "duration": "", "genre": "Indie" },
+  { "title": "Betapa", "artist": "Sheila On 7", "album": "", "file": "assets/music/Betapa - Sheila On 7.m4a", "cover": "", "duration": "", "genre": "Rock" },
+  { "title": "Bila Rasaku Ini Rasamu", "artist": "Nidji", "album": "", "file": "assets/music/Bila Rasaku Ini Rasamu - Nidji.MP3", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Bukannya Aku Takut", "artist": "Juliette", "album": "", "file": "assets/music/Bukannya Aku Takut - Juliette.m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Hidupku Kan Damaikan Hatimu", "artist": "Caffeine", "album": "", "file": "assets/music/Caffeine - Hidupku Kan Damaikan Hatimu (Official Audio).mp3", "cover": "", "duration": "", "genre": "Rock" },
+  { "title": "Cincin", "artist": "Hindia", "album": "", "file": "assets/music/Cincin - Hindia.m4a", "cover": "", "duration": "", "genre": "Indie" },
+  { "title": "Dua Cincin", "artist": "Hello", "album": "", "file": "assets/music/Dua Cincin - Hello.m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Cinta Tak Bersyarat", "artist": "Element", "album": "", "file": "assets/music/Element - Cinta Tak Bersyarat (Official Lyric).m4a", "cover": "", "duration": "", "genre": "Rock" },
+  { "title": "Empat Mata", "artist": "D'Bagindas", "album": "", "file": "assets/music/Empat Mata - D'Bagindas Lirik - Musik Favorit.mp3", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Gantung", "artist": "Melly Goeslaw", "album": "", "file": "assets/music/Gantung - Melly Goeslaw.m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Hanya Ingin Kau Tahu", "artist": "Repvblik", "album": "", "file": "assets/music/Hanya Ingin Kau Tahu - Repvblik.m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Hapus Aku", "artist": "Nidji", "album": "", "file": "assets/music/Hapus Aku - Nidji.m4a", "cover": "", "duration": "", "genre": "Rock" },
+  { "title": "Evakuasi", "artist": "Hindia", "album": "", "file": "assets/music/Hindia - Evakuasi (Official Video) -9qV_tSpS9c.m4a", "cover": "", "duration": "", "genre": "Indie" },
+  { "title": "Everything U Are", "artist": "Hindia", "album": "", "file": "assets/music/Hindia - everything u are.m4a", "cover": "", "duration": "", "genre": "Indie" },
+  { "title": "Ijinkan Aku Menyayangimu", "artist": "Iwan Fals", "album": "", "file": "assets/music/Ijinkan Aku Menyayangimu - Iwan Fals.m4a", "cover": "", "duration": "", "genre": "Folk" },
+  { "title": "JIKA", "artist": "Melly Goeslaw feat. Ari Lasso", "album": "", "file": "assets/music/JIKA - MELLY GOESLOW FEAT ARI LASSO (LYRICS) UT-o4aRw2TI.m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Janji Palsu", "artist": "", "album": "", "file": "assets/music/Janji Palsu.m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Karma", "artist": "Cokelat", "album": "", "file": "assets/music/Karma - Cokelat.m4a", "cover": "", "duration": "", "genre": "Rock" },
+  { "title": "Kau Masih Kekasihku", "artist": "NaFF", "album": "", "file": "assets/music/Kau Masih Kekasihku - NaFF.m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Kisah Kasih Di Sekolah", "artist": "", "album": "", "file": "assets/music/Kisah Kasih Di Sekolah.m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Lesung Pipi", "artist": "", "album": "", "file": "assets/music/Lesung Pipi.m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Puisi Alam", "artist": "", "album": "", "file": "assets/music/Puisi Alam.m4a", "cover": "", "duration": "", "genre": "Folk" },
+  { "title": "Demi Waktu", "artist": "Ungu", "album": "", "file": "assets/music/Ungu - Demi Waktu (Video lyrics).mp3", "cover": "", "duration": "", "genre": "Rock" },
+  { "title": "Bergema Sampai Selamanya", "artist": "", "album": "", "file": "assets/music/bergema sampai selamanya.m4a", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Masa Sepi", "artist": "Bernadya", "album": "", "file": "assets/music/bernadya-masa-sepi.m4a", "cover": "", "duration": "", "genre": "Indie" }
 ]
