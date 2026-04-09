@@ -31,5 +31,6 @@
   { "title": "Demi Waktu", "artist": "Ungu", "album": "", "file": "assets/music/Ungu - Demi Waktu (Video lyrics).mp3", "cover": "", "duration": "", "genre": "Rock" },
   { "title": "Bergema Sampai Selamanya", "artist": "", "album": "", "file": "assets/music/bergema sampai selamanya.m4a", "cover": "", "duration": "", "genre": "Pop" },
   { "title": "Masa Sepi", "artist": "Bernadya", "album": "", "file": "assets/music/bernadya-masa-sepi.m4a", "cover": "", "duration": "", "genre": "Indie" },
-  { "title": "Bahagia Lagi", "artist": "Piche Kota", "album": "", "file": "assets/music/Piche Kota - Bahagia Lagi.mp3", "cover": "", "duration": "", "genre": "Pop" }
+  { "title": "Bahagia Lagi", "artist": "Piche Kota", "album": "", "file": "assets/music/Piche Kota - Bahagia Lagi.mp3", "cover": "", "duration": "", "genre": "Pop" },
+  { "title": "Rumah Ke Rumah", "artist": "Hindia", "album": "", "file": "assets/music/Hindia-Rumah Ke Rumah.mp3", "cover": "", "duration": "", "genre": "Indie" }
 ]
