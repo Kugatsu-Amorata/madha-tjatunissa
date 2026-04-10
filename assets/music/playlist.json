@@ -40,5 +40,6 @@
   { "title": "Secukupnya", "artist": "Hindia", "album": "", "file": "assets/music/Hindia - Secukupnya.mp3", "cover": "", "duration": "", "genre": "Indie" },
   { "title": "IQRO", "artist": "Raim Laode", "album": "", "file": "assets/music/Raim Laode - IQRO.mp3", "cover": "", "duration": "", "genre": "Pop" },
   { "title": "Tarot", "artist": "Feast", "album": "", "file": "assets/music/Feast - Tarot.mp3", "cover": "", "duration": "", "genre": "Indie" },
-  { "title": "33x", "artist": "Perunggu", "album": "", "file": "assets/music/Perunggu - 33x.mp3", "cover": "", "duration": "", "genre": "Indie" }
+  { "title": "33x", "artist": "Perunggu", "album": "", "file": "assets/music/Perunggu - 33x.mp3", "cover": "", "duration": "", "genre": "Indie" },
+  { "title": "Ada titik-titik di ujung doa", "artist": "Sal Priadi", "album": "", "file": "assets/music/Sal Priadi - Ada titik-titik di ujung doa.mp3", "cover": "", "duration": "", "genre": "Indie" }
 ]
