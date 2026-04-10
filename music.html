@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎵 Musik — Dashboard Data Madha</title>
+<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAMAEBAAAAAAIAD/AwAANgAAACAgAAAAACAAXwoAADUEAAAwMAAAAAAgAOASAACUDgAAiVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAACsklEQVR4nGWTS29TRxiGn5lzc0h7nCi14yTgolAlUpETyqK0RZG6IGLbSlX3/TlddMfP6K4XVAmxBAqIElXCNCQmIXHrC3Xq5NjH5zLzdWEcKJ3VSPO9z0jv+70qiiKx1qKUAkBETu9vH7EWlDp9V0qhJwIRQSuF57oggrUWa+1rKOAHAb7vgQgigjEGdzLgBwH9wYA0zZgthvhiERn/rLUmznPazSYA5UoFjEEphTru98UvFNh+Uqf/4CFOdEKytMTyxgauowGwIrTu/cqZw0N0IYDaGtW1GjbLcD3fp93pkDx+zPLzBnsPfmP186s0oojA0YgVMq1ZTka0bt3GWVrgr85LpirzVMplXNfz2N/ZZfvefQ7iIavLVRbemWKhPAdTZ8AYcB3EWHbXa7wIQ8JzVWZnZ8nyHBXHsezv7dPr92nuNljZegSey8rFi7ilMspahnHM760OZm6O969+xmJlnmQYj43P85xq9RyXrnzMfLdNPRry1fc/87Sxh6MVGEPj6B+++e4Gj27dJj04IElSjDFjgycRNQ+bSLvFoutw/fxZSjan9aROt9tFRxFfXF5j88J5olYb8ypyYByj1po8y0gGAzZXLrCx+gE7Lw4ZJCm6OEPg+Xz79ZeA5c7xMcYYNGCtRQMYYwiLIT3tYHtHJLnhZbdHkOcU/2zS237GcW6w7xbJPA/f87AiaK3RSikyYyiHITOb17n59BlBOuLKhytkAn/nhk82PiV8b4679T8o1Wp4b67zycmJTHzwCgV++ekmRz/+wOXpAgvFEOO4dFyfbe1QvXaNSx+tMxrGKK1fAybrbK1lenqa+vM9dra2iLtdHMdl5uwSq+trLJZKJKPRqfg/gAkEEQLfR7kOqbHjgmlNlqZkeY5+QywiqLfrzCt3lVKoCXTc3f9VXinFv2jGZjkP5WKmAAAAAElFTkSuQmCC">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js" defer></script>
+<style>
+/* ═══ RESET ═════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1DB954;--green-hi:#23e261;--green-glow:rgba(29,185,84,.35);--green-dim:rgba(29,185,84,.12);
+  --red:#ff4d6d;--red-dim:rgba(255,77,109,.12);
+  --text:#eaeaf6;--muted:rgba(220,220,255,.40);--muted2:rgba(220,220,255,.14);
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.04);
+  --glass:rgba(255,255,255,.045);--glass2:rgba(255,255,255,.025);--surface:rgba(255,255,255,.055);
+  --accent-r:29;--accent-g:185;--accent-b:84;
+  --accent:rgb(var(--accent-r),var(--accent-g),var(--accent-b));
+  --accent-glow:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.28);
+  --accent-dim:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.10);
+}
+html{scroll-behavior:smooth}
+body{background:#07070f;color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;padding-bottom:100px}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.10);border-radius:3px}
+
+/* ═══ BACKGROUND (5 layers) ═════════════════════════ */
+#bg-mesh{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 65% 50% at -5% 0%,rgba(16,128,72,.30) 0%,transparent 65%),
+    radial-gradient(ellipse 55% 45% at 108% 8%,rgba(45,55,180,.20) 0%,transparent 60%),
+    radial-gradient(ellipse 75% 55% at 50% 55%,rgba(55,20,95,.13) 0%,transparent 68%),
+    radial-gradient(ellipse 55% 50% at -8% 104%,rgba(8,95,85,.20) 0%,transparent 62%),
+    radial-gradient(ellipse 60% 55% at 112% 100%,rgba(65,28,115,.18) 0%,transparent 62%)}
+#bg-blobs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);will-change:transform;animation:blob-float linear infinite}
+.b1{width:580px;height:580px;top:-160px;left:-120px;background:radial-gradient(circle,rgba(29,185,84,.20) 0%,transparent 72%);animation-duration:24s}
+.b2{width:460px;height:460px;top:25%;right:-130px;background:radial-gradient(circle,rgba(55,75,230,.17) 0%,transparent 72%);animation-duration:30s;animation-delay:-9s}
+.b3{width:420px;height:420px;bottom:12%;left:-80px;background:radial-gradient(circle,rgba(0,175,145,.15) 0%,transparent 72%);animation-duration:27s;animation-delay:-15s}
+.b4{width:360px;height:360px;bottom:-80px;right:8%;background:radial-gradient(circle,rgba(170,45,95,.13) 0%,transparent 72%);animation-duration:32s;animation-delay:-6s}
+/* Extra blobs for more life */
+.b5{width:300px;height:300px;top:40%;left:40%;background:radial-gradient(circle,rgba(255,180,0,.08) 0%,transparent 70%);animation-duration:20s;animation-delay:-10s}
+.b6{width:350px;height:350px;top:70%;right:30%;background:radial-gradient(circle,rgba(100,50,200,.10) 0%,transparent 70%);animation-duration:26s;animation-delay:-18s}
+#bg-accent-blob{position:fixed;width:700px;height:700px;top:-180px;left:-180px;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0;
+  background:radial-gradient(circle,rgba(29,185,84,.14) 0%,transparent 65%);
+  transition:background 2.8s ease,opacity 1.5s;animation:blob-float 38s linear infinite;animation-delay:-22s}
+@keyframes blob-float{
+  0%{transform:translate(0,0) scale(1)}25%{transform:translate(28px,-22px) scale(1.07)}
+  50%{transform:translate(-16px,32px) scale(.94)}75%{transform:translate(22px,12px) scale(1.04)}100%{transform:translate(0,0) scale(1)}}
+/* Floating music notes */
+#bg-notes{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.note{position:absolute;font-size:18px;opacity:0;animation:note-rise linear infinite}
+@keyframes note-rise{
+  0%{opacity:0;transform:translateY(0) rotate(0deg) scale(.7)}
+  15%{opacity:.22}70%{opacity:.15}100%{opacity:0;transform:translateY(-100vh) rotate(40deg) scale(1.2)}}
+/* Animated horizontal scan line */
+#bg-scanline{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,0) 0px,rgba(255,255,255,0) 2px,rgba(255,255,255,.012) 2px,rgba(255,255,255,.012) 3px);
+  animation:scanline-shift 8s linear infinite}
+@keyframes scanline-shift{0%{background-position:0 0}100%{background-position:0 100px}}
+#bg-grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.030;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;animation:grain-shift .1s steps(1) infinite}
+@keyframes grain-shift{0%{background-position:0 0}10%{background-position:-40px -20px}20%{background-position:100px 60px}30%{background-position:-30px 100px}40%{background-position:70px -30px}50%{background-position:-100px 40px}60%{background-position:20px 120px}70%{background-position:-60px -60px}80%{background-position:120px 20px}90%{background-position:-20px -100px}}
+#bg-vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 100% 70% at 50% 0%,transparent 40%,rgba(4,4,12,.6) 100%),
+    radial-gradient(ellipse 100% 55% at 50% 100%,transparent 30%,rgba(4,4,12,.7) 100%),
+    radial-gradient(ellipse 38% 100% at 0% 50%,transparent 50%,rgba(4,4,12,.3) 100%),
+    radial-gradient(ellipse 38% 100% at 100% 50%,transparent 50%,rgba(4,4,12,.3) 100%)}
+
+/* ═══ HEADER ════════════════════════════════════════ */
+.mp-header{position:sticky;top:0;z-index:200;background:rgba(6,6,14,.82);
+  backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%);
+  border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;gap:16px}
+.mp-back{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--muted);font-size:13px;
+  padding:6px 10px;border-radius:8px;transition:color .2s,background .2s}
+.mp-back:hover{color:var(--text);background:rgba(255,255,255,.06)}
+.mp-header-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text)}
+.mp-header-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.mp-header-badge{background:var(--green-dim);color:var(--green);font-size:11px;font-weight:600;
+  padding:4px 12px;border-radius:20px;border:1px solid rgba(29,185,84,.22);letter-spacing:.04em}
+.mp-search-wrap{position:relative;display:flex;align-items:center}
+.mp-search-wrap svg{position:absolute;left:10px;color:var(--muted);pointer-events:none}
+#mp-search{background:var(--glass);border:1px solid var(--border);color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:13px;padding:7px 12px 7px 34px;border-radius:20px;
+  outline:none;width:200px;transition:border-color .2s,width .3s,background .2s}
+#mp-search:focus{border-color:rgba(29,185,84,.45);background:var(--surface);width:240px}
+#mp-search::placeholder{color:var(--muted)}
+
+/* ═══ HERO ══════════════════════════════════════════ */
+.mp-hero{position:relative;z-index:10;padding:56px 36px 40px;display:flex;gap:40px;align-items:flex-end;
+  overflow:hidden;border-bottom:1px solid rgba(255,255,255,.05);
+  transition:background 2s ease;background:linear-gradient(168deg,rgba(20,28,48,.75) 0%,transparent 72%)}
+#hero-backdrop{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;
+  filter:blur(60px) saturate(1.4) brightness(.28);transform:scale(1.15);
+  transition:background-image 1.2s ease,opacity 1.2s;opacity:0}
+.mp-hero.has-cover #hero-backdrop{opacity:1}
+.mp-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;z-index:2;
+  background:linear-gradient(90deg,transparent 0%,rgba(var(--accent-r),var(--accent-g),var(--accent-b),.55) 35%,rgba(100,120,255,.40) 70%,transparent 100%);
+  animation:shimmer 4s ease-in-out infinite alternate}
+@keyframes shimmer{from{opacity:.4;transform:scaleX(.55)}to{opacity:1;transform:scaleX(1)}}
+.mp-hero-art{width:210px;height:210px;border-radius:18px;flex-shrink:0;overflow:hidden;position:relative;z-index:2;
+  box-shadow:0 32px 80px rgba(0,0,0,.80),0 0 0 1px rgba(255,255,255,.08);
+  background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;
+  transition:box-shadow 1s ease}
+.mp-hero-art img{width:100%;height:100%;object-fit:cover}
+.mp-hero-art-placeholder{font-size:56px;opacity:.15}
+.mp-hero-art::before{content:'';position:absolute;inset:-6px;border-radius:22px;
+  border:2px solid var(--accent);opacity:0;z-index:-1;transition:opacity .5s}
+body.mp-playing .mp-hero-art::before{opacity:.5;animation:pulse-ring 2.4s ease-in-out infinite}
+@keyframes pulse-ring{0%,100%{transform:scale(1);opacity:.45}50%{transform:scale(1.04);opacity:.15}}
+.mp-hero-info{flex:1;position:relative;z-index:2}
+.mp-hero-label{font-size:10px;font-weight:700;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;margin-bottom:10px}
+.mp-hero-name{font-family:'Syne',sans-serif;font-size:clamp(26px,5vw,54px);font-weight:800;
+  line-height:1.0;letter-spacing:-.03em;color:#fff;margin-bottom:14px;text-shadow:0 4px 32px rgba(0,0,0,.5)}
+.mp-hero-stats{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-bottom:14px}
+.mp-hero-stats strong{color:var(--text);font-weight:600}
+.mp-hero-stats .dot{opacity:.25}
+#mp-now-playing-line{display:none;align-items:center;gap:8px;margin-bottom:10px;font-size:12px;color:var(--accent)}
+body.mp-playing #mp-now-playing-line{display:flex}
+.np-eq{display:flex;align-items:flex-end;gap:2px;height:14px}
+.np-eq span{display:block;width:3px;border-radius:2px;background:var(--accent);animation:np-eq .65s ease-in-out infinite alternate}
+.np-eq span:nth-child(1){height:6px;animation-delay:0s}.np-eq span:nth-child(2){height:12px;animation-delay:.12s}.np-eq span:nth-child(3){height:7px;animation-delay:.25s}
+@keyframes np-eq{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+.mp-genre-bar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:22px}
+.mp-genre-chip{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;
+  border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.06);color:var(--muted);
+  transition:all .22s;backdrop-filter:blur(8px);user-select:none}
+.mp-genre-chip:hover{border-color:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.45);color:var(--text);transform:translateY(-1px)}
+.mp-genre-chip.active{background:var(--accent);color:#000;border-color:var(--accent);box-shadow:0 2px 18px var(--accent-glow)}
+.mp-hero-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.mp-play-all{display:flex;align-items:center;gap:8px;background:var(--accent);color:#000;border:none;
+  padding:12px 28px;border-radius:30px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;transition:all .22s;box-shadow:0 4px 24px var(--accent-glow)}
+.mp-play-all:hover{background:var(--green-hi);transform:scale(1.05);box-shadow:0 8px 32px var(--accent-glow)}
+.mp-play-all:active{transform:scale(.97)}
+.mp-btn-ghost{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);color:var(--muted);
+  border:1px solid rgba(255,255,255,.10);padding:11px 20px;border-radius:30px;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;
+  transition:all .22s;backdrop-filter:blur(8px)}
+.mp-btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.11);transform:translateY(-1px)}
+.mp-btn-ghost:active{transform:scale(.96)}
+.mp-btn-ghost.active{color:var(--red);border-color:rgba(255,77,109,.40);background:var(--red-dim)}
+
+/* ═══ RECENTLY PLAYED ═══════════════════════════════ */
+#mp-recent-section{position:relative;z-index:10;padding:24px 36px 0}
+.mp-section-heading{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.mp-recent-list{display:flex;gap:8px;flex-wrap:wrap}
+.mp-recent-chip{display:flex;align-items:center;gap:10px;background:var(--glass);
+  border:1px solid var(--border);backdrop-filter:blur(12px);border-radius:10px;
+  padding:7px 14px 7px 7px;cursor:pointer;transition:all .22s;max-width:210px}
+.mp-recent-chip:hover{background:var(--surface);border-color:rgba(255,255,255,.14);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.mp-recent-art{width:34px;height:34px;border-radius:6px;flex-shrink:0;background:rgba(255,255,255,.06);
+  overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:15px}
+.mp-recent-art img{width:100%;height:100%;object-fit:cover}
+.mp-recent-title{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.mp-recent-artist{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+
+/* ═══ SIDEBAR + MAIN LAYOUT ═════════════════════════ */
+.mp-body-layout{position:relative;z-index:10;display:flex;gap:0;align-items:flex-start}
+
+/* ── LEFT SIDEBAR (Daftar Putar) ── */
+.mp-sidebar{
+  width:240px;flex-shrink:0;
+  padding:20px 16px;
+  border-right:1px solid var(--border2);
+  min-height:calc(100vh - 200px);
+  background:rgba(0,0,0,.15);
+}
+.mp-sidebar-title{
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:12px;padding:0 4px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.mp-sidebar-title button{
+  background:none;border:none;cursor:pointer;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;
+  width:24px;height:24px;border-radius:50%;
+  transition:color .2s,background .2s;
+}
+.mp-sidebar-title button:hover{color:var(--green);background:var(--green-dim)}
+
+/* Folder list */
+.mp-folder-list{display:flex;flex-direction:column;gap:2px}
+.mp-folder-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;border-radius:8px;cursor:pointer;
+  transition:background .18s;position:relative;
+  border-left:2px solid transparent;
+}
+.mp-folder-item:hover{background:rgba(255,255,255,.055)}
+.mp-folder-item.active{
+  background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.10);
+  border-left-color:var(--accent);
+}
+.mp-folder-icon{font-size:16px;flex-shrink:0;width:20px;text-align:center}
+.mp-folder-name{
+  font-size:13px;font-weight:500;color:var(--text);
+  flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  outline:none;background:transparent;border:none;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+}
+.mp-folder-name:focus{
+  color:#fff;
+  border-bottom:1px solid var(--accent);
+  cursor:text;
+}
+.mp-folder-count{
+  font-size:11px;color:var(--muted);flex-shrink:0;
+  background:rgba(255,255,255,.07);padding:2px 7px;border-radius:10px;
+}
+.mp-folder-del{
+  background:none;border:none;cursor:pointer;color:var(--muted);
+  width:20px;height:20px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;opacity:0;transition:opacity .2s,color .2s,background .2s;flex-shrink:0;
+}
+.mp-folder-item:hover .mp-folder-del{opacity:1}
+.mp-folder-del:hover{color:var(--red);background:var(--red-dim)}
+
+/* Special folders */
+.mp-folder-item.is-all .mp-folder-icon::before{content:'🎵'}
+.mp-folder-item.is-fav .mp-folder-icon::before{content:'❤️'}
+
+/* ── MAIN TRACK AREA ── */
+.mp-main-area{flex:1;min-width:0;padding:20px 32px 120px}
+
+/* ── Add to folder tooltip ── */
+.mp-add-folder-popup{
+  position:fixed;z-index:5000;
+  background:rgba(16,16,24,.97);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;padding:8px 6px;
+  min-width:180px;
+  box-shadow:0 16px 48px rgba(0,0,0,.7);
+  backdrop-filter:blur(20px);
+  animation:popup-in .18s ease;
+}
+@keyframes popup-in{from{opacity:0;transform:translateY(4px) scale(.97)}to{opacity:1;transform:none}}
+.mp-add-folder-popup-title{
+  font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;
+  color:var(--muted);padding:4px 10px 8px;
+}
+.mp-add-folder-popup-item{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:7px;cursor:pointer;
+  font-size:13px;color:var(--text);transition:background .15s;
+}
+.mp-add-folder-popup-item:hover{background:rgba(255,255,255,.08)}
+.mp-add-folder-popup-item .pfi{font-size:14px;flex-shrink:0}
+.mp-add-folder-popup-item.active-folder{color:var(--green)}
+
+/* ── TOAST notification ── */
+#mp-toast{
+  position:fixed;bottom:110px;left:50%;transform:translateX(-50%) translateY(20px);
+  z-index:9999;background:rgba(20,20,30,.95);color:var(--text);
+  font-size:13px;font-weight:500;
+  padding:10px 20px;border-radius:20px;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+  opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;
+  backdrop-filter:blur(16px);
+}
+#mp-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══ SECTION TITLE + TRACK LIST ════════════════════ */
+.mp-list-glass{background:var(--glass2);border:1px solid var(--border2);border-radius:16px;overflow:hidden;backdrop-filter:blur(4px)}
+.mp-section-title{
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.10em;text-transform:uppercase;color:var(--muted);
+  padding:12px 16px;
+  display:grid;grid-template-columns:44px 1fr 90px 56px 44px 32px;gap:10px;
+  border-bottom:1px solid rgba(255,255,255,.04)}
+.mp-section-title .col-r{text-align:right}
+
+/* Track row */
+.mdp-track-item{
+  display:grid;grid-template-columns:44px 1fr 90px 56px 44px 32px;
+  gap:10px;align-items:center;
+  padding:7px 16px;cursor:pointer;position:relative;
+  border-left:3px solid transparent;
+  transition:background .18s,border-color .18s,transform .15s;user-select:none}
+.mdp-track-item+.mdp-track-item{border-top:1px solid rgba(255,255,255,.028)}
+.mdp-track-item:hover{background:rgba(255,255,255,.044);transform:translateX(3px)}
+.mdp-track-item.mdp-active{background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.09)!important;border-left-color:var(--accent)!important}
+.mdp-track-item.sortable-ghost{opacity:.28;background:var(--accent-dim)!important;border:1px dashed rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35)}
+.mdp-track-item.sortable-drag{background:var(--glass)!important;box-shadow:0 20px 56px rgba(0,0,0,.65);border-radius:10px}
+
+/* Number col + eq + hover play */
+.mdp-track-num{width:28px;color:var(--muted);font-size:13px;text-align:center;
+  font-variant-numeric:tabular-nums;display:flex;align-items:center;justify-content:center;position:relative}
+.ico-play{display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:#fff}
+.mdp-track-item:hover:not(.mdp-active) .ico-play{display:flex}
+.mdp-track-item:hover:not(.mdp-active) .num-txt{visibility:hidden}
+.eq-bars{display:none;align-items:flex-end;justify-content:center;gap:2px;height:16px;position:absolute}
+.eq-bars b{display:block;width:3px;border-radius:2px;background:var(--accent);animation:eq .7s ease-in-out infinite alternate}
+.eq-bars b:nth-child(1){height:6px;animation-delay:0s}.eq-bars b:nth-child(2){height:13px;animation-delay:.15s}.eq-bars b:nth-child(3){height:5px;animation-delay:.30s}
+@keyframes eq{from{transform:scaleY(.32)}to{transform:scaleY(1)}}
+.mdp-track-item.mdp-active .eq-bars{display:flex}
+.mdp-track-item.mdp-active .num-txt{visibility:hidden}
+
+/* Track cover */
+.mdp-track-main{display:flex;align-items:center;gap:12px;overflow:hidden}
+.mdp-track-cover{width:42px;height:42px;border-radius:8px;flex-shrink:0;
+  background:rgba(255,255,255,.05);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  border:1px solid rgba(255,255,255,.06);transition:border-color .2s,box-shadow .2s}
+.mdp-track-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.mdp-track-item.mdp-active .mdp-track-cover{border-color:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.55);box-shadow:0 0 0 1px rgba(var(--accent-r),var(--accent-g),var(--accent-b),.28)}
+.mdp-track-text{overflow:hidden}
+.mdp-track-name{font-size:13.5px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .15s}
+.mdp-track-name mark,.mdp-track-artist mark{background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.28);color:inherit;border-radius:2px;padding:0 1px}
+.mdp-track-item:hover .mdp-track-name,.mdp-track-item.mdp-active .mdp-track-name{color:#fff}
+.mdp-track-artist{font-size:11.5px;color:var(--muted);font-weight:300;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.mdp-track-genre{font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+  padding:2px 8px;border-radius:10px;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.07);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mdp-track-dur{font-size:12px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums;font-weight:300}
+
+/* Like button */
+.mdp-like-btn{width:32px;height:32px;background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:50%;color:var(--muted2);flex-shrink:0;
+  opacity:0;transition:color .2s,transform .18s,background .2s,opacity .2s}
+.mdp-track-item:hover .mdp-like-btn,.mdp-like-btn.liked{opacity:1}
+.mdp-like-btn.liked{color:var(--red)}
+.mdp-like-btn:hover{transform:scale(1.3);color:var(--red);background:var(--red-dim)}
+.mdp-like-btn:active{transform:scale(.88)}
+
+/* Add to folder button on each track */
+.mdp-add-btn{width:28px;height:28px;background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:50%;color:var(--muted2);flex-shrink:0;
+  opacity:0;transition:color .2s,transform .18s,background .2s,opacity .2s}
+.mdp-track-item:hover .mdp-add-btn{opacity:1}
+.mdp-add-btn:hover{transform:scale(1.2);color:var(--green);background:var(--green-dim)}
+
+/* ═══ LOADING / EMPTY ═══════════════════════════════ */
+.mp-loading{text-align:center;padding:60px;color:var(--muted)}
+.mp-loading-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin:0 3px;animation:mpb 1.2s ease-in-out infinite}
+.mp-loading-dot:nth-child(2){animation-delay:.2s}.mp-loading-dot:nth-child(3){animation-delay:.4s}
+@keyframes mpb{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-8px);opacity:1}}
+.mp-no-results{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;animation:fade-in .3s ease}
+@keyframes fade-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.mp-empty{text-align:center;padding:80px 20px;color:var(--muted)}
+.mp-empty h3{font-family:'Syne',sans-serif;font-size:17px;margin-bottom:8px;color:var(--text)}
+.mp-empty p{font-size:13px;line-height:1.7;max-width:340px;margin:0 auto}
+
+/* ═══ RESPONSIVE ════════════════════════════════════ */
+@media(max-width:900px){
+  .mp-sidebar{width:190px}
+  .mp-main-area{padding:20px 16px 120px}
+}
+@media(max-width:700px){
+  .mp-header{padding:0 16px}
+  #mp-search{width:140px}#mp-search:focus{width:160px}
+  .mp-hero{flex-direction:column;align-items:flex-start;gap:20px;padding:28px 18px 28px}
+  .mp-hero-art{width:130px;height:130px}
+  .mp-hero-name{font-size:26px}
+  .mp-body-layout{flex-direction:column}
+  .mp-sidebar{width:100%;border-right:none;border-bottom:1px solid var(--border2);min-height:auto;padding:16px}
+  .mp-folder-list{flex-direction:row;flex-wrap:wrap;gap:6px}
+  .mp-folder-item{padding:6px 12px;border-radius:20px;border-left:none;border:1px solid var(--border)}
+  .mp-folder-item.active{border-color:var(--accent)}
+  .mp-folder-del{display:none}
+  .mp-main-area{padding:16px 12px 120px}
+  .mp-section-title{grid-template-columns:36px 1fr 32px 24px}
+  .mp-section-title .col-genre,.mp-section-title .col-dur{display:none}
+  .mdp-track-item{grid-template-columns:36px 1fr 32px 24px}
+  .mdp-track-genre,.mdp-track-dur{display:none}
+  #mp-recent-section{padding:20px 16px 0}
+}
+@media(max-width:480px){
+  .mp-search-wrap{display:none}
+  .mp-btn-ghost span{display:none}
+  .mp-hero-art{width:100px;height:100px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ BACKGROUND ════════════════════════════════════ -->
+<div id="bg-mesh"></div>
+<div id="bg-blobs">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+  <div class="blob b5"></div><div class="blob b6"></div>
+</div>
+<div id="bg-notes"></div>
+<div id="bg-accent-blob"></div>
+<div id="bg-scanline"></div>
+<div id="bg-grain"></div>
+<div id="bg-vignette"></div>
+<div id="mp-toast"></div>
+
+<!-- ═══ HEADER ═══════════════════════════════════════ -->
+<header class="mp-header">
+  <a href="index.html" class="mp-back">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+    </svg>
+    Dashboard
+  </a>
+  <span class="mp-header-title">🎵 Playlist</span>
+  <div class="mp-header-right">
+    <div class="mp-search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+      </svg>
+      <input type="text" id="mp-search" placeholder="Cari lagu atau artis…" autocomplete="off"/>
+    </div>
+    <span class="mp-header-badge" id="mp-count-badge">Memuat…</span>
+  </div>
+</header>
+
+<!-- ═══ HERO ═════════════════════════════════════════ -->
+<section class="mp-hero" id="mp-hero">
+  <div id="hero-backdrop"></div>
+  <div class="mp-hero-art" id="mp-hero-art">
+    <div class="mp-hero-art-placeholder">🎵</div>
+  </div>
+  <div class="mp-hero-info">
+    <div class="mp-hero-label">Playlist · PT KB Finansia Multi Finance</div>
+    <h1 class="mp-hero-name">Dashboard<br>Data Madha</h1>
+    <div id="mp-now-playing-line">
+      <div class="np-eq"><span></span><span></span><span></span></div>
+      <span id="mp-now-title">—</span>
+    </div>
+    <div class="mp-hero-stats">
+      <strong id="mp-total">0</strong>&nbsp;lagu
+      <span class="dot">·</span>
+      <strong id="mp-favcount">0</strong>&nbsp;favorit
+    </div>
+    <div class="mp-genre-bar" id="mp-genre-bar"></div>
+    <div class="mp-hero-actions">
+      <button class="mp-play-all" id="mp-play-all-btn">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Putar Semua
+      </button>
+      <button class="mp-btn-ghost" id="mp-shuffle-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/>
+        </svg>
+        <span>Acak</span>
+      </button>
+      <button class="mp-btn-ghost" id="mp-fav-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <span>Favorit</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ RECENTLY PLAYED ═══════════════════════════════ -->
+<div id="mp-recent-section" style="display:none">
+  <div class="mp-section-heading">Terakhir Diputar</div>
+  <div class="mp-recent-list" id="mp-recent-list"></div>
+</div>
+
+<!-- ═══ BODY LAYOUT: SIDEBAR + MAIN ══════════════════ -->
+<div class="mp-body-layout">
+
+  <!-- SIDEBAR: Daftar Putar / Folder -->
+  <aside class="mp-sidebar">
+    <div class="mp-sidebar-title">
+      <span>Daftar Putar</span>
+      <button id="mp-add-folder-btn" title="Buat daftar putar baru">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+      </button>
+    </div>
+    <div class="mp-folder-list" id="mp-folder-list">
+      <!-- populated by JS -->
+    </div>
+  </aside>
+
+  <!-- MAIN TRACK AREA -->
+  <div class="mp-main-area">
+    <div class="mp-list-glass">
+      <div class="mp-section-title">
+        <span>#</span>
+        <span>JUDUL</span>
+        <span class="col-genre">GENRE</span>
+        <span class="col-dur col-r">DURASI</span>
+        <span></span>
+        <span></span>
+      </div>
+      <div id="mdp-playlist-container">
+        <div class="mp-loading">
+          <span class="mp-loading-dot"></span>
+          <span class="mp-loading-dot"></span>
+          <span class="mp-loading-dot"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ GLOBAL PLAYER ════════════════════════════════ -->
+<script src="assets/js/music-player.js"></script>
+
+<!-- ═══ PAGE LOGIC ════════════════════════════════════ -->
+<script>
+(function(){
+'use strict';
+
+/* ════ CONSTANTS ════════════════════════════════════ */
+var LS_LIKED   = 'mdp_liked';
+var LS_RECENT  = 'mdp_recent';
+var LS_FOLDERS = 'mdp_folders';
+var MAX_REC    = 6;
+var DEBOUNCE   = 220;
+
+/* ════ STATE ════════════════════════════════════════ */
+var masterList   = [];
+var filteredList = [];
+var likedSet     = new Set(JSON.parse(localStorage.getItem(LS_LIKED)  || '[]'));
+var recentList   = JSON.parse(localStorage.getItem(LS_RECENT) || '[]');
+var activeGenre  = 'all';
+var searchQ      = '';
+var favsOnly     = false;
+var lastIdx      = -1;
+var searchTimer  = null;
+var activeFolderIdx = -1;  // -1=all, -2=fav, 0+=custom folder index
+var openPopup    = null;
+
+/* Default folders */
+var folders = JSON.parse(localStorage.getItem(LS_FOLDERS) || JSON.stringify([
+  { id:'__all__', name:'Semua Lagu',  icon:'🎵', songs:[], special:'all' },
+  { id:'__fav__', name:'Favorit',     icon:'❤️', songs:[], special:'fav' }
+]));
+
+/* ════ PERSIST ══════════════════════════════════════ */
+function saveLikes()   { localStorage.setItem(LS_LIKED,   JSON.stringify([...likedSet])); }
+function saveRecent()  { localStorage.setItem(LS_RECENT,  JSON.stringify(recentList)); }
+function saveFolders() { localStorage.setItem(LS_FOLDERS, JSON.stringify(folders)); }
+
+/* ════ TOAST ════════════════════════════════════════ */
+var toastTimer = null;
+function showToast(msg) {
+  var t = document.getElementById('mp-toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2200);
+}
+
+/* ════ FLOATING NOTES (background) ═════════════════ */
+(function spawnNotes(){
+  var notes = ['♩','♪','♫','♬','𝄞','𝄢'];
+  var container = document.getElementById('bg-notes');
+  for(var i=0;i<8;i++){
+    (function(i){
+      setTimeout(function(){
+        var n = document.createElement('div');
+        n.className = 'note';
+        n.textContent = notes[Math.floor(Math.random()*notes.length)];
+        n.style.left  = (10 + Math.random()*80)+'%';
+        n.style.top   = (80 + Math.random()*20)+'%';
+        n.style.fontSize = (14+Math.random()*10)+'px';
+        var dur = 12+Math.random()*14;
+        n.style.animationDuration  = dur+'s';
+        n.style.animationDelay     = (Math.random()*dur)+'s';
+        n.style.animationIterationCount = 'infinite';
+        container.appendChild(n);
+      },i*700);
+    })(i);
+  }
+})();
+
+/* ════ DYNAMIC ACCENT / HERO ART ═══════════════════ */
+function setAccentFromCover(coverUrl){
+  var root = document.documentElement;
+  var hero = document.getElementById('mp-hero');
+  var backdrop = document.getElementById('hero-backdrop');
+  var accentBlob = document.getElementById('bg-accent-blob');
+  if(!coverUrl){
+    root.style.setProperty('--accent-r','29');
+    root.style.setProperty('--accent-g','185');
+    root.style.setProperty('--accent-b','84');
+    hero.style.background=''; if(backdrop)backdrop.style.backgroundImage='';
+    hero.classList.remove('has-cover'); return;
+  }
+  if(backdrop){ backdrop.style.backgroundImage='url("'+coverUrl+'")'; hero.classList.add('has-cover'); }
+  var img=new Image(); img.crossOrigin='anonymous';
+  img.onload=function(){
+    try{
+      var c=document.createElement('canvas'); c.width=6; c.height=6;
+      var ctx=c.getContext('2d'); ctx.drawImage(img,0,0,6,6);
+      var d=ctx.getImageData(0,0,6,6).data;
+      var rS=0,gS=0,bS=0,cnt=0;
+      for(var i=0;i<d.length;i+=4){
+        var r=d[i],g=d[i+1],b=d[i+2];
+        var mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+        var sat=mx===0?0:(mx-mn)/mx; var w=1+sat*2;
+        rS+=r*w; gS+=g*w; bS+=b*w; cnt+=w;
+      }
+      var fr=Math.round(rS/cnt),fg=Math.round(gS/cnt),fb=Math.round(bS/cnt);
+      var br=(fr*299+fg*587+fb*114)/1000;
+      if(br<60){fr=Math.min(255,fr+60);fg=Math.min(255,fg+60);fb=Math.min(255,fb+60);}
+      root.style.setProperty('--accent-r',fr);
+      root.style.setProperty('--accent-g',fg);
+      root.style.setProperty('--accent-b',fb);
+      hero.style.background='linear-gradient(168deg,rgba('+fr+','+fg+','+fb+',.38) 0%,rgba(8,8,18,0) 68%)';
+      if(accentBlob) accentBlob.style.background='radial-gradient(circle,rgba('+fr+','+fg+','+fb+',.16) 0%,transparent 65%)';
+    }catch(e){}
+  };
+  img.src=coverUrl;
+}
+
+function setHeroArt(track){
+  var ha=document.getElementById('mp-hero-art');
+  var nt=document.getElementById('mp-now-title');
+  if(track&&track.cover){
+    ha.innerHTML='<img src="'+track.cover+'" alt="Cover" onerror="this.parentNode.innerHTML=\'<div class=mp-hero-art-placeholder>🎵</div>\'" />';
+    setAccentFromCover(track.cover);
+  } else { ha.innerHTML='<div class="mp-hero-art-placeholder">🎵</div>'; setAccentFromCover(null); }
+  if(nt&&track) nt.textContent=track.title||'—';
+}
+function setPlayingState(p){ document.body.classList.toggle('mp-playing',p); }
+
+/* ════ RECENTLY PLAYED ══════════════════════════════ */
+function pushRecent(idx){
+  var t=masterList[idx]; if(!t)return;
+  recentList=recentList.filter(function(r){return r.idx!==idx;});
+  recentList.unshift({idx:idx,title:t.title,artist:t.artist||'',cover:t.cover||''});
+  if(recentList.length>MAX_REC) recentList.pop();
+  saveRecent(); renderRecent();
+}
+function renderRecent(){
+  var sec=document.getElementById('mp-recent-section');
+  var list=document.getElementById('mp-recent-list');
+  if(!recentList.length){sec.style.display='none';return;}
+  sec.style.display='block'; list.innerHTML='';
+  recentList.forEach(function(r){
+    var c=document.createElement('div'); c.className='mp-recent-chip';
+    c.innerHTML='<div class="mp-recent-art">'+(r.cover?'<img src="'+r.cover+'" alt="" onerror="this.style.display=\'none\'" />':'🎵')+'</div>'
+      +'<div><div class="mp-recent-title">'+r.title+'</div><div class="mp-recent-artist">'+(r.artist||'—')+'</div></div>';
+    c.addEventListener('click',function(){ window.MDP&&window.MDP.playAt(r.idx); pushRecent(r.idx); });
+    list.appendChild(c);
+  });
+}
+
+/* ════ FOLDER / DAFTAR PUTAR SYSTEM ════════════════ */
+function renderFolderSidebar(){
+  var list=document.getElementById('mp-folder-list');
+  list.innerHTML='';
+  folders.forEach(function(folder,fi){
+    var isAll=folder.special==='all';
+    var isFav=folder.special==='fav';
+    var isActive=(isAll&&activeFolderIdx===-1)||(isFav&&activeFolderIdx===-2)||(activeFolderIdx===fi&&!isAll&&!isFav);
+
+    var item=document.createElement('div');
+    item.className='mp-folder-item'+(isActive?' active':'')+(isAll?' is-all':'')+(isFav?' is-fav':'');
+    item.dataset.fi=fi;
+
+    /* Count */
+    var count=isAll?masterList.length:(isFav?likedSet.size:folder.songs.length);
+
+    /* Name (editable for custom folders) */
+    var nameEl=isAll||isFav
+      ? '<span class="mp-folder-name">'+folder.name+'</span>'
+      : '<span class="mp-folder-name" contenteditable="true" spellcheck="false" data-fi="'+fi+'">'+folder.name+'</span>';
+
+    item.innerHTML=
+      '<div class="mp-folder-icon"></div>'
+      +'<div class="mp-folder-icon-emoji" style="position:absolute;left:10px;font-size:16px">'+folder.icon+'</div>'
+      +nameEl
+      +'<span class="mp-folder-count">'+count+'</span>'
+      +(isAll||isFav?'':'<button class="mp-folder-del" title="Hapus daftar putar"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>');
+
+    /* Click → switch folder */
+    item.addEventListener('click',function(e){
+      if(e.target.closest('.mp-folder-del')) return;
+      if(e.target.closest('[contenteditable]')) return;
+      if(isAll)        activeFolderIdx=-1;
+      else if(isFav)   activeFolderIdx=-2;
+      else             activeFolderIdx=fi;
+      favsOnly=false; // reset fav toggle
+      var fb=document.getElementById('mp-fav-btn');
+      if(fb){ fb.classList.remove('active'); fb.querySelector('svg').setAttribute('fill','none'); fb.querySelector('svg').setAttribute('stroke','currentColor'); fb.querySelector('span').textContent='Favorit'; }
+      applyFilters(); renderFolderSidebar();
+    });
+
+    /* Inline rename */
+    var nameSpan=item.querySelector('[contenteditable]');
+    if(nameSpan){
+      nameSpan.addEventListener('blur',function(){
+        var newName=this.textContent.trim();
+        if(newName&&newName!==folders[fi].name){
+          folders[fi].name=newName; saveFolders(); showToast('Nama diperbarui: '+newName);
+        } else { this.textContent=folders[fi].name; }
+      });
+      nameSpan.addEventListener('keydown',function(e){
+        if(e.key==='Enter'){e.preventDefault();this.blur();}
+        if(e.key==='Escape'){this.textContent=folders[fi].name;this.blur();}
+        e.stopPropagation();
+      });
+    }
+
+    /* Delete */
+    var delBtn=item.querySelector('.mp-folder-del');
+    if(delBtn){
+      delBtn.addEventListener('click',function(e){
+        e.stopPropagation();
+        if(!confirm('Hapus daftar putar "'+folders[fi].name+'"?')) return;
+        folders.splice(fi,1); saveFolders();
+        if(activeFolderIdx===fi) activeFolderIdx=-1;
+        applyFilters(); renderFolderSidebar();
+        showToast('Daftar putar dihapus');
+      });
+    }
+
+    list.appendChild(item);
+  });
+}
+
+/* Create new folder */
+document.getElementById('mp-add-folder-btn').addEventListener('click',function(){
+  var name=prompt('Nama daftar putar baru:','Playlist Baru');
+  if(!name||!name.trim()) return;
+  var icons=['🎸','🎹','🎺','🎻','🥁','🎷','🎤','🎧','🌟','🔥','💫','🎶'];
+  folders.push({
+    id:'folder_'+Date.now(),
+    name:name.trim(),
+    icon:icons[Math.floor(Math.random()*icons.length)],
+    songs:[]
+  });
+  saveFolders(); renderFolderSidebar();
+  showToast('Daftar putar "'+name.trim()+'" dibuat!');
+});
+
+/* ── Add-to-folder popup ── */
+function showAddPopup(origIdx, anchorEl){
+  closePopup();
+  var popup=document.createElement('div');
+  popup.className='mp-add-folder-popup';
+  popup.id='mp-add-popup';
+
+  popup.innerHTML='<div class="mp-add-folder-popup-title">Tambah ke Daftar Putar</div>';
+
+  /* Only custom folders */
+  var customFolders=folders.filter(function(f){return !f.special;});
+  if(!customFolders.length){
+    popup.innerHTML+='<div class="mp-add-folder-popup-item" style="color:var(--muted);cursor:default">Belum ada daftar putar.<br><small>Klik + di sidebar untuk membuat.</small></div>';
+  } else {
+    customFolders.forEach(function(folder){
+      var fi=folders.indexOf(folder);
+      var inFolder=folder.songs.indexOf(origIdx)!==-1;
+      var item=document.createElement('div');
+      item.className='mp-add-folder-popup-item'+(inFolder?' active-folder':'');
+      item.innerHTML='<span class="pfi">'+folder.icon+'</span>'
+        +'<span>'+(inFolder?'✓ ':'')+folder.name+'</span>';
+      item.addEventListener('click',function(){
+        if(inFolder){
+          folder.songs=folder.songs.filter(function(s){return s!==origIdx;});
+          showToast('Dihapus dari "'+folder.name+'"');
+        } else {
+          folder.songs.push(origIdx);
+          showToast('Ditambahkan ke "'+folder.name+'"');
+        }
+        saveFolders(); renderFolderSidebar(); closePopup();
+        if(activeFolderIdx===fi) applyFilters();
+      });
+      popup.appendChild(item);
+    });
+  }
+
+  /* Position */
+  document.body.appendChild(popup);
+  var rect=anchorEl.getBoundingClientRect();
+  var top=rect.bottom+6; var left=rect.left-popup.offsetWidth+28;
+  if(left<8) left=8;
+  if(top+popup.offsetHeight>window.innerHeight-120) top=rect.top-popup.offsetHeight-6;
+  popup.style.top=top+'px'; popup.style.left=left+'px';
+  openPopup=popup;
+}
+function closePopup(){
+  if(openPopup){ openPopup.remove(); openPopup=null; }
+}
+document.addEventListener('click',function(e){
+  if(openPopup&&!openPopup.contains(e.target)&&!e.target.closest('.mdp-add-btn')) closePopup();
+});
+
+/* ════ GENRE CHIPS ══════════════════════════════════ */
+function buildGenres(){
+  var bar=document.getElementById('mp-genre-bar');
+  var genres=['all'];
+  masterList.forEach(function(t){if(t.genre&&!genres.includes(t.genre))genres.push(t.genre);});
+  if(genres.length<=2){bar.style.display='none';return;}
+  bar.innerHTML='';
+  genres.forEach(function(g){
+    var c=document.createElement('button');
+    c.className='mp-genre-chip'+(g==='all'?' active':'');
+    c.textContent=g==='all'?'Semua':g; c.dataset.genre=g;
+    c.addEventListener('click',function(){
+      activeGenre=g;
+      document.querySelectorAll('.mp-genre-chip').forEach(function(x){x.classList.toggle('active',x.dataset.genre===g);});
+      applyFilters();
+    });
+    bar.appendChild(c);
+  });
+}
+
+/* ════ FILTER ═══════════════════════════════════════ */
+function applyFilters(){
+  filteredList=masterList.filter(function(t,i){
+    var gOk=activeGenre==='all'||(t.genre||'').toLowerCase()===activeGenre.toLowerCase();
+    var sOk=!searchQ||(t.title||'').toLowerCase().includes(searchQ)||(t.artist||'').toLowerCase().includes(searchQ);
+    /* Folder filter */
+    var fOk=true;
+    if(favsOnly||activeFolderIdx===-2) fOk=likedSet.has(i);
+    else if(activeFolderIdx>=0&&folders[activeFolderIdx]&&!folders[activeFolderIdx].special)
+      fOk=folders[activeFolderIdx].songs.indexOf(i)!==-1;
+    return gOk&&sOk&&fOk;
+  });
+  renderTrackList();
+}
+
+/* ════ HIGHLIGHT TEXT ═══════════════════════════════ */
+function highlightText(text,query){
+  if(!query)return text;
+  var esc=query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return text.replace(new RegExp('('+esc+')','gi'),'<mark>$1</mark>');
+}
+
+/* ════ STATS ════════════════════════════════════════ */
+function updateStats(){
+  document.getElementById('mp-total').textContent    = masterList.length;
+  document.getElementById('mp-favcount').textContent = likedSet.size;
+  document.getElementById('mp-count-badge').textContent = masterList.length+' Lagu';
+}
+
+/* ════ RENDER TRACK LIST ════════════════════════════ */
+function renderTrackList(){
+  var cont=document.getElementById('mdp-playlist-container');
+  cont.innerHTML='';
+  if(!filteredList.length){
+    var msg=activeFolderIdx>=0&&folders[activeFolderIdx]&&!folders[activeFolderIdx].special
+      ?'Belum ada lagu di daftar putar ini.<br><small>Klik ＋ di baris lagu untuk menambahkan.</small>'
+      :'😔 Tidak ada lagu yang cocok.';
+    cont.innerHTML='<div class="mp-no-results">'+msg+'</div>'; return;
+  }
+  var activeIdx=window.MDP?window.MDP.getIndex():-1;
+  filteredList.forEach(function(track,di){
+    var origIdx=masterList.indexOf(track);
+    var isActive=origIdx===activeIdx;
+    var liked=likedSet.has(origIdx);
+    var item=document.createElement('div');
+    item.className='mdp-track-item'+(isActive?' mdp-active':'');
+    item.dataset.origIdx=origIdx;
+    var coverHTML=track.cover?'<img src="'+track.cover+'" alt="" onerror="this.style.display=\'none\'" />':'🎵';
+    var dt=highlightText(track.title||'',searchQ);
+    var da=highlightText(track.artist||'Dashboard Data Madha',searchQ);
+    item.innerHTML=
+      '<div class="mdp-track-num">'
+        +'<span class="num-txt">'+(di+1)+'</span>'
+        +'<span class="ico-play"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>'
+        +'<span class="eq-bars"><b></b><b></b><b></b></span>'
+      +'</div>'
+      +'<div class="mdp-track-main">'
+        +'<div class="mdp-track-cover">'+coverHTML+'</div>'
+        +'<div class="mdp-track-text"><div class="mdp-track-name">'+dt+'</div><div class="mdp-track-artist">'+da+'</div></div>'
+      +'</div>'
+      +'<div class="mdp-track-genre">'+(track.genre||'')+'</div>'
+      +'<div class="mdp-track-dur">'+(track.duration||'')+'</div>'
+      +'<button class="mdp-like-btn'+(liked?' liked':'')+'" data-idx="'+origIdx+'" title="'+(liked?'Hapus favorit':'Tambah ke favorit')+'">'
+        +'<svg width="14" height="14" viewBox="0 0 24 24" fill="'+(liked?'currentColor':'none')+'" stroke="'+(liked?'none':'currentColor')+'" stroke-width="2">'
+          +'<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>'
+        +'</svg>'
+      +'</button>'
+      +'<button class="mdp-add-btn" data-idx="'+origIdx+'" title="Tambah ke daftar putar">'
+        +'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>'
+      +'</button>';
+
+    item.addEventListener('click',function(e){
+      if(e.target.closest('.mdp-like-btn')||e.target.closest('.mdp-add-btn'))return;
+      window.MDP&&window.MDP.playAt(origIdx); pushRecent(origIdx);
+    });
+    item.addEventListener('dblclick',function(e){
+      if(e.target.closest('.mdp-like-btn')||e.target.closest('.mdp-add-btn'))return;
+      window.MDP&&window.MDP.playAt(origIdx);
+    });
+    item.querySelector('.mdp-like-btn').addEventListener('click',function(e){
+      e.stopPropagation(); toggleLike(parseInt(this.dataset.idx,10));
+    });
+    item.querySelector('.mdp-add-btn').addEventListener('click',function(e){
+      e.stopPropagation(); showAddPopup(parseInt(this.dataset.idx,10),this);
+    });
+    cont.appendChild(item);
+  });
+  if(typeof Sortable!=='undefined'){
+    Sortable.create(cont,{
+      animation:165,ghostClass:'sortable-ghost',dragClass:'sortable-drag',
+      onEnd:function(){ cont.querySelectorAll('.mdp-track-item').forEach(function(el,i){ var n=el.querySelector('.num-txt');if(n)n.textContent=i+1; }); }
+    });
+  }
+}
+
+/* ════ LIKE (FAVORIT) ═══════════════════════════════ */
+function toggleLike(idx){
+  likedSet.has(idx)?likedSet.delete(idx):likedSet.add(idx);
+  saveLikes(); updateStats(); renderFolderSidebar();
+  var btn=document.querySelector('.mdp-like-btn[data-idx="'+idx+'"]');
+  if(btn){
+    var now=likedSet.has(idx);
+    btn.classList.toggle('liked',now);
+    btn.title=now?'Hapus favorit':'Tambah ke favorit';
+    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="'+(now?'currentColor':'none')+'" stroke="'+(now?'none':'currentColor')+'" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+    btn.style.transform='scale(1.6)';
+    setTimeout(function(){btn.style.transform='scale(1)';},180);
+    showToast(now?'❤️ Ditambahkan ke Favorit':'Dihapus dari Favorit');
+  }
+  if(favsOnly||activeFolderIdx===-2) applyFilters();
+}
+
+/* ════ HIGHLIGHT ACTIVE ═════════════════════════════ */
+function highlightActive(idx){
+  document.querySelectorAll('.mdp-track-item').forEach(function(el){
+    el.classList.toggle('mdp-active',parseInt(el.dataset.origIdx,10)===idx);
+  });
+}
+
+/* ════ SEARCH ═══════════════════════════════════════ */
+document.getElementById('mp-search').addEventListener('input',function(){
+  clearTimeout(searchTimer);
+  var val=this.value.trim().toLowerCase();
+  searchTimer=setTimeout(function(){searchQ=val;applyFilters();},DEBOUNCE);
+});
+
+/* ════ KEYBOARD ═════════════════════════════════════ */
+document.addEventListener('keydown',function(e){
+  var tag=document.activeElement.tagName;
+  var ce=document.activeElement.contentEditable;
+  if(tag==='INPUT'||tag==='TEXTAREA'||ce==='true')return;
+  if(e.code==='Space'){e.preventDefault();window.MDP&&window.MDP.play();}
+  if(e.code==='ArrowRight'){e.preventDefault();window.MDP&&window.MDP.next();}
+  if(e.code==='ArrowLeft'){e.preventDefault();window.MDP&&window.MDP.prev();}
+  if(e.code==='Escape') closePopup();
+});
+
+/* ════ HERO BUTTONS ═════════════════════════════════ */
+document.getElementById('mp-play-all-btn').addEventListener('click',function(){
+  if(!window.MDP||!filteredList.length)return;
+  var idx=masterList.indexOf(filteredList[0]);
+  window.MDP.playAt(idx); pushRecent(idx);
+});
+document.getElementById('mp-shuffle-btn').addEventListener('click',function(){
+  if(!window.MDP)return;
+  var pool=filteredList.length?filteredList:masterList;
+  var t=pool[Math.floor(Math.random()*pool.length)];
+  var idx=masterList.indexOf(t);
+  window.MDP.playAt(idx); pushRecent(idx);
+});
+document.getElementById('mp-fav-btn').addEventListener('click',function(){
+  favsOnly=!favsOnly;
+  activeFolderIdx=favsOnly?-2:-1;
+  this.classList.toggle('active',favsOnly);
+  this.querySelector('svg').setAttribute('fill',favsOnly?'currentColor':'none');
+  this.querySelector('svg').setAttribute('stroke',favsOnly?'none':'currentColor');
+  this.querySelector('span').textContent=favsOnly?'Semua':'Favorit';
+  applyFilters(); renderFolderSidebar();
+});
+
+/* ════ MDP:READY ════════════════════════════════════ */
+window.addEventListener('mdp:ready',function(e){
+  masterList=e.detail.playlist; filteredList=masterList.slice();
+  updateStats(); buildGenres(); renderTrackList(); renderRecent(); renderFolderSidebar();
+  var ai=window.MDP?window.MDP.getIndex():0;
+  setHeroArt(masterList[ai]); lastIdx=ai;
+});
+
+/* ════ POLL MDP STATE ═══════════════════════════════ */
+setInterval(function(){
+  if(!window.MDP||!masterList.length)return;
+  var idx=window.MDP.getIndex();
+  if(idx!==lastIdx){ lastIdx=idx; highlightActive(idx); setHeroArt(masterList[idx]); }
+  var ico=document.getElementById('mdp-play-ico');
+  if(ico) setPlayingState(ico.innerHTML.includes('M6 19h4'));
+},500);
+
+})();
+</script>
+</body>
+</html>
