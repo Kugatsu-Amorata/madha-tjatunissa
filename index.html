@@ -935,7 +935,7 @@ body.bg-karyawan .sb-item.active { background: rgba(2,119,189,0.35); color:#fff;
     <span class="sb-tooltip">Karyawan</span>
   </button>
 
-  <button class="sb-item" id="btnKmb" onclick="showPage('kmb')">
+  <button class="sb-item" id="btnKmb" onclick="loadKMB()">
     <span class="sb-icon">📡</span>
     <span class="sb-label">KMB Sally</span>
     <span class="sb-tooltip">KMB Sally</span>
@@ -2803,9 +2803,16 @@ setInterval(karyawanUpdateClock, 1000);
       </h1>
       <p style="margin:4px 0 0;color:rgba(255,255,255,0.45);font-size:0.85rem;font-weight:500;">Monitoring status aktif / mati</p>
     </div>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+    <div style="margin-left:auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
       <span id="kmbLastUpdate" style="font-size:0.75rem;color:rgba(255,255,255,0.3);font-weight:500;"></span>
-      <div id="kmbRefreshDot" style="width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;animation:kmbPulse 2s infinite;"></div>
+      <span id="kmbCountdown" style="font-size:0.72rem;color:rgba(255,255,255,0.25);font-weight:500;display:none;">refresh dalam <b id="kmbCountdownSec" style="color:rgba(255,255,255,0.4);">30</b>s</span>
+      <button onclick="kmbManualRefresh()" title="Refresh sekarang"
+        style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.13);border-radius:10px;color:rgba(255,255,255,0.65);font-size:0.78rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all 0.15s;"
+        onmouseover="this.style.background='rgba(255,255,255,0.13)';this.style.color='#fff'"
+        onmouseout="this.style.background='rgba(255,255,255,0.07)';this.style.color='rgba(255,255,255,0.65)'">
+        <span id="kmbRefreshIcon" style="display:inline-block;transition:transform 0.4s;">🔄</span> Refresh
+      </button>
+      <div id="kmbRefreshDot" style="width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;animation:kmbPulse 2s infinite;flex-shrink:0;"></div>
     </div>
   </div>
 
@@ -2946,10 +2953,17 @@ setInterval(karyawanUpdateClock, 1000);
 <div id="kmbWarningPopup">
   <div style="display:flex;align-items:flex-start;gap:12px;">
     <div class="kmb-warn-icon">⚠️</div>
-    <div>
+    <div style="flex:1;min-width:0;">
       <div class="kmb-warn-title">Peringatan Sistem</div>
       <div class="kmb-warn-body" id="kmbWarnText">— data MATI terdeteksi</div>
     </div>
+    <button onclick="kmbDismissWarning()" title="Tutup"
+      style="background:none;border:none;color:rgba(255,200,200,0.5);font-size:1rem;cursor:pointer;padding:0 0 0 4px;line-height:1;flex-shrink:0;transition:color 0.15s;"
+      onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,200,200,0.5)'">✕</button>
+  </div>
+  <!-- Progress bar -->
+  <div style="margin-top:12px;height:3px;background:rgba(255,255,255,0.12);border-radius:2px;overflow:hidden;">
+    <div id="kmbWarnBar" style="height:100%;background:rgba(252,165,165,0.7);border-radius:2px;width:100%;transition:width linear;"></div>
   </div>
 </div>
 
@@ -2987,11 +3001,24 @@ function showKmbWarning(matiCount) {
   clearTimeout(kmbWarnTimer);
   const popup  = document.getElementById('kmbWarningPopup');
   const text   = document.getElementById('kmbWarnText');
+  const bar    = document.getElementById('kmbWarnBar');
   if (!popup || !text) return;
 
   popup.classList.remove('kmb-warn-out');
   text.textContent = matiCount + ' data MATI terdeteksi';
   popup.style.display = 'block';
+
+  // Animate progress bar shrinking over 4.5s
+  if (bar) {
+    bar.style.transition = 'none';
+    bar.style.width = '100%';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        bar.style.transition = 'width 4.5s linear';
+        bar.style.width = '0%';
+      });
+    });
+  }
 
   kmbWarnTimer = setTimeout(function() {
     popup.classList.add('kmb-warn-out');
@@ -3000,6 +3027,36 @@ function showKmbWarning(matiCount) {
       popup.classList.remove('kmb-warn-out');
     }, 420);
   }, 4500);
+}
+
+function kmbDismissWarning() {
+  clearTimeout(kmbWarnTimer);
+  const popup = document.getElementById('kmbWarningPopup');
+  if (!popup) return;
+  popup.classList.add('kmb-warn-out');
+  setTimeout(function() {
+    popup.style.display = 'none';
+    popup.classList.remove('kmb-warn-out');
+  }, 420);
+}
+
+/* ── Manual Refresh ──────────────────────────────────────────────── */
+function kmbManualRefresh() {
+  const icon = document.getElementById('kmbRefreshIcon');
+  if (icon) {
+    icon.style.transition = 'transform 0.4s';
+    icon.style.transform = 'rotate(360deg)';
+    setTimeout(function() {
+      icon.style.transition = 'none';
+      icon.style.transform = 'rotate(0deg)';
+    }, 450);
+    setTimeout(function() { icon.style.transition = 'transform 0.4s'; }, 500);
+  }
+  // Reset countdown
+  kmbCountdownSecs = 30;
+  var cdSec = document.getElementById('kmbCountdownSec');
+  if (cdSec) cdSec.textContent = 30;
+  kmbRefreshData();
 }
 
 /* ── Render Table ────────────────────────────────────────────────── */
@@ -3086,14 +3143,14 @@ async function kmbFetchData() {
 
 /* ── Main Load Function ──────────────────────────────────────────── */
 async function loadKMB() {
-  // Show page
+  // Activate the KMB page via SPA router
   showPage('kmb');
 
-  // Show spinner, hide table on first load
+  // On very first load, show spinner
   if (!kmbLoaded) {
-    var spinner = document.getElementById('kmbSpinner');
+    var spinner   = document.getElementById('kmbSpinner');
     var tableWrap = document.getElementById('kmbTableWrap');
-    if (spinner)   spinner.style.display  = 'flex';
+    if (spinner)   spinner.style.display   = 'flex';
     if (tableWrap) tableWrap.style.display = 'none';
   }
 
@@ -3147,19 +3204,47 @@ async function kmbRefreshData() {
   }
 }
 
-/* ── Auto Refresh (30s) ──────────────────────────────────────────── */
+/* ── Auto Refresh (30s) + Countdown ─────────────────────────────── */
+var kmbCountdownTimer = null;
+var kmbCountdownSecs  = 30;
+
 function kmbStartRefresh() {
   kmbStopRefresh();
-  kmbRefreshTimer = setInterval(function() {
-    if (document.getElementById('kmbPage') &&
-        document.getElementById('kmbPage').style.display !== 'none') {
-      kmbRefreshData();
+  kmbCountdownSecs = 30;
+
+  // Show countdown label
+  var cdEl  = document.getElementById('kmbCountdown');
+  var cdSec = document.getElementById('kmbCountdownSec');
+  if (cdEl) cdEl.style.display = 'inline';
+
+  // Countdown tick every second
+  kmbCountdownTimer = setInterval(function() {
+    kmbCountdownSecs--;
+    if (cdSec) cdSec.textContent = kmbCountdownSecs;
+
+    if (kmbCountdownSecs <= 0) {
+      kmbCountdownSecs = 30;
+      if (cdSec) cdSec.textContent = 30;
+      // Only refresh if KMB page is visible
+      if (document.getElementById('kmbPage') &&
+          document.getElementById('kmbPage').style.display !== 'none') {
+        kmbRefreshData();
+      }
     }
+  }, 1000);
+
+  // Also set the 30s hard interval as backup
+  kmbRefreshTimer = setInterval(function() {
+    // Handled by countdown above
   }, 30000);
 }
 
 function kmbStopRefresh() {
-  if (kmbRefreshTimer) { clearInterval(kmbRefreshTimer); kmbRefreshTimer = null; }
+  if (kmbRefreshTimer)    { clearInterval(kmbRefreshTimer);    kmbRefreshTimer    = null; }
+  if (kmbCountdownTimer)  { clearInterval(kmbCountdownTimer);  kmbCountdownTimer  = null; }
+  // Hide countdown
+  var cdEl = document.getElementById('kmbCountdown');
+  if (cdEl) cdEl.style.display = 'none';
 }
 
 /* ── Real-time Search ────────────────────────────────────────────── */
