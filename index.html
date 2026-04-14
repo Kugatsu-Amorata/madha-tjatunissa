@@ -90,6 +90,7 @@ body{
 body.bg-kmob   .sb-item.active { background: rgba(123,31,162,0.35); color:#fff; box-shadow: inset 3px 0 0 #7b1fa2; }
 body.bg-cabang .sb-item.active { background: rgba(46,125,50,0.35);  color:#fff; box-shadow: inset 3px 0 0 #43a047; }
 body.bg-quran  .sb-item.active { background: rgba(184,134,11,0.35); color:#ffd700; box-shadow: inset 3px 0 0 #ffd700; }
+body.bg-kmb    .sb-item.active { background: rgba(220,38,38,0.35);  color:#fff;    box-shadow: inset 3px 0 0 #ef4444; }
 
 .sb-icon {
   font-size: 1.15rem;
@@ -934,6 +935,12 @@ body.bg-karyawan .sb-item.active { background: rgba(2,119,189,0.35); color:#fff;
     <span class="sb-tooltip">Karyawan</span>
   </button>
 
+  <button class="sb-item" id="btnKmb" onclick="showPage('kmb')">
+    <span class="sb-icon">📡</span>
+    <span class="sb-label">KMB Sally</span>
+    <span class="sb-tooltip">KMB Sally</span>
+  </button>
+
   <div class="sb-divider"></div>
 
   <a class="sb-item" href="kalkulator.html">
@@ -1703,7 +1710,9 @@ function showPage(page){
   document.getElementById("cabangPage").style.display="none";
   document.getElementById("quranPage").style.display="none";
   document.getElementById("karyawanPage").style.display="none";
-  ["btnKmob","btnCabang","btnQuran","btnKaryawan"].forEach(function(id){
+  var kmbPageEl = document.getElementById("kmbPage");
+  if (kmbPageEl) kmbPageEl.style.display="none";
+  ["btnKmob","btnCabang","btnQuran","btnKaryawan","btnKmb"].forEach(function(id){
     var el=document.getElementById(id);
     if(el) el.classList.remove("active");
   });
@@ -1712,12 +1721,14 @@ function showPage(page){
     document.getElementById("btnKmob").classList.add("active");
     document.body.className="bg-kmob";
     stopSundaQuote();
+    kmbStopRefresh();
   }
   if(page==="cabang"){
     document.getElementById("cabangPage").style.display="block";
     document.getElementById("btnCabang").classList.add("active");
     document.body.className="bg-cabang";
     startSundaQuote();
+    kmbStopRefresh();
   }
   if(page==="quran"){
     document.getElementById("quranPage").style.display="block";
@@ -1725,6 +1736,7 @@ function showPage(page){
     document.body.className="bg-quran";
     stopSundaQuote();
     quranInit();
+    kmbStopRefresh();
   }
   if(page==="karyawan"){
     document.getElementById("karyawanPage").style.display="block";
@@ -1732,6 +1744,15 @@ function showPage(page){
     document.body.className="bg-karyawan";
     stopSundaQuote();
     loadKaryawan();
+    kmbStopRefresh();
+  }
+  if(page==="kmb"){
+    if (kmbPageEl) kmbPageEl.style.display="block";
+    var btnKmbEl = document.getElementById("btnKmb");
+    if (btnKmbEl) btnKmbEl.classList.add("active");
+    document.body.className="bg-kmb";
+    stopSundaQuote();
+    kmbStartRefresh();
   }
   if(window.innerWidth <= 640) sbClose();
 }
@@ -2771,7 +2792,391 @@ setInterval(karyawanUpdateClock, 1000);
 
 </div>
 
+<!-- ============ KMB SALLY PAGE ============ -->
+<div id="kmbPage" style="display:none;">
+
+  <!-- Page Header -->
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;flex-wrap:wrap;">
+    <div>
+      <h1 style="margin:0;font-size:1.8rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:1.5rem;">📡</span> KMB Monitoring
+      </h1>
+      <p style="margin:4px 0 0;color:rgba(255,255,255,0.45);font-size:0.85rem;font-weight:500;">Monitoring status aktif / mati</p>
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+      <span id="kmbLastUpdate" style="font-size:0.75rem;color:rgba(255,255,255,0.3);font-weight:500;"></span>
+      <div id="kmbRefreshDot" style="width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;animation:kmbPulse 2s infinite;"></div>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:22px;">
+    <div class="kmb-card-total" style="background:rgba(255,255,255,0.07);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.13);border-radius:18px;padding:20px 22px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+      <div style="position:absolute;top:-12px;right:-10px;font-size:4rem;opacity:0.06;pointer-events:none;">📊</div>
+      <h2 id="kmbTotal" style="font-size:2.2rem;font-weight:800;color:#fff;margin:0;line-height:1.1;">-</h2>
+      <span style="font-size:0.78rem;color:rgba(255,255,255,0.5);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Total Data</span>
+    </div>
+    <div style="background:rgba(34,197,94,0.12);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(34,197,94,0.3);border-radius:18px;padding:20px 22px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(34,197,94,0.1);">
+      <div style="position:absolute;top:-12px;right:-10px;font-size:4rem;opacity:0.08;pointer-events:none;">✅</div>
+      <h2 id="kmbAktif" style="font-size:2.2rem;font-weight:800;color:#4ade80;margin:0;line-height:1.1;text-shadow:0 0 18px rgba(34,197,94,0.5);">-</h2>
+      <span style="font-size:0.78rem;color:rgba(34,197,94,0.7);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Aktif</span>
+    </div>
+    <div style="background:rgba(239,68,68,0.12);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(239,68,68,0.3);border-radius:18px;padding:20px 22px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(239,68,68,0.1);">
+      <div style="position:absolute;top:-12px;right:-10px;font-size:4rem;opacity:0.08;pointer-events:none;">❌</div>
+      <h2 id="kmbMati" style="font-size:2.2rem;font-weight:800;color:#f87171;margin:0;line-height:1.1;text-shadow:0 0 18px rgba(239,68,68,0.5);">-</h2>
+      <span style="font-size:0.78rem;color:rgba(239,68,68,0.7);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Mati</span>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div style="position:relative;margin-bottom:16px;">
+    <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:1rem;pointer-events:none;">🔍</span>
+    <input type="text" id="kmbSearch" placeholder="Cari Nama / Agreement / Cabang / Status..."
+      style="width:100%;padding:12px 16px 12px 42px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;color:#fff;font-size:0.9rem;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color 0.2s,box-shadow 0.2s;box-sizing:border-box;"
+      onfocus="this.style.borderColor='rgba(239,68,68,0.5)';this.style.boxShadow='0 0 0 3px rgba(239,68,68,0.1)'"
+      onblur="this.style.borderColor='rgba(255,255,255,0.12)';this.style.boxShadow='none'">
+  </div>
+
+  <!-- Loading Spinner -->
+  <div id="kmbSpinner" style="display:flex;align-items:center;justify-content:center;padding:40px;gap:12px;color:rgba(255,255,255,0.45);font-size:0.9rem;">
+    <div style="width:22px;height:22px;border:2.5px solid rgba(255,255,255,0.15);border-top-color:#ef4444;border-radius:50%;animation:kmbSpin 0.7s linear infinite;flex-shrink:0;"></div>
+    Memuat data KMB Sally...
+  </div>
+
+  <!-- Table -->
+  <div style="overflow-x:auto;border-radius:16px;border:1px solid rgba(255,255,255,0.09);box-shadow:0 8px 32px rgba(0,0,0,0.3);display:none;" id="kmbTableWrap">
+    <table id="kmbTable" style="width:100%;border-collapse:collapse;min-width:600px;">
+      <thead>
+        <tr style="background:rgba(255,255,255,0.06);position:sticky;top:0;z-index:10;backdrop-filter:blur(12px);">
+          <th style="padding:13px 16px;text-align:left;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,0.08);">Tanggal</th>
+          <th style="padding:13px 16px;text-align:left;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,0.08);">Status</th>
+          <th style="padding:13px 16px;text-align:left;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,0.08);">Agreement</th>
+          <th style="padding:13px 16px;text-align:left;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,0.08);">Nama</th>
+          <th style="padding:13px 16px;text-align:left;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,0.08);">Cabang</th>
+        </tr>
+      </thead>
+      <tbody id="kmbTbody"></tbody>
+    </table>
+  </div>
+  <div id="kmbInfo" style="margin-top:8px;color:rgba(255,255,255,0.35);font-size:0.75rem;text-align:right;"></div>
+
+</div><!-- /kmbPage -->
+
 </div><!-- /mainContent -->
   <script src="assets/js/music-player.js"></script>
+<!-- ============ KMB SALLY — CSS + JS ============ -->
+<style>
+@keyframes kmbSpin    { to { transform: rotate(360deg); } }
+@keyframes kmbPulse   { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(0.85)} }
+@keyframes kmbBlink   { 0%,100%{opacity:1} 50%{opacity:0.25} }
+@keyframes kmbFadeIn  { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+@keyframes kmbFadeOut { from{opacity:1;transform:translateY(0)} to{opacity:0;transform:translateY(12px)} }
+
+#kmbTable tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.18s;
+}
+#kmbTable tbody tr:hover { background: rgba(255,255,255,0.05) !important; }
+#kmbTable tbody tr.kmb-row-mati {
+  background: rgba(239,68,68,0.07) !important;
+  animation: kmbBlink 2.4s ease-in-out infinite;
+}
+#kmbTable tbody tr.kmb-row-aktif { background: rgba(34,197,94,0.04) !important; }
+
+#kmbWarningPopup {
+  position: fixed;
+  bottom: 92px;
+  right: 20px;
+  z-index: 99998;
+  background: linear-gradient(135deg, rgba(185,28,28,0.95), rgba(127,29,29,0.95));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(239,68,68,0.45);
+  border-radius: 16px;
+  padding: 16px 20px;
+  min-width: 240px;
+  max-width: 300px;
+  box-shadow: 0 12px 48px rgba(239,68,68,0.35), 0 4px 16px rgba(0,0,0,0.5);
+  display: none;
+  animation: kmbFadeIn 0.35s cubic-bezier(.34,1.56,.64,1);
+}
+#kmbWarningPopup.kmb-warn-out {
+  animation: kmbFadeOut 0.4s ease forwards;
+}
+.kmb-warn-icon { font-size: 1.4rem; line-height: 1; }
+.kmb-warn-title {
+  font-size: 0.8rem;
+  color: rgba(254,202,202,0.7);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 2px;
+}
+.kmb-warn-body {
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 700;
+}
+.kmb-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+.kmb-badge-aktif {
+  background: rgba(34,197,94,0.2);
+  color: #4ade80;
+  border: 1px solid rgba(34,197,94,0.4);
+  box-shadow: 0 0 8px rgba(34,197,94,0.25);
+}
+.kmb-badge-mati {
+  background: rgba(239,68,68,0.2);
+  color: #f87171;
+  border: 1px solid rgba(239,68,68,0.4);
+  box-shadow: 0 0 8px rgba(239,68,68,0.25);
+}
+</style>
+
+<!-- Warning Popup DOM -->
+<div id="kmbWarningPopup">
+  <div style="display:flex;align-items:flex-start;gap:12px;">
+    <div class="kmb-warn-icon">⚠️</div>
+    <div>
+      <div class="kmb-warn-title">Peringatan Sistem</div>
+      <div class="kmb-warn-body" id="kmbWarnText">— data MATI terdeteksi</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ====================================================================
+   KMB SALLY — loadKMB, showWarning, parseCSV, filter, auto-refresh
+   ==================================================================== */
+
+const KMB_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7NvRjaRJSrWnqUWuwNpKFsKXmvs6d37RWCn0VOx331pK7YXmk1S2thcY4QoUfiW6ilnJ20Wn67_z6/pub?gid=33181710&single=true&output=csv';
+
+let kmbDataGlobal    = [];
+let kmbPreviousMati  = -1;
+let kmbRefreshTimer  = null;
+let kmbWarnTimer     = null;
+let kmbFirstLoad     = true;
+let kmbLoaded        = false;
+
+/* ── Parse CSV (RFC 4180 compliant) ─────────────────────────────── */
+function kmbParseCSVLine(line) {
+  const result = []; let cur = ''; let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') {
+      if (inQ && line[i+1] === '"') { cur += '"'; i++; }
+      else inQ = !inQ;
+    } else if (c === ',' && !inQ) { result.push(cur.trim()); cur = ''; }
+    else { cur += c; }
+  }
+  result.push(cur.trim());
+  return result;
+}
+
+/* ── Warning Popup ───────────────────────────────────────────────── */
+function showKmbWarning(matiCount) {
+  clearTimeout(kmbWarnTimer);
+  const popup  = document.getElementById('kmbWarningPopup');
+  const text   = document.getElementById('kmbWarnText');
+  if (!popup || !text) return;
+
+  popup.classList.remove('kmb-warn-out');
+  text.textContent = matiCount + ' data MATI terdeteksi';
+  popup.style.display = 'block';
+
+  kmbWarnTimer = setTimeout(function() {
+    popup.classList.add('kmb-warn-out');
+    setTimeout(function() {
+      popup.style.display = 'none';
+      popup.classList.remove('kmb-warn-out');
+    }, 420);
+  }, 4500);
+}
+
+/* ── Render Table ────────────────────────────────────────────────── */
+function kmbRenderTable(data) {
+  const tbody = document.getElementById('kmbTbody');
+  const info  = document.getElementById('kmbInfo');
+  if (!tbody) return;
+
+  if (!data.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;color:rgba(255,255,255,0.3);">Tidak ada data ditemukan</td></tr>';
+    if (info) info.textContent = '';
+    return;
+  }
+
+  tbody.innerHTML = data.map(function(d) {
+    const isMati   = d.status.toLowerCase() === 'mati';
+    const isAktif  = d.status.toLowerCase() === 'aktif';
+    const rowClass = isMati ? 'kmb-row-mati' : (isAktif ? 'kmb-row-aktif' : '');
+    const badge    = isMati
+      ? '<span class="kmb-badge kmb-badge-mati">● Mati</span>'
+      : isAktif
+        ? '<span class="kmb-badge kmb-badge-aktif">● Aktif</span>'
+        : '<span class="kmb-badge" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.1);">' + (d.status || '-') + '</span>';
+
+    return '<tr class="' + rowClass + '">' +
+      '<td style="padding:11px 16px;color:rgba(255,255,255,0.6);font-size:0.82rem;white-space:nowrap;">' + (d.tanggal || '-') + '</td>' +
+      '<td style="padding:11px 16px;">' + badge + '</td>' +
+      '<td style="padding:11px 16px;color:rgba(200,220,255,0.85);font-size:0.82rem;font-family:\'Courier New\',monospace;">' + (d.agreement || '-') + '</td>' +
+      '<td style="padding:11px 16px;color:#fff;font-weight:600;font-size:0.88rem;">' + (d.nama || '-') + '</td>' +
+      '<td style="padding:11px 16px;color:rgba(255,255,255,0.55);font-size:0.82rem;">' + (d.cabang || '-') + '</td>' +
+    '</tr>';
+  }).join('');
+
+  if (info) info.textContent = 'Menampilkan ' + data.length + ' dari ' + kmbDataGlobal.length + ' data';
+}
+
+/* ── Update Summary Cards ────────────────────────────────────────── */
+function kmbUpdateStats(data) {
+  const aktif = data.filter(function(d){ return d.status.toLowerCase() === 'aktif'; }).length;
+  const mati  = data.filter(function(d){ return d.status.toLowerCase() === 'mati';  }).length;
+
+  var totalEl = document.getElementById('kmbTotal');
+  var aktifEl = document.getElementById('kmbAktif');
+  var matiEl  = document.getElementById('kmbMati');
+  if (totalEl) totalEl.textContent = data.length;
+  if (aktifEl) aktifEl.textContent = aktif;
+  if (matiEl)  matiEl.textContent  = mati;
+
+  return { aktif: aktif, mati: mati };
+}
+
+/* ── Fetch & Parse KMB CSV ───────────────────────────────────────── */
+async function kmbFetchData() {
+  try {
+    const res  = await fetch(KMB_CSV_URL + '&t=' + Date.now());
+    const text = await res.text();
+    const rows = text.split('\n');
+    const result = [];
+
+    // Skip header row
+    rows.slice(1).forEach(function(row) {
+      if (!row.trim()) return;
+      const col = kmbParseCSVLine(row);
+      // Columns from screenshot: TGL(0), RE-TGL(1 = status label), AGR(2), NAMA(3), NOMOR(4), CABANG(5), LIMIT(6)
+      // Col[1] contains the colored dot + text like "● Mati" / "● Aktif" — we strip to text
+      const rawStatus = (col[1] || '').replace(/[^a-zA-Z]/g, '').trim();
+      result.push({
+        tanggal:   (col[0] || '').trim(),
+        status:    rawStatus || (col[1] || '').trim(),
+        agreement: (col[2] || '').trim(),
+        nama:      (col[3] || '').trim(),
+        nomor:     (col[4] || '').trim(),
+        cabang:    (col[5] || '').trim(),
+        limit:     (col[6] || '').trim()
+      });
+    });
+
+    return result;
+  } catch (e) {
+    console.warn('[KMB] Fetch error:', e);
+    return null;
+  }
+}
+
+/* ── Main Load Function ──────────────────────────────────────────── */
+async function loadKMB() {
+  // Show page
+  showPage('kmb');
+
+  // Show spinner, hide table on first load
+  if (!kmbLoaded) {
+    var spinner = document.getElementById('kmbSpinner');
+    var tableWrap = document.getElementById('kmbTableWrap');
+    if (spinner)   spinner.style.display  = 'flex';
+    if (tableWrap) tableWrap.style.display = 'none';
+  }
+
+  await kmbRefreshData();
+}
+
+/* ── Refresh Data (called by auto-refresh too) ───────────────────── */
+async function kmbRefreshData() {
+  const data = await kmbFetchData();
+  if (!data) return;
+
+  kmbDataGlobal = data;
+  kmbLoaded     = true;
+
+  const stats = kmbUpdateStats(data);
+
+  // Filter by current search query
+  const kw = (document.getElementById('kmbSearch') && document.getElementById('kmbSearch').value) || '';
+  const filtered = kw.trim() ? kmbDataGlobal.filter(function(d) {
+    const q = kw.toLowerCase();
+    return (d.nama      + d.agreement + d.cabang + d.status + d.tanggal)
+           .toLowerCase().indexOf(q) !== -1;
+  }) : kmbDataGlobal;
+
+  kmbRenderTable(filtered);
+
+  // Show table, hide spinner
+  var spinner   = document.getElementById('kmbSpinner');
+  var tableWrap = document.getElementById('kmbTableWrap');
+  if (spinner)   spinner.style.display   = 'none';
+  if (tableWrap) tableWrap.style.display = 'block';
+
+  // Warning logic: show on first load if mati > 0, or when count changes
+  const mati = stats.mati;
+  if (kmbFirstLoad) {
+    kmbFirstLoad = false;
+    if (mati > 0) showKmbWarning(mati);
+  } else if (mati !== kmbPreviousMati) {
+    if (mati > 0) showKmbWarning(mati);
+  }
+  kmbPreviousMati = mati;
+
+  // Update last-updated timestamp
+  var luEl = document.getElementById('kmbLastUpdate');
+  if (luEl) {
+    var now = new Date();
+    var hh  = String(now.getHours()).padStart(2,'0');
+    var mm  = String(now.getMinutes()).padStart(2,'0');
+    var ss  = String(now.getSeconds()).padStart(2,'0');
+    luEl.textContent = 'Update: ' + hh + ':' + mm + ':' + ss;
+  }
+}
+
+/* ── Auto Refresh (30s) ──────────────────────────────────────────── */
+function kmbStartRefresh() {
+  kmbStopRefresh();
+  kmbRefreshTimer = setInterval(function() {
+    if (document.getElementById('kmbPage') &&
+        document.getElementById('kmbPage').style.display !== 'none') {
+      kmbRefreshData();
+    }
+  }, 30000);
+}
+
+function kmbStopRefresh() {
+  if (kmbRefreshTimer) { clearInterval(kmbRefreshTimer); kmbRefreshTimer = null; }
+}
+
+/* ── Real-time Search ────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', function() {
+  var searchEl = document.getElementById('kmbSearch');
+  if (searchEl) {
+    searchEl.addEventListener('input', function() {
+      if (!kmbLoaded) return;
+      const kw = this.value.toLowerCase().trim();
+      const filtered = kw ? kmbDataGlobal.filter(function(d) {
+        return (d.nama + d.agreement + d.cabang + d.status + d.tanggal)
+               .toLowerCase().indexOf(kw) !== -1;
+      }) : kmbDataGlobal;
+      kmbRenderTable(filtered);
+    });
+  }
+});
+</script>
 </body>
 </html>
