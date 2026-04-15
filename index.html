@@ -2900,7 +2900,7 @@ setInterval(karyawanUpdateClock, 1000);
 
   <!-- Table -->
   <div style="overflow-x:auto;border-radius:16px;border:1px solid rgba(255,255,255,0.09);box-shadow:0 8px 32px rgba(0,0,0,0.3);display:none;" id="kmbTableWrap">
-    <table id="kmbTable" style="width:100%;border-collapse:collapse;min-width:640px;">
+    <table id="kmbTable" style="width:100%;border-collapse:collapse;min-width:900px;">
       <thead>
         <tr style="background:rgba(255,255,255,0.05);position:sticky;top:0;z-index:10;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);">
           <th style="padding:12px 14px;text-align:left;font-size:0.7rem;color:rgba(255,255,255,0.4);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid rgba(255,255,255,0.07);white-space:nowrap;">Tanggal</th>
@@ -2909,6 +2909,9 @@ setInterval(karyawanUpdateClock, 1000);
           <th style="padding:12px 14px;text-align:left;font-size:0.7rem;color:rgba(255,255,255,0.4);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid rgba(255,255,255,0.07);">Nama</th>
           <th style="padding:12px 14px;text-align:left;font-size:0.7rem;color:rgba(255,255,255,0.4);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid rgba(255,255,255,0.07);white-space:nowrap;">No. HP</th>
           <th style="padding:12px 14px;text-align:left;font-size:0.7rem;color:rgba(255,255,255,0.4);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid rgba(255,255,255,0.07);">Cabang</th>
+          <th style="padding:12px 14px;text-align:right;font-size:0.7rem;color:rgba(255,255,255,0.4);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid rgba(255,255,255,0.07);white-space:nowrap;">Plafon</th>
+          <th style="padding:12px 14px;text-align:right;font-size:0.7rem;color:rgba(255,255,255,0.4);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid rgba(255,255,255,0.07);white-space:nowrap;">Angsuran</th>
+          <th style="padding:12px 14px;text-align:right;font-size:0.7rem;color:rgba(255,255,255,0.4);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid rgba(255,255,255,0.07);white-space:nowrap;">Sisa Hutang</th>
           <th style="padding:12px 14px;text-align:left;font-size:0.7rem;color:rgba(255,255,255,0.4);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid rgba(255,255,255,0.07);white-space:nowrap;">Deadline</th>
         </tr>
       </thead>
@@ -3183,9 +3186,15 @@ function kmbRenderTable(data) {
   if (!tbody) return;
 
   if (!data.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:rgba(255,255,255,0.25);background:rgba(0,0,0,0.2);">Tidak ada data ditemukan</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:32px;color:rgba(255,255,255,0.25);background:rgba(0,0,0,0.2);">Tidak ada data ditemukan</td></tr>';
     if (info) info.textContent = '';
     return;
+  }
+
+  // Format rupiah
+  function fmtRp(str) {
+    if (!str || str === 'Rp0' || str === '-') return '<span style="color:rgba(255,255,255,0.2);font-size:0.76rem;">-</span>';
+    return '<span style="font-size:0.78rem;color:rgba(255,255,255,0.55);">' + str + '</span>';
   }
 
   tbody.innerHTML = data.map(function(d) {
@@ -3200,27 +3209,29 @@ function kmbRenderTable(data) {
         ? '<span class="kmb-badge kmb-badge-aktif">● Aktif</span>'
         : '<span class="kmb-badge kmb-badge-unknown">' + (d.status || '?') + '</span>';
 
-    // Deadline cell
     var deadlineCell;
     if (d.daysLeft === null) {
-      deadlineCell = '<span style="color:rgba(255,255,255,0.2);font-size:0.78rem;">-</span>';
+      deadlineCell = '<span style="color:rgba(255,255,255,0.18);font-size:0.76rem;">-</span>';
     } else if (d.daysLeft < 0) {
-      deadlineCell = '<span class="kmb-badge" style="background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.2);font-size:0.71rem;">Lewat ' + Math.abs(d.daysLeft) + ' hr</span>';
+      deadlineCell = '<span class="kmb-badge" style="background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2);font-size:0.69rem;">Lewat ' + Math.abs(d.daysLeft) + ' hr</span>';
     } else if (d.daysLeft === 0) {
       deadlineCell = '<span class="kmb-badge kmb-badge-deadline">⚡ Hari Ini</span>';
     } else if (d.daysLeft === 1) {
       deadlineCell = '<span class="kmb-badge kmb-badge-deadline">⏰ Besok</span>';
     } else {
-      deadlineCell = '<span style="color:rgba(255,255,255,0.45);font-size:0.79rem;">' + kmbFmtDate(d.limit) + '</span>';
+      deadlineCell = '<span style="color:rgba(255,255,255,0.4);font-size:0.76rem;">' + kmbFmtDate(d.limit) + '</span>';
     }
 
     return '<tr class="' + rowClass + '">' +
-      '<td style="padding:10px 14px;color:rgba(255,255,255,0.5);font-size:0.79rem;white-space:nowrap;">' + kmbFmtDate(d.tanggal) + '</td>' +
+      '<td style="padding:10px 14px;color:rgba(255,255,255,0.45);font-size:0.77rem;white-space:nowrap;">' + kmbFmtDate(d.tanggal) + '</td>' +
       '<td style="padding:10px 14px;">' + badge + '</td>' +
-      '<td style="padding:10px 14px;color:rgba(180,210,255,0.8);font-size:0.79rem;font-family:\'Courier New\',monospace;white-space:nowrap;">' + (d.agreement || '-') + '</td>' +
-      '<td style="padding:10px 14px;color:#fff;font-weight:600;font-size:0.86rem;">' + (d.nama || '-') + '</td>' +
-      '<td style="padding:10px 14px;color:rgba(255,255,255,0.5);font-size:0.79rem;white-space:nowrap;">' + (d.nomor || '-') + '</td>' +
-      '<td style="padding:10px 14px;color:rgba(255,255,255,0.55);font-size:0.79rem;">' + (d.cabang || '-') + '</td>' +
+      '<td style="padding:10px 14px;color:rgba(160,200,255,0.75);font-size:0.77rem;font-family:\'Courier New\',monospace;white-space:nowrap;">' + (d.agreement || '-') + '</td>' +
+      '<td style="padding:10px 14px;color:#fff;font-weight:600;font-size:0.85rem;">' + (d.nama || '-') + '</td>' +
+      '<td style="padding:10px 14px;color:rgba(255,255,255,0.45);font-size:0.77rem;white-space:nowrap;">' + (d.nomor || '-') + '</td>' +
+      '<td style="padding:10px 14px;color:rgba(255,255,255,0.5);font-size:0.77rem;">' + (d.cabang || '-') + '</td>' +
+      '<td style="padding:10px 14px;text-align:right;">' + fmtRp(d.plafon) + '</td>' +
+      '<td style="padding:10px 14px;text-align:right;">' + fmtRp(d.angsuran) + '</td>' +
+      '<td style="padding:10px 14px;text-align:right;">' + fmtRp(d.sisaHutang) + '</td>' +
       '<td style="padding:10px 14px;">' + deadlineCell + '</td>' +
     '</tr>';
   }).join('');
@@ -3247,63 +3258,76 @@ function kmbUpdateStats(data) {
 }
 
 /* ── Fetch & Parse KMB CSV ───────────────────────────────────────── */
-async function kmbFetchData() {
-  try {
-    var res  = await fetch(KMB_CSV_URL + '&cachebust=' + Date.now());
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    var text = await res.text();
-    if (!text || text.trim().length < 5) throw new Error('Empty response');
+function kmbFetchData() {
+  return fetch(KMB_CSV_URL)
+    .then(function(res) { return res.text(); })
+    .then(function(text) {
+      if (!text || text.trim().length < 5) throw new Error('Empty response');
 
-    var rows   = text.split('\n');
-    var result = [];
+      var rows   = text.split('\n');
+      var result = [];
 
-    // Header row: TGL, RE-TGL, AGR, NAMA, NOMOR, CABANG, LIMIT
-    rows.slice(1).forEach(function(row) {
-      row = row.replace(/\r/g,'');
-      if (!row.trim()) return;
-      var col = kmbParseCSVLine(row);
-      if (col.length < 2) return;
+      // Columns (from spreadsheet):
+      // A(0)=TGL, B(1)=RE-TGL/Status, C(2)=AGR, D(3)=NAMA,
+      // E(4)=NOMOR, F(5)=CABANG, G(6)=LIMIT, H(7)=PLAFON,
+      // I(8)=ANGSURAN, J(9)=SISA HUTANG, K(10)=DENDA, L(11)=?, M(12)=TERIMA DANA
+      rows.slice(1).forEach(function(row) {
+        row = row.replace(/\r/g, '');
+        if (!row.trim()) return;
+        var col = kmbParseCSVLine(row);
+        if (col.length < 2) return;
 
-      // Normalize status: strip everything except letters, then capitalize
-      var rawSt = (col[1] || '').replace(/\r/g,'').trim();
-      var status = rawSt.replace(/[^a-zA-Z]/g,'').trim();
-      // Capitalize first letter: "aktif" → "Aktif", "mati" → "Mati"
-      if (status) status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+        // Normalize status — strip non-alpha then capitalize
+        var rawSt  = (col[1] || '').trim();
+        var status = rawSt.replace(/[^a-zA-Z]/g, '').trim();
+        if (status) status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+        // fallback: if stripping removes everything, use raw
+        if (!status) status = rawSt;
 
-      var limitStr = (col[6] || '').replace(/\r/g,'').trim();
-      var days     = kmbDaysLeft(limitStr);
+        var limitStr = (col[6] || '').trim();
+        var days     = kmbDaysLeft(limitStr);
 
-      result.push({
-        tanggal:   (col[0] || '').replace(/\r/g,'').trim(),
-        status:    status,
-        agreement: (col[2] || '').replace(/\r/g,'').trim(),
-        nama:      (col[3] || '').replace(/\r/g,'').trim(),
-        nomor:     (col[4] || '').replace(/\r/g,'').trim(),
-        cabang:    (col[5] || '').replace(/\r/g,'').trim(),
-        limit:     limitStr,
-        daysLeft:  days
+        var clean = function(s) { return (s || '').replace(/\r/g, '').trim(); };
+
+        result.push({
+          tanggal:    clean(col[0]),
+          status:     status,
+          agreement:  clean(col[2]),
+          nama:       clean(col[3]),
+          nomor:      clean(col[4]),
+          cabang:     clean(col[5]),
+          limit:      clean(col[6]),
+          plafon:     clean(col[7]),
+          angsuran:   clean(col[8]),
+          sisaHutang: clean(col[9]),
+          denda:      clean(col[10]),
+          terimaDana: clean(col[12]),
+          daysLeft:   days
+        });
       });
-    });
 
-    return result;
-  } catch(e) {
-    console.warn('[KMB] Fetch error:', e.message);
-    return null;
-  }
+      return result;
+    })
+    .catch(function(e) {
+      console.warn('[KMB] Fetch error:', e.message);
+      return null;
+    });
 }
 
 /* ── Filter helper ───────────────────────────────────────────────── */
 function kmbFilter(kw) {
-  if (!kw) return kmbDataGlobal;
+  if (!kw || !kw.trim()) return kmbDataGlobal;
   var q = kw.toLowerCase().trim();
   return kmbDataGlobal.filter(function(d) {
-    return (d.nama + '|' + d.nomor + '|' + d.agreement + '|' + d.cabang + '|' + d.status + '|' + d.tanggal)
-           .toLowerCase().indexOf(q) !== -1;
+    var haystack = [d.nama, d.nomor, d.agreement, d.cabang, d.status,
+                    d.tanggal, d.plafon, d.angsuran, d.sisaHutang, d.limit]
+                   .join('|').toLowerCase();
+    return haystack.indexOf(q) !== -1;
   });
 }
 
 /* ── Main Load ───────────────────────────────────────────────────── */
-async function loadKMB() {
+function loadKMB() {
   showPage('kmb');
 
   if (!kmbLoaded) {
@@ -3317,54 +3341,56 @@ async function loadKMB() {
     if (bw) bw.style.display = 'none';
   }
 
-  await kmbRefreshData();
+  kmbRefreshData();
 }
 
 /* ── Refresh Data ────────────────────────────────────────────────── */
-async function kmbRefreshData() {
-  var data = await kmbFetchData();
+function kmbRefreshData() {
+  kmbFetchData().then(function(data) {
+    var sp = document.getElementById('kmbSpinner');
+    var tw = document.getElementById('kmbTableWrap');
+    var er = document.getElementById('kmbError');
 
-  var sp = document.getElementById('kmbSpinner');
-  var tw = document.getElementById('kmbTableWrap');
-  var er = document.getElementById('kmbError');
+    if (!data || data.length === 0) {
+      if (sp) sp.style.display = 'none';
+      if (!kmbLoaded) {
+        if (er) er.style.display = 'block';
+      }
+      return;
+    }
 
-  if (!data) {
+    kmbDataGlobal = data;
+    kmbLoaded     = true;
+
+    var stats = kmbUpdateStats(data);
+    var kw    = document.getElementById('kmbSearch') ? document.getElementById('kmbSearch').value : '';
+    kmbRenderTable(kmbFilter(kw));
+    kmbRenderBreakdown(data);
+
     if (sp) sp.style.display = 'none';
-    if (!kmbLoaded && er) er.style.display = 'block';
-    return;
-  }
+    if (er) er.style.display = 'none';
+    if (tw) tw.style.display = 'block';
 
-  kmbDataGlobal = data;
-  kmbLoaded     = true;
+    // Warning
+    var mati = stats.mati;
+    if (kmbFirstLoad) {
+      kmbFirstLoad = false;
+      if (mati > 0) showKmbWarning(mati);
+    } else if (mati !== kmbPreviousMati) {
+      if (mati > 0) showKmbWarning(mati);
+    }
+    kmbPreviousMati = mati;
 
-  var stats = kmbUpdateStats(data);
-  var kw    = document.getElementById('kmbSearch') ? document.getElementById('kmbSearch').value : '';
-  kmbRenderTable(kmbFilter(kw));
-  kmbRenderBreakdown(data);
-
-  if (sp) sp.style.display = 'none';
-  if (er) er.style.display = 'none';
-  if (tw) tw.style.display = 'block';
-
-  // Warning logic
-  var mati = stats.mati;
-  if (kmbFirstLoad) {
-    kmbFirstLoad = false;
-    if (mati > 0) showKmbWarning(mati);
-  } else if (mati !== kmbPreviousMati) {
-    if (mati > 0) showKmbWarning(mati);
-  }
-  kmbPreviousMati = mati;
-
-  // Timestamp
-  var lu = document.getElementById('kmbLastUpdate');
-  if (lu) {
-    var n  = new Date();
-    var hh = String(n.getHours()).padStart(2,'0');
-    var mm = String(n.getMinutes()).padStart(2,'0');
-    var ss = String(n.getSeconds()).padStart(2,'0');
-    lu.textContent = 'Update: ' + hh + ':' + mm + ':' + ss;
-  }
+    // Timestamp
+    var lu = document.getElementById('kmbLastUpdate');
+    if (lu) {
+      var n  = new Date();
+      var hh = String(n.getHours()).padStart(2,'0');
+      var mm = String(n.getMinutes()).padStart(2,'0');
+      var ss = String(n.getSeconds()).padStart(2,'0');
+      lu.textContent = 'Update: ' + hh + ':' + mm + ':' + ss;
+    }
+  });
 }
 
 /* ── Manual Refresh ──────────────────────────────────────────────── */
