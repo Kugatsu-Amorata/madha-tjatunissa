@@ -3259,8 +3259,17 @@ function kmbUpdateStats(data) {
 
 /* ── Fetch & Parse KMB CSV ───────────────────────────────────────── */
 function kmbFetchData() {
-  return fetch(KMB_CSV_URL)
-    .then(function(res) { return res.text(); })
+  return fetch(KMB_CSV_URL, {
+  method: "GET",
+  mode: "cors",
+  cache: "no-store"
+})
+.then(function(res) {
+  if (!res.ok) {
+    throw new Error("Network response error: " + res.status);
+  }
+  return res.text();
+})
     .then(function(text) {
       if (!text || text.trim().length < 5) throw new Error('Empty response');
 
