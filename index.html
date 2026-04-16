@@ -2892,14 +2892,18 @@ setInterval(karyawanUpdateClock, 1000);
   </div>
 
   <!-- Error state -->
-  <div id="kmbError" style="display:none;text-align:center;padding:48px 20px;color:rgba(255,120,100,0.85);font-size:0.9rem;">
-    <div style="font-size:2.5rem;margin-bottom:12px;">⚠️</div>
-    <div style="font-weight:700;font-size:1rem;color:#f87171;margin-bottom:6px;">Gagal memuat data KMB</div>
-    <div id="kmbErrorMsg" style="font-size:0.8rem;color:rgba(255,255,255,0.35);margin-bottom:18px;max-width:320px;margin-left:auto;margin-right:auto;line-height:1.5;">Tidak dapat terhubung ke sumber data</div>
+  <div id="kmbError" style="display:none;text-align:center;padding:48px 24px;">
+    <div style="font-size:2.5rem;margin-bottom:14px;">⚠️</div>
+    <div style="font-weight:700;font-size:1rem;color:#f87171;margin-bottom:8px;">Gagal memuat data KMB</div>
+    <div id="kmbErrorMsg" style="font-size:0.82rem;color:rgba(255,255,255,0.4);margin-bottom:6px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6;"></div>
+    <div style="font-size:0.78rem;color:rgba(251,191,36,0.7);margin-bottom:20px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:10px;padding:10px 14px;">
+      💡 <strong>Solusi:</strong> Buka Google Sheets → File → Share → Publish to web<br>
+      Pastikan <strong>"Restrict access"</strong> tidak dicentang, lalu Publish ulang dan kirim URL CSV baru.
+    </div>
     <button onclick="kmbManualRefresh()"
-      style="padding:9px 22px;background:rgba(239,68,68,0.18);border:1px solid rgba(239,68,68,0.4);border-radius:10px;color:#f87171;font-size:0.83rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.15s;"
-      onmouseover="this.style.background='rgba(239,68,68,0.3)'"
-      onmouseout="this.style.background='rgba(239,68,68,0.18)'">
+      style="padding:9px 22px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.35);border-radius:10px;color:#f87171;font-size:0.83rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;"
+      onmouseover="this.style.background='rgba(239,68,68,0.28)'"
+      onmouseout="this.style.background='rgba(239,68,68,0.15)'">
       🔄 Coba Lagi
     </button>
   </div>
@@ -3265,31 +3269,17 @@ function kmbUpdateStats(data) {
 
 /* ── Fetch & Parse KMB CSV ───────────────────────────────────────── */
 function kmbFetchData() {
-  // ── Konfigurasi fetch: CORS + no-cache agar tidak kena stale redirect
-  var fetchOptions = {
-    method:  'GET',
-    mode:    'cors',
-    cache:   'no-cache',
-    headers: { 'Accept': 'text/csv, text/plain, */*' }
-  };
-
-  return fetch(KMB_CSV_URL, fetchOptions)
+  // Fetch polos — identik dengan cara KMOB/Cabang/Karyawan yang sudah terbukti jalan
+  return fetch(KMB_CSV_URL)
     .then(function(res) {
-      // ── Validasi response HTTP
-      if (!res.ok) {
-        throw new Error('HTTP ' + res.status + ' ' + res.statusText);
-      }
+      if (!res.ok) throw new Error('HTTP ' + res.status + ': Spreadsheet tidak dapat diakses');
       return res.text();
     })
     .then(function(text) {
-      // ── Validasi isi response
-      if (!text || text.trim().length < 10) {
-        throw new Error('Response kosong atau tidak valid');
-      }
-      // Deteksi apakah response adalah HTML (halaman error Google)
-      if (text.trim().toLowerCase().startsWith('<!doctype') ||
-          text.trim().toLowerCase().startsWith('<html')) {
-        throw new Error('Server mengembalikan halaman HTML, bukan CSV');
+      if (!text || text.trim().length < 5) throw new Error('Response kosong dari server');
+      // Deteksi HTML error page (bukan CSV)
+      if (text.trim().charAt(0) === '<') {
+        throw new Error('Spreadsheet belum dipublish secara publik, atau "Restrict access" masih aktif di Publish settings');
       }
 
       var rows   = text.split('\n');
@@ -3304,19 +3294,13 @@ function kmbFetchData() {
         var col = kmbParseCSVLine(row);
         if (col.length < 2) return;
 
-        // Normalize status — strip non-alpha lalu capitalize
         var rawSt  = (col[1] || '').trim();
         var status = rawSt.replace(/[^a-zA-Z]/g, '').trim();
-        if (status) {
-          status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-        } else {
-          status = rawSt; // fallback ke raw jika kosong setelah strip
-        }
+        if (status) status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+        if (!status) status = rawSt;
 
-        var clean = function(s) { return (s || '').replace(/\r/g, '').trim(); };
-
+        var clean    = function(s) { return (s || '').replace(/\r/g, '').trim(); };
         var limitStr = clean(col[6]);
-        var days     = kmbDaysLeft(limitStr);
 
         result.push({
           tanggal:    clean(col[0]),
@@ -3331,17 +3315,13 @@ function kmbFetchData() {
           sisaHutang: clean(col[9]),
           denda:      clean(col[10]),
           terimaDana: clean(col[12] || ''),
-          daysLeft:   days
+          daysLeft:   kmbDaysLeft(limitStr)
         });
       });
 
-      if (result.length === 0) {
-        throw new Error('Tidak ada baris data setelah parsing');
-      }
-
       return result;
+      // Tidak ada .catch() di sini — error naik ke kmbRefreshData
     });
-    // Tidak ada .catch() di sini — biarkan error naik ke kmbRefreshData
 }
 
 /* ── Filter helper ───────────────────────────────────────────────── */
@@ -3379,13 +3359,10 @@ function kmbRefreshData() {
   var sp = document.getElementById('kmbSpinner');
   var tw = document.getElementById('kmbTableWrap');
   var er = document.getElementById('kmbError');
-
-  // Tampilkan spinner saat sedang fetch ulang (jika tabel sudah tampil, biarkan)
-  if (!kmbLoaded && sp) sp.style.display = 'flex';
+  var em = document.getElementById('kmbErrorMsg');
 
   kmbFetchData()
     .then(function(data) {
-      // ── Sukses: sembunyikan spinner & error, tampilkan tabel
       kmbDataGlobal = data;
       kmbLoaded     = true;
 
@@ -3398,7 +3375,6 @@ function kmbRefreshData() {
       if (er) er.style.display = 'none';
       if (tw) tw.style.display = 'block';
 
-      // ── Warning logic
       var mati = stats.mati;
       if (kmbFirstLoad) {
         kmbFirstLoad = false;
@@ -3408,7 +3384,6 @@ function kmbRefreshData() {
       }
       kmbPreviousMati = mati;
 
-      // ── Timestamp
       var lu = document.getElementById('kmbLastUpdate');
       if (lu) {
         var n  = new Date();
@@ -3419,23 +3394,20 @@ function kmbRefreshData() {
       }
     })
     .catch(function(err) {
-      // ── Gagal: log detail error, tampilkan error state
-      console.error('[KMB] Gagal memuat data:', err.message || err);
+      // Error tertangkap — log detail, tampilkan pesan yang berguna
+      console.error('[KMB] Gagal fetch data:', err.message || err);
 
       if (sp) sp.style.display = 'none';
 
-      // Hanya tampilkan error jika data belum pernah berhasil dimuat
-      // (agar auto-refresh yang gagal tidak merusak tampilan yang sudah ada)
       if (!kmbLoaded) {
-        if (er) {
-          er.style.display = 'block';
-          var errMsg = er.querySelector('#kmbErrorMsg');
-          if (errMsg) errMsg.textContent = err.message || 'Tidak dapat terhubung ke sumber data';
-        }
+        // Belum pernah berhasil — tampilkan error state
+        if (em) em.textContent = err.message || 'Tidak dapat terhubung ke sumber data';
+        if (er) er.style.display = 'block';
+        if (tw) tw.style.display = 'none';
       } else {
-        // Sudah ada data — update timestamp dengan tanda error
+        // Sudah ada data sebelumnya — pertahankan tampilan, update status saja
         var lu = document.getElementById('kmbLastUpdate');
-        if (lu) lu.textContent = '⚠ Gagal update — data terakhir ditampilkan';
+        if (lu) lu.textContent = '⚠ Gagal update — menampilkan data terakhir';
       }
     });
 }
