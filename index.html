@@ -2856,22 +2856,39 @@ setInterval(karyawanUpdateClock, 1000);
     </div>
   </div>
 
-  <!-- Breakdown mini-table -->
-  <div id="kmbBreakdownWrap" style="display:none;margin-bottom:20px;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.09);border-radius:16px;padding:16px 20px;">
-    <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">📋 Ringkasan Berdasarkan Cabang</div>
-    <div style="overflow-x:auto;">
-      <table id="kmbBreakdownTable" style="width:100%;border-collapse:collapse;min-width:360px;font-size:0.82rem;">
-        <thead>
-          <tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
-            <th style="padding:7px 12px;text-align:left;color:rgba(255,255,255,0.4);font-weight:700;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;">Cabang</th>
-            <th style="padding:7px 12px;text-align:center;color:rgba(34,197,94,0.7);font-weight:700;font-size:0.7rem;text-transform:uppercase;">Aktif</th>
-            <th style="padding:7px 12px;text-align:center;color:rgba(239,68,68,0.7);font-weight:700;font-size:0.7rem;text-transform:uppercase;">Mati</th>
-            <th style="padding:7px 12px;text-align:center;color:rgba(251,191,36,0.7);font-weight:700;font-size:0.7rem;text-transform:uppercase;">⏰ Deadline</th>
-            <th style="padding:7px 12px;text-align:center;color:rgba(255,255,255,0.35);font-weight:700;font-size:0.7rem;text-transform:uppercase;">Total</th>
-          </tr>
-        </thead>
-        <tbody id="kmbBreakdownBody"></tbody>
-      </table>
+  <!-- Breakdown per Cabang — card grid style -->
+  <div id="kmbBreakdownWrap" style="display:none;margin-bottom:20px;">
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:4px;height:22px;background:linear-gradient(to bottom,#ef4444,#f97316);border-radius:2px;flex-shrink:0;"></div>
+        <span style="font-size:0.92rem;color:#fff;font-weight:700;letter-spacing:0.02em;">Rekap per Cabang</span>
+        <span id="kmbBreakdownCount" style="font-size:0.72rem;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);padding:2px 9px;border-radius:20px;font-weight:600;border:1px solid rgba(255,255,255,0.08);"></span>
+      </div>
+      <span style="font-size:0.72rem;color:rgba(255,255,255,0.3);">Total kontrak = semua data per cabang</span>
+    </div>
+    <!-- Card grid -->
+    <div id="kmbBreakdownCards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:16px;"></div>
+    <!-- Summary bar -->
+    <div id="kmbBreakdownSummary" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px 18px;display:none;">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;">
+        <div>
+          <div style="font-size:1.3rem;font-weight:800;color:#fff;" id="kmbSumTotal">0</div>
+          <div style="font-size:0.67rem;color:rgba(255,255,255,0.4);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Total</div>
+        </div>
+        <div>
+          <div style="font-size:1.3rem;font-weight:800;color:#4ade80;" id="kmbSumAktif">0</div>
+          <div style="font-size:0.67rem;color:rgba(34,197,94,0.6);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Aktif</div>
+        </div>
+        <div>
+          <div style="font-size:1.3rem;font-weight:800;color:#f87171;" id="kmbSumMati">0</div>
+          <div style="font-size:0.67rem;color:rgba(239,68,68,0.6);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Mati</div>
+        </div>
+        <div>
+          <div style="font-size:1.3rem;font-weight:800;color:#fbbf24;" id="kmbSumDeadline">0</div>
+          <div style="font-size:0.67rem;color:rgba(251,191,36,0.6);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Deadline</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -3004,10 +3021,89 @@ setInterval(karyawanUpdateClock, 1000);
   box-shadow: 0 0 8px rgba(251,191,36,0.2);
   animation: kmbBlink 1.8s ease-in-out infinite;
 }
-/* Breakdown table rows */
-#kmbBreakdownBody tr { border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.15s; }
-#kmbBreakdownBody tr:last-child { border-bottom: none; font-weight:700; background: rgba(255,255,255,0.04); }
-#kmbBreakdownBody tr:hover { background: rgba(255,255,255,0.04); }
+/* Breakdown cards */
+.kmb-cab-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 16px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+  cursor: default;
+}
+.kmb-cab-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  border-color: rgba(255,255,255,0.18);
+}
+.kmb-cab-card.has-mati {
+  border-color: rgba(239,68,68,0.25);
+  background: rgba(239,68,68,0.06);
+}
+.kmb-cab-card.has-deadline {
+  border-color: rgba(251,191,36,0.3);
+  background: rgba(251,191,36,0.06);
+  animation: kmbBlink 2.8s ease-in-out infinite;
+}
+.kmb-cab-name {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.01em;
+}
+.kmb-cab-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.kmb-cab-stat {
+  text-align: center;
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 7px 4px;
+}
+.kmb-cab-stat-val {
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.kmb-cab-stat-lbl {
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+/* Progress bar inside card */
+.kmb-cab-bar {
+  margin-top: 12px;
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+  gap: 1px;
+}
+.kmb-cab-bar-aktif { background: #22c55e; border-radius: 3px 0 0 3px; transition: width 0.5s ease; }
+.kmb-cab-bar-mati  { background: #ef4444; border-radius: 0; transition: width 0.5s ease; }
+.kmb-cab-bar-lain  { background: rgba(255,255,255,0.2); border-radius: 0 3px 3px 0; transition: width 0.5s ease; }
+/* Accent top border per card */
+.kmb-cab-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+}
+.kmb-cab-card.has-mati::before { background: linear-gradient(to right, #ef4444, rgba(239,68,68,0.1)); }
+.kmb-cab-card.has-deadline::before { background: linear-gradient(to right, #fbbf24, rgba(251,191,36,0.1)); }
+.kmb-cab-card.all-aktif::before { background: linear-gradient(to right, #22c55e, rgba(34,197,94,0.1)); }
 </style>
 
 <!-- Warning Popup DOM -->
@@ -3141,51 +3237,96 @@ function kmbDismissWarning() {
 
 /* ── Render Breakdown Table per Cabang ───────────────────────────── */
 function kmbRenderBreakdown(data) {
-  var tbody = document.getElementById('kmbBreakdownBody');
-  var wrap  = document.getElementById('kmbBreakdownWrap');
-  if (!tbody || !wrap) return;
+  var cardsEl  = document.getElementById('kmbBreakdownCards');
+  var wrap     = document.getElementById('kmbBreakdownWrap');
+  var countEl  = document.getElementById('kmbBreakdownCount');
+  var summEl   = document.getElementById('kmbBreakdownSummary');
+  if (!cardsEl || !wrap) return;
 
   if (!data.length) { wrap.style.display = 'none'; return; }
 
   // Group by cabang
   var map = {};
   data.forEach(function(d) {
-    var cab = d.cabang || 'Lainnya';
+    var cab = (d.cabang || '').trim() || '(Tanpa Cabang)';
     if (!map[cab]) map[cab] = { aktif:0, mati:0, deadline:0, total:0 };
     map[cab].total++;
     if (d.status === 'Aktif') map[cab].aktif++;
     else if (d.status === 'Mati') map[cab].mati++;
-    if (d.daysLeft !== null && d.daysLeft <= 1) map[cab].deadline++;
+    if (d.daysLeft !== null && d.daysLeft <= 1 && d.daysLeft >= 0) map[cab].deadline++;
   });
 
   var keys = Object.keys(map).sort();
   var totalAktif = 0, totalMati = 0, totalDeadline = 0, totalAll = 0;
+  keys.forEach(function(k) {
+    totalAktif    += map[k].aktif;
+    totalMati     += map[k].mati;
+    totalDeadline += map[k].deadline;
+    totalAll      += map[k].total;
+  });
 
-  var html = keys.map(function(cab) {
+  // Update summary bar
+  var sa = document.getElementById('kmbSumTotal');    if (sa) sa.textContent = totalAll;
+  var sb = document.getElementById('kmbSumAktif');    if (sb) sb.textContent = totalAktif;
+  var sc = document.getElementById('kmbSumMati');     if (sc) sc.textContent = totalMati;
+  var sd = document.getElementById('kmbSumDeadline'); if (sd) sd.textContent = totalDeadline;
+  if (summEl) summEl.style.display = 'block';
+
+  // Cabang count badge
+  if (countEl) countEl.textContent = keys.length + ' cabang';
+
+  // Build cards
+  cardsEl.innerHTML = keys.map(function(cab) {
     var r = map[cab];
-    totalAktif    += r.aktif;
-    totalMati     += r.mati;
-    totalDeadline += r.deadline;
-    totalAll      += r.total;
-    return '<tr>' +
-      '<td style="padding:8px 12px;color:rgba(255,255,255,0.75);font-weight:600;">' + cab + '</td>' +
-      '<td style="padding:8px 12px;text-align:center;color:#4ade80;font-weight:700;">' + (r.aktif || '-') + '</td>' +
-      '<td style="padding:8px 12px;text-align:center;color:#f87171;font-weight:700;">' + (r.mati || '-') + '</td>' +
-      '<td style="padding:8px 12px;text-align:center;color:#fbbf24;font-weight:700;">' + (r.deadline || '-') + '</td>' +
-      '<td style="padding:8px 12px;text-align:center;color:rgba(255,255,255,0.5);">' + r.total + '</td>' +
-    '</tr>';
+    var pctAktif = totalAll > 0 ? (r.aktif / r.total * 100).toFixed(0) : 0;
+    var pctMati  = totalAll > 0 ? (r.mati  / r.total * 100).toFixed(0) : 0;
+    var pctLain  = 100 - pctAktif - pctMati;
+
+    var cardClass = 'kmb-cab-card';
+    if (r.deadline > 0)     cardClass += ' has-deadline';
+    else if (r.mati > 0)    cardClass += ' has-mati';
+    else if (r.mati === 0)  cardClass += ' all-aktif';
+
+    // Emoji icon per status dominan
+    var icon = r.deadline > 0 ? '⏰' : (r.mati > 0 ? '⚠️' : '✅');
+
+    return '<div class="' + cardClass + '">' +
+      // Top accent handled by ::before CSS
+      '<div style="display:flex;align-items:center;gap:7px;margin-bottom:10px;">' +
+        '<span style="font-size:1rem;line-height:1;">' + icon + '</span>' +
+        '<div class="kmb-cab-name" title="' + cab + '">' + cab + '</div>' +
+      '</div>' +
+
+      // Stats grid: Total | Aktif | Mati | Deadline
+      '<div class="kmb-cab-stats">' +
+        '<div class="kmb-cab-stat">' +
+          '<div class="kmb-cab-stat-val" style="color:#fff;">' + r.total + '</div>' +
+          '<div class="kmb-cab-stat-lbl" style="color:rgba(255,255,255,0.5);">Total</div>' +
+        '</div>' +
+        '<div class="kmb-cab-stat">' +
+          '<div class="kmb-cab-stat-val" style="color:#4ade80;">' + (r.aktif || '0') + '</div>' +
+          '<div class="kmb-cab-stat-lbl" style="color:#4ade80;">Aktif</div>' +
+        '</div>' +
+        '<div class="kmb-cab-stat">' +
+          '<div class="kmb-cab-stat-val" style="color:' + (r.mati > 0 ? '#f87171' : 'rgba(255,255,255,0.25)') + ';">' + (r.mati || '0') + '</div>' +
+          '<div class="kmb-cab-stat-lbl" style="color:#f87171;">Mati</div>' +
+        '</div>' +
+        '<div class="kmb-cab-stat">' +
+          '<div class="kmb-cab-stat-val" style="color:' + (r.deadline > 0 ? '#fbbf24' : 'rgba(255,255,255,0.25)') + ';">' + (r.deadline || '0') + '</div>' +
+          '<div class="kmb-cab-stat-lbl" style="color:#fbbf24;">Deadline</div>' +
+        '</div>' +
+      '</div>' +
+
+      // Progress bar aktif vs mati
+      '<div class="kmb-cab-bar" title="' + pctAktif + '% Aktif, ' + pctMati + '% Mati">' +
+        '<div class="kmb-cab-bar-aktif" style="width:' + pctAktif + '%;"></div>' +
+        '<div class="kmb-cab-bar-mati"  style="width:' + pctMati  + '%;"></div>' +
+        '<div class="kmb-cab-bar-lain"  style="width:' + Math.max(0,pctLain) + '%;"></div>' +
+      '</div>' +
+
+    '</div>';
   }).join('');
 
-  // Total row
-  html += '<tr>' +
-    '<td style="padding:8px 12px;color:rgba(255,255,255,0.9);font-weight:800;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.05em;">TOTAL</td>' +
-    '<td style="padding:8px 12px;text-align:center;color:#4ade80;font-weight:800;">' + totalAktif + '</td>' +
-    '<td style="padding:8px 12px;text-align:center;color:#f87171;font-weight:800;">' + totalMati + '</td>' +
-    '<td style="padding:8px 12px;text-align:center;color:#fbbf24;font-weight:800;">' + totalDeadline + '</td>' +
-    '<td style="padding:8px 12px;text-align:center;color:rgba(255,255,255,0.8);font-weight:800;">' + totalAll + '</td>' +
-  '</tr>';
-
-  tbody.innerHTML = html;
   wrap.style.display = 'block';
 }
 
